@@ -13,6 +13,13 @@ import java.io.IOException;
 public interface IReceivingRadio 
 {
 	/**
+	 * Gets the address of the spot that has sent the datagram
+	 * @return String address
+	 * @throws IOException   If address cannot be found (maybe the datagram hasn't been received by receiveLight or receiveHeat)
+	 */
+	public String getReceivedAddress() throws IOException;
+
+	/**
 	 * Receives a datagram sent by the SendingRadio containing light data
 	 * @return light data
 	 */

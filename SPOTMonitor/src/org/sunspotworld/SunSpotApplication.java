@@ -28,6 +28,20 @@ import javax.microedition.midlet.MIDletStateChangeException;
  * be selected for execution.
  */
 public class SunSpotApplication extends MIDlet {
+    ISendingRadio sendingRadio;
+    ILightMonitor lightMonitor;
+    IThermoMonitor thermoMonitor;
+    private static final int SAMPLE_PERIOD = 100 * 25;  
+
+    public SunSpotApplication() {
+        try {
+            sendingRadio = RadiosFactory.createSendingRadio(); 
+            lightMonitor = MonitorFactory.createLightMonitor(); 
+            thermoMonitor = MonitorFactory.createThermoMonitor(); 
+        } catch(IOException io) {
+            System.out.println("There was an error initialising the SunSPOT sensors: " + io);
+        }
+    }
 
     protected void startApp() throws MIDletStateChangeException {
         BootloaderListenerService.getInstance().start();   // monitor the USB (if connected) and recognize commands from host
@@ -35,9 +49,11 @@ public class SunSpotApplication extends MIDlet {
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
 
         try {
-            ISendingRadio sendingRadio = RadiosFactory.createSendingRadio(); 
-            sendingRadio.sendLight(10); 
-            sendingRadio.sendHeat(20); 
+            for (int i = 0; i < 10; i++) {
+                sendingRadio.sendLight(lightMonitor.getLightIntensity()); 
+                sendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());    
+                Utils.sleep(SAMPLE_PERIOD);
+            }
         } catch (IOException io) {
             System.out.println("Data could not be send to basestation: " + io);
         }
