@@ -6,10 +6,12 @@
 package org.sunspotworld;
 
 import java.io.IOException;
+
 /**
  *
  * @author adamcornforth
  */
-public interface IReceivingRadio 
+public interface ISendingRadio 
 {
+	
 }
