@@ -20,6 +20,13 @@ import javax.microedition.io.*;
  */
 public class ReceivingRadio implements IReceivingRadio
 {
+    private static final int HOST_PORT = 96;
+    //sample period in milliseconds
+    private RadiogramConnection radioConn = null;
+    private Datagram  datagram = null;
+    
+    private String spotAddress = System.getProperty("IEEE_ADDRESS");
+
     public ReceivingRadio() throws IOException
     {
         radioConn = (RadiogramConnection) Connector.open("radiogram://:" + HOST_PORT);
@@ -31,13 +38,13 @@ public class ReceivingRadio implements IReceivingRadio
     {
         radioConn.receive(datagram); 
         String addr = datagram.getAddress();  
-        return datagram.readDouble(); 
+        return datagram.readInt(); 
     }
 
     public double receiveHeat() throws IOException
     {
         radioConn.receive(datagram); 
         String addr = datagram.getAddress();  
-        return datagram.readInt(); 
+        return datagram.readDouble(); 
     }
 }

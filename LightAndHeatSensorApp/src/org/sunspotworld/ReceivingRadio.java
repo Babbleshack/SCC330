@@ -41,13 +41,13 @@ public class ReceivingRadio implements IReceivingRadio
     {
         radioConn.receive(datagram); 
         String addr = datagram.getAddress();  
-        return datagram.readDouble(); 
+        return datagram.readInt(); 
     }
 
     public double receiveHeat() throws IOException
     {
         radioConn.receive(datagram); 
         String addr = datagram.getAddress();  
-        return datagram.readInt(); 
+        return datagram.readDouble(); 
     }
 }
