@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class ReceivingRadio implements IReceivingRadio
 {
-    public ReceivingRadio()
+    public ReceivingRadio() throws IOException
     {
         System.out.println("Receiving Radio created");
     }

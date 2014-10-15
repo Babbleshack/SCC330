@@ -15,6 +15,8 @@ import com.sun.spot.service.BootloaderListenerService;
 import com.sun.spot.util.IEEEAddress;
 import com.sun.spot.util.Utils;
 
+import java.io.IOException;
+
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
@@ -27,15 +29,18 @@ import javax.microedition.midlet.MIDletStateChangeException;
  */
 public class SunSpotApplication extends MIDlet {
 
-    private ITriColorLEDArray leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
-
     protected void startApp() throws MIDletStateChangeException {
         BootloaderListenerService.getInstance().start();   // monitor the USB (if connected) and recognize commands from host
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
 
-        ISendingRadio sendingRadio = RadiosFactory.createSendingRadio(); 
-
+        try {
+            ISendingRadio sendingRadio = RadiosFactory.createSendingRadio(); 
+            sendingRadio.sendLight(10); 
+            sendingRadio.sendHeat(20); 
+        } catch (IOException io) {
+            System.out.println("Data could not be send to basestation: " + io);
+        }
         notifyDestroyed();                      // cause the MIDlet to exit
     }
 

@@ -5,11 +5,25 @@
  */
 package org.sunspotworld;
 
+import java.io.IOException;
+
 /**
  *
  * @author adamcornforth
  */
 public interface ISendingRadio 
 {
+	/**
+	 * Builds a datagram that sends light intensity data to the basestation
+	 * @param  value the light value to send to the basestation
+	 * @return status code
+	 */
+	public void sendLight(int value) throws IOException;
 
+	/**
+	 * Builds a datagram that sends heat data to the basestation
+	 * @param  value the light value to send to the basestation
+	 * @return status code
+	 */
+	public void sendHeat(double value) throws IOException;
 }

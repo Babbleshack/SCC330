@@ -5,17 +5,19 @@
  */
 package org.sunspotworld;
 
+import java.io.IOException;
+
 /**
  *
  * @author adamcornforth
  */
 public class RadiosFactory 
 {
-    public static ISendingRadio createSendingRadio()
+    public static ISendingRadio createSendingRadio() throws IOException
     {
         return new SendingRadio();
     }
-    public static IReceivingRadio createReceivingRadio()
+    public static IReceivingRadio createReceivingRadio() throws IOException
     {
         return new ReceivingRadio(); 
     }
