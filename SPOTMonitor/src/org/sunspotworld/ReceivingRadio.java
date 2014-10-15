@@ -22,6 +22,22 @@ public class ReceivingRadio implements IReceivingRadio
 {
     public ReceivingRadio() throws IOException
     {
-        
+        radioConn = (RadiogramConnection) Connector.open("radiogram://:" + HOST_PORT);
+        datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
+        System.out.println("Receiving Radio created");
+    }
+
+    public int receiveLight() throws IOException
+    {
+        radioConn.receive(datagram); 
+        String addr = datagram.getAddress();  
+        return datagram.readDouble(); 
+    }
+
+    public double receiveHeat() throws IOException
+    {
+        radioConn.receive(datagram); 
+        String addr = datagram.getAddress();  
+        return datagram.readInt(); 
     }
 }
