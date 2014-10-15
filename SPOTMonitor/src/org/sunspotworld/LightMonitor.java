@@ -6,18 +6,18 @@
 package org.sunspotworld;
 
 import com.sun.spot.resources.Resources;
-import com.sun.spot.sensorboard.peripheral.LightSensor;
+import com.sun.spot.resources.transducers.ILightSensor;
 import java.io.IOException;
 /**
- *
+ * Define a Light Monitor 
  * @author babbleshack
  */
 public class LightMonitor implements ILightMonitor
 {
-    LightSensor lightSensor;
+    ILightSensor lightSensor;
     public LightMonitor()
     {
-        lightSensor = (LightSensor) Resources.lookup(ILightMonitor.class);
+        lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
     }
     public int getLightIntensity() 
     {
@@ -26,7 +26,7 @@ public class LightMonitor implements ILightMonitor
            return lightSensor.getAverageValue();
         } catch (IOException ex) {
            System.err.println("Failed to get light sensor: " + ex);
-        }
+        } 
         return -9999;
     }
     
