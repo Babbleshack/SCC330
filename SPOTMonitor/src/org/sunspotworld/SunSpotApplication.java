@@ -34,6 +34,8 @@ public class SunSpotApplication extends MIDlet {
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
 
+        ISendingRadio sendingRadio = RadiosFactory.createSendingRadio(); 
+
         notifyDestroyed();                      // cause the MIDlet to exit
     }
 

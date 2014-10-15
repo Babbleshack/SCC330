@@ -9,10 +9,7 @@ package org.sunspotworld;
  *
  * @author adamcornforth
  */
-public class RadioFactory 
+public interface IReceivingRadio 
 {
-    public static IRadioMonitor createRadioMonitor()
-    {
-        return new RadioMonitor();
-    }
+
 }
