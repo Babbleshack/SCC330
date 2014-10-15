@@ -37,7 +37,7 @@ public class ReceivingRadio implements IReceivingRadio
         System.out.println("Receiving Radio created");
     }
 
-    public int receiveLight() throws IOException
+    public double receiveLight() throws IOException
     {
         radioConn.receive(datagram); 
         String addr = datagram.getAddress();  
