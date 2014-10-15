@@ -33,19 +33,27 @@ public class SendingRadio implements ISendingRadio
         datagram = radioConn.newDatagram(50); 
     }
 
-    public void sendLight(int value) throws IOException
+    public void sendLight(int value)
     {
-    	datagram.reset();
-    	datagram.writeInt(value);
-    	radioConn.send(datagram);
-    	System.out.println("Light value " + value + " sent...");
+        try {
+            datagram.reset();
+            datagram.writeInt(value);
+            radioConn.send(datagram);
+            System.out.println("Light value " + value + " sent...");
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending Light: " + e);
+        }
     }
 
-    public void sendHeat(double value) throws IOException
+    public void sendHeat(double value)
     {
-    	datagram.reset();
-    	datagram.writeDouble(value);
-    	radioConn.send(datagram);
-    	System.out.println("Heat value " + value + " sent...");
+        try {
+            datagram.reset();
+            datagram.writeDouble(value);
+            radioConn.send(datagram);
+            System.out.println("Heat value " + value + " sent...");
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending thermo: " + e);
+        }
     }
 }
