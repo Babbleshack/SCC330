@@ -5,6 +5,8 @@
  */
 package org.sunspotworld;
 
+import com.sun.spot.resources.Resources;
+
 /**
  *
  * @author babbleshack
@@ -15,7 +17,7 @@ public class MonitorFactory
     {
         return new LightMonitor();
     }
-    public static IThermoMonitor IThermoMonitor()
+    public static IThermoMonitor createThermoMonitor()
     {
         return new ThermoMonitor();
     }

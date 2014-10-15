@@ -6,15 +6,15 @@
 package org.sunspotworld;
 
 import com.sun.spot.resources.Resources;
-import com.sun.spot.sensorboard.peripheral.TemperatureInput;
+import com.sun.spot.resources.transducers.ITemperatureInput;
 import java.io.IOException;
 
 public class ThermoMonitor implements IThermoMonitor 
 {
-    TemperatureInput thermo;
+    ITemperatureInput thermo;
     public ThermoMonitor()
     {
-        thermo = (TemperatureInput) Resources.lookup(TemperatureInput.class);
+        thermo = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
     }
 
     public double getCelsiusTemp() {
