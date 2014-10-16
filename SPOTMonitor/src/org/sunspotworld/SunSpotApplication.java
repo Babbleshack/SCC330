@@ -34,13 +34,8 @@ public class SunSpotApplication extends MIDlet {
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
 
-        try {
-            ISendingRadio sendingRadio = RadiosFactory.createSendingRadio(); 
-            sendingRadio.sendLight(10); 
-            sendingRadio.sendHeat(20); 
-        } catch (IOException io) {
-            System.out.println("Data could not be send to basestation: " + io);
-        }
+        ISendingRadio sendingRadio = RadiosFactory.createSendingRadio(); 
+        sendingRadio.sendLight(10); 
         notifyDestroyed();                      // cause the MIDlet to exit
     }
 
