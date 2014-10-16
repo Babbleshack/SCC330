@@ -22,13 +22,7 @@ import javax.microedition.io.*;
  */
 public class SunSpotHostApplication implements Runnable
 {
-    // Broadcast port on which we listen for tilt data
-    private static final int HOST_PORT = 96;
-    
-    //Connection and datagram variables
-    private RadiogramConnection radioConn;
-    private Datagram datagram;
-   
+       
     //thread for communicating with SPOT
     private Thread pollingThread = null;
 

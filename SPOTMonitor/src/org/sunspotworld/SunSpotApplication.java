@@ -32,7 +32,6 @@ public class SunSpotApplication extends MIDlet {
     private ILightMonitor lightMonitor;
     private IThermoMonitor thermoMonitor;
     private ISPOTMediator mediator;
-    private static final int SAMPLE_PERIOD = 100 * 25;  
 
     public SunSpotApplication() {
         mediator = new SPOTMediator(RadiosFactory.createSendingRadio());
@@ -45,8 +44,8 @@ public class SunSpotApplication extends MIDlet {
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
 
-        ISendingRadio sendingRadio = RadiosFactory.createSendingRadio(); 
-        sendingRadio.sendLight(10); 
+        mediator.postLightData(lightMonitor); 
+        mediator.postCelsiusData(thermoMonitor); 
         notifyDestroyed();                      // cause the MIDlet to exit
     }
 
