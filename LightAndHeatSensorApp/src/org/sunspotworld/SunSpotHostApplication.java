@@ -69,7 +69,7 @@ public class SunSpotHostApplication implements Runnable
             try 
             {                                
                 // Read light and heat values
-                int     lightValue  = receivingRadio.receiveLight();
+                double  lightValue  = receivingRadio.receiveLight();
                 double  heatValue   = receivingRadio.receiveHeat();
 
                 // Print out light and heat values
