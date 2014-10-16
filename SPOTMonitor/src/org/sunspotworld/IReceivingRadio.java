@@ -12,15 +12,5 @@ import java.io.IOException;
  */
 public interface IReceivingRadio 
 {
-	/**
-	 * Receives a datagram sent by the SendingRadio containing light data
-	 * @return light data
-	 */
-	public int receiveLight() throws IOException;
-
-	/**
-	 * Receives a datagram sent by the SendingRadio containing heat data
-	 * @return heat data
-	 */
-	public double receiveHeat() throws IOException;
+	
 }

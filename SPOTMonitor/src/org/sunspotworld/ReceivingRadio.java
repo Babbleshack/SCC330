@@ -33,18 +33,4 @@ public class ReceivingRadio implements IReceivingRadio
         datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
         System.out.println("Receiving Radio created");
     }
-
-    public int receiveLight() throws IOException
-    {
-        radioConn.receive(datagram); 
-        String addr = datagram.getAddress();  
-        return datagram.readInt(); 
-    }
-
-    public double receiveHeat() throws IOException
-    {
-        radioConn.receive(datagram); 
-        String addr = datagram.getAddress();  
-        return datagram.readDouble(); 
-    }
 }

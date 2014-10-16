@@ -13,12 +13,12 @@ import com.sun.spot.resources.Resources;
  */
 public class MonitorFactory 
 {
-    public static ILightMonitor createLightMonitor()
+    public static ILightMonitor createLightMonitor(ISPOTMediator mediator)
     {
-        return new LightMonitor();
+        return new LightMonitor(mediator);
     }
-    public static IThermoMonitor createThermoMonitor()
+    public static IThermoMonitor createThermoMonitor(ISPOTMediator mediator)
     {
-        return new ThermoMonitor();
+        return new ThermoMonitor(mediator);
     }
 }

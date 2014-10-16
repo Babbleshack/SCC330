@@ -9,7 +9,7 @@ package org.sunspotworld;
  *
  * @author babbleshack
  */
-public interface ILightMonitor 
+public interface ILightMonitor
 {
     /**
      * basically a wrapper

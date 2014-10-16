@@ -6,7 +6,10 @@
 package org.sunspotworld;
 
 import com.sun.spot.resources.Resources;
+import com.sun.spot.resources.transducers.Condition;
+import com.sun.spot.resources.transducers.IConditionListener;
 import com.sun.spot.resources.transducers.ILightSensor;
+import com.sun.spot.resources.transducers.SensorEvent;
 import java.io.IOException;
 /**
  * Define a Light Monitor 
@@ -14,10 +17,37 @@ import java.io.IOException;
  */
 public class LightMonitor implements ILightMonitor
 {
-    ILightSensor lightSensor;
-    public LightMonitor()
+ 
+    private ISPOTMediator mediator; // Mediator
+    private ILightSensor lightSensor; //Light Sensor 
+    private ILightMonitor Outerself = this;
+    /**
+     * Define Condition Listener Callback.
+     * Uses SPOTMediator to call send method on the radio.
+     */
+    IConditionListener postData = new IConditionListener() {
+        ISPOTMediator med = mediator; // get referance to outer mediator
+        ILightMonitor self = Outerself; //get ref to outer 'ThermoMonitor' inst
+        public void conditionMet(SensorEvent evt, Condition condition){
+            med.postLightData(Outerself);
+        }
+    };
+    
+    /**
+     * Define Conditon Listener
+     * triggers callback every 60 seconds
+     */
+    Condition checkTemp = new Condition(lightSensor, postData, 60 * 1000) {
+        public boolean isMet(){
+            //we can add a switch here to deativate reporter
+            return true;
+        }
+    };
+    
+    public LightMonitor(ISPOTMediator mediator)
     {
-        lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
+        this.lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
+        this.mediator = mediator;
     }
     public int getLightIntensity() 
     {
