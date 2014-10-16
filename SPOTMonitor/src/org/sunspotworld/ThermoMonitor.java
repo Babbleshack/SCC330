@@ -14,45 +14,10 @@ import java.io.IOException;
 
 public class ThermoMonitor implements IThermoMonitor 
 {
-    private ISPOTMediator mediator;
     private ITemperatureInput thermo;
-    private ThermoMonitor Outerself = this;
-    
-    /**
-     * Define Condition Listener Callback.
-     * Uses SPOTMediator to call send method on the radio.
-     */
-    IConditionListener postData = new IConditionListener() {
-        ISPOTMediator med = mediator; // get referance to outer mediator
-        ThermoMonitor self = Outerself; //get ref to outer 'ThermoMonitor' inst
-        public void conditionMet(SensorEvent evt, Condition condition){
-            med.postCelciusData(self);
-            med.postFahrenheitData(self);
-        }
-    };
-    
-    /**
-     * Define Conditon Listener
-     * triggers callback every 60 seconds
-     */
-    Condition checkTemp = new Condition(thermo, postData, 60 * 1000) {
-        public boolean isMet(){
-            //we can add a switch here to deativate reporter
-            return true;
-        }
-    };
-        
-    
-    
-    
-    
-    
-    //IConditionListener timeout = new ConditionListener
-    public ThermoMonitor(ISPOTMediator mediator)
+    public ThermoMonitor()
     {
         this.thermo = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
-        this.mediator = mediator;
-        
     }
 
     public double getCelsiusTemp() {

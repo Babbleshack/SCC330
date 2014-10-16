@@ -18,7 +18,7 @@ public interface ISendingRadio
 	 * @param  value the light value to send to the basestation
 	 * @return status code
 	 */
-	public void sendLight(int value);
+	public void sendLight(double value);
 
 	/**
 	 * Builds a datagram that sends heat data to the basestation

@@ -33,11 +33,11 @@ public class SendingRadio implements ISendingRadio
         datagram = radioConn.newDatagram(50); 
     }
 
-    public void sendLight(int value)
+    public void sendLight(double value)
     {
         try {
             datagram.reset();
-            datagram.writeInt(value);
+            datagram.writeDouble(value);
             radioConn.send(datagram);
             System.out.println("Light value " + value + " sent...");
         } catch (Exception e) {

@@ -31,22 +31,27 @@ public class SunSpotApplication extends MIDlet {
     //private ISendingRadio sendingRadio;
     private ILightMonitor lightMonitor;
     private IThermoMonitor thermoMonitor;
-    private ISPOTMediator mediator;
+    private ISendingRadio sendingRadio;
+    private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
 
     public SunSpotApplication() {
-        mediator = new SPOTMediator(RadiosFactory.createSendingRadio());
-        lightMonitor = MonitorFactory.createLightMonitor(mediator); 
-        thermoMonitor = MonitorFactory.createThermoMonitor(mediator); 
+        sendingRadio = RadiosFactory.createSendingRadio();
+        lightMonitor = MonitorFactory.createLightMonitor(); 
+        thermoMonitor = MonitorFactory.createThermoMonitor(); 
     }
 
     protected void startApp() throws MIDletStateChangeException {
         BootloaderListenerService.getInstance().start();   // monitor the USB (if connected) and recognize commands from host
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
+        while(true)
+        {
+            sendingRadio.sendLight(lightMonitor.getLightIntensity());
+            sendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
+            Utils.sleep(SAMPLE_RATE);
+        }
 
-        mediator.postLightData(lightMonitor); 
-        mediator.postCelsiusData(thermoMonitor); 
-        notifyDestroyed();                      // cause the MIDlet to exit
+        //notifyDestroyed();                      // cause the MIDlet to exit
     }
 
     protected void pauseApp() {
