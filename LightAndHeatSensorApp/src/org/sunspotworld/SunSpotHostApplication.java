@@ -31,14 +31,17 @@ public class SunSpotHostApplication implements Runnable
    
     //thread for communicating with SPOT
     private Thread pollingThread = null;
+
+    // Init receiving radio
+    IReceivingRadio receivingRadio;
    
-   //creates an instance of SunSpotHostApplication class and initialises
-    //instance variables
+    // creates an instance of SunSpotHostApplication class and initialises
+    // instance variables
     public SunSpotHostApplication()
     {
        try
        { 
-           //starts polling thread
+           // starts polling thread
            startPolling();
        }
        catch(Exception e)
@@ -57,39 +60,31 @@ public class SunSpotHostApplication implements Runnable
     
     public void run()  
     {
-        //starts application
         try 
         {
-            // opens a server-side broadcast radiogram connection
-            // to listen for switch readings being sent by SPOT devices
-            radioConn = (RadiogramConnection) Connector.open("radiogram://:" + HOST_PORT);
-            datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
+            receivingRadio = (IReceivingRadio)RadiosFactory.createReceivingRadio(); 
         } 
         catch (Exception e) 
         {
-             System.err.println("setUp caught " + e.getMessage());   
+            System.err.println("setUp caught " + e.getMessage());   
         }
         
         // main switch reading/polling loop
         while (true) 
         {
             try 
-            {
-                // reads accelerometer state data received over the radio
-                radioConn.receive(datagram);
-                
-                //reads sender ID
-                String addr = datagram.getAddress();  
-                
-                //read a value
-                double value = datagram.readDouble(); 
+            {                                
+                // Read light and heat values
+                int     lightValue  = receivingRadio.receiveLight();
+                double  heatValue   = receivingRadio.receiveHeat();
 
-                //prints ID od switch pressed, senders ID's and date
-                System.out.println("Message from "+addr+": \t " + value);   
+                // Print out light and heat values
+                System.out.println("Message from "+receivingRadio.getReceivedAddress()+": \t Light " + lightValue + "\t Heat: " + heatValue);   
             } 
-            catch (Exception e) 
+            catch (IOException io) 
             {
-                System.err.println("Caught " + e +  " while polling SPOT");   
+                System.err.println("Caught " + io +  " while polling SPOT");   
+                io.printStackTrace();
             }
         }
     }

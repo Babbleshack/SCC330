@@ -28,6 +28,17 @@ import javax.microedition.midlet.MIDletStateChangeException;
  * be selected for execution.
  */
 public class SunSpotApplication extends MIDlet {
+    //private ISendingRadio sendingRadio;
+    private ILightMonitor lightMonitor;
+    private IThermoMonitor thermoMonitor;
+    private ISPOTMediator mediator;
+    private static final int SAMPLE_PERIOD = 100 * 25;  
+
+    public SunSpotApplication() {
+        mediator = new SPOTMediator(RadiosFactory.createSendingRadio());
+        lightMonitor = MonitorFactory.createLightMonitor(mediator); 
+        thermoMonitor = MonitorFactory.createThermoMonitor(mediator); 
+    }
 
     protected void startApp() throws MIDletStateChangeException {
         BootloaderListenerService.getInstance().start();   // monitor the USB (if connected) and recognize commands from host
