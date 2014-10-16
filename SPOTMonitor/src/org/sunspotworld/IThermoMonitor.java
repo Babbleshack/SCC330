@@ -9,7 +9,7 @@ package org.sunspotworld;
  *
  * @author babbleshack
  */
-public interface IThermoMonitor 
+public interface IThermoMonitor
 {
     /**
      * return temperature in Degrees Celsius

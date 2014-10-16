@@ -10,14 +10,10 @@ import java.io.IOException;
 
 public class SPOTMediator implements ISPOTMediator 
 {
-    private ILightMonitor lightMonitor; // light sensor
-    private IThermoMonitor thermoMonitor; // thermo sensor
     private ISendingRadio sendingRadio;
-    public SPOTMediator(ILightMonitor lightMonitor, IThermoMonitor thermoMonitor)
+    public SPOTMediator(ISendingRadio sendingRadio)
     {
-        this.lightMonitor = lightMonitor;
-        this.thermoMonitor = thermoMonitor;
-        sendingRadio = RadiosFactory.createSendingRadio();
+        sendingRadio = sendingRadio;
     }
     /**
      * call light monitor 

@@ -40,7 +40,7 @@ public class SendingRadio implements ISendingRadio
             datagram.writeInt(value);
             radioConn.send(datagram);
             System.out.println("Light value " + value + " sent...");
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("IOException occured while sending Light: " + e);
         }
     }

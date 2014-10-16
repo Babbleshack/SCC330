@@ -33,14 +33,11 @@ public class SunSpotApplication extends MIDlet {
         BootloaderListenerService.getInstance().start();   // monitor the USB (if connected) and recognize commands from host
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
-
-        try {
-            ISendingRadio sendingRadio = RadiosFactory.createSendingRadio(); 
+       /* ISendingRadio sendingRadio = null;
+            sendingRadio = RadiosFactory.createSendingRadio(); 
             sendingRadio.sendLight(10); 
-            sendingRadio.sendHeat(20); 
-        } catch (IOException io) {
-            System.out.println("Data could not be send to basestation: " + io);
-        }
+            sendingRadio.sendHeat(20); */
+        ISPOTMediator mediator = new SPOTMediator(RadiosFactory.createSendingRadio());
         notifyDestroyed();                      // cause the MIDlet to exit
     }
 
