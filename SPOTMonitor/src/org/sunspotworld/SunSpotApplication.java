@@ -35,6 +35,7 @@ public class SunSpotApplication extends MIDlet {
     private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
 
     public SunSpotApplication() {
+        System.out.println("VITALI SMELLS OF FLOWERS!");
         sendingRadio = RadiosFactory.createSendingRadio();
         lightMonitor = MonitorFactory.createLightMonitor(); 
         thermoMonitor = MonitorFactory.createThermoMonitor(); 
