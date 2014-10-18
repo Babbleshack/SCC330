@@ -87,9 +87,10 @@ public class SunSpotHostApplication implements Runnable
  
     public static void main(String[] args) throws Exception 
     {
+        System.setProperty("java.net.preferIPv4Stack" , "true");
         //registers the application's name with the OTA Command
         //server & starts the OTA 
-        OTACommandServer.start("SunSpotHostApplication");
+        OTACommandServer.start("HostApplication");
         SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication(); 
         
     }    
