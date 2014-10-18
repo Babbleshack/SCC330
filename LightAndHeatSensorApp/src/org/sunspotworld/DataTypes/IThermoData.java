@@ -10,6 +10,8 @@ package org.sunspotworld.DataTypes;
  */
 public interface IThermoData 
 {
-    void setThermoData(double data);
-    double getThermoData();
+    double getCelciusData();
+    double getFahrenheitData();
+    void setCelciusData(double data);
+    void setFahrenheitData(double data);
 }

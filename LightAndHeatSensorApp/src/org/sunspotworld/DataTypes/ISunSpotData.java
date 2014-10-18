@@ -9,6 +9,6 @@ package org.sunspotworld.DataTypes;
  * @author Babblebase
  */
 public interface ISunSpotData {
-    void SetAddress(String addr);
-    String getAddress();
+    void setSpotAddress(String addr);
+    String getSpotAddress();
 }
