@@ -8,6 +8,9 @@ package org.sunspotworld.DB;
  *
  * @author Babblebase
  */
-public interface IQuearyManager {
+public interface IQuearyManager 
+{
+    
+    
     
 }
