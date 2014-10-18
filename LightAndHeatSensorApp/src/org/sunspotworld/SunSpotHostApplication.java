@@ -28,96 +28,54 @@ import javax.microedition.io.*;
  */
 public class SunSpotHostApplication implements Runnable
 {
-
-    private ILightMonitor lightMonitor; 
-    private IThermoMonitor thermoMonitor;
         
     /**
-     * thread for communicating with SPOT
-     * Init receiving radio
+     * Threads for communicating with SPOT
      */
-    private Thread pollingThread = null;
-    IReceivingRadio lightReceivingRadio, thermoReceivingRadio;
-   
+    private Thread heatThread = null;
+    private Thread lightThread = null;
+
     /**
-     * creates an instance of SunSpotHostApplication class and initialises
-     * instance variables
+     * Starts polling threads
      */
-    public SunSpotHostApplication()
+    public SunSpotHostApplication() throws Exception
     {
-       try
-       { 
-            lightMonitor = MonitorFactory.createLightMonitor(); 
-            thermoMonitor = MonitorFactory.createThermoMonitor(); 
-
-            lightReceivingRadio = RadiosFactory.createReceivingRadio(lightMonitor.getPort());
-            thermoReceivingRadio = RadiosFactory.createReceivingRadio(thermoMonitor.getPort());
-
-            /**
-             * Starts polling thread
-             */
-            startPolling();
-       }
-       catch(Exception e)
-       {
-           System.out.println("Unable initiate polling");
-       }
+        startPolling();
     }
-     
+
     /**
-     * Initiates thread for communication with SPOT device
-     */ 
+     * Initiate threads for communicating with the sunSPOT device
+     */
     public void startPolling() throws Exception
     {
-        pollingThread = new Thread(this,"pollingService");
-        pollingThread.setDaemon(true);
-        pollingThread.start();
+        heatThread = new Thread(new TReceivingHeat(),"heatService");
+        lightThread = new Thread(new TReceivingLight(),"lightService");
+
+        heatThread.setDaemon(true);
+        lightThread.setDaemon(true);
+
+        heatThread.start();
+        lightThread.start();
     }
-    
+
     public void run()  
     {    
-        /**
-         * Poll for reading updates
-         */
-        while (true) 
-        {
-            try 
-            {                                
-                /**
-                 * Read values using radios
-                 */
-                double  lightValue  = lightReceivingRadio.receiveLight();
-                double  thermoValue   = thermoReceivingRadio.receiveHeat();
-
-                /**
-                 * Output received values
-                 */
-                System.out.println("Message from "+lightReceivingRadio.getReceivedAddress()+": \t Light " + lightValue + "\t Heat: " + thermoValue);   
-            } 
-            catch (IOException io) 
-            {
-                System.err.println("Caught " + io +  " while polling SPOT");   
-                io.printStackTrace();
-            }
-        }
     }
-    
-    
- 
-    public static void main(String[] args) throws Exception 
+
+    public static void main(String[] args) throws Exception
     {
         /**
          * Fixes a strange issue with the SunSpot library not playing nice with 
          * IPv6 address strings when initialising the shared basestation
          */
         System.setProperty("java.net.preferIPv4Stack" , "true");
-        
+
         /**
          * registers the application's name with the OTA Command
          * server & starts the OTA 
          */
         OTACommandServer.start("HostApplication");
-        SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication(); 
-        
-    }    
+        SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication();
+
+    }
 }
