@@ -5,7 +5,7 @@
  * set(int i, Obj o)
  * 
  */
-package org.sunspotworld.database.Collections;
+package org.sunspotworld.Collections;
 
 import java.util.AbstractList;
 

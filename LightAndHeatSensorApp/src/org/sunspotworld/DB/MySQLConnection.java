@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sunspotworld.database;
+package org.sunspotworld.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author Babblebase
  */
-public class MySQLConnection 
+public class MySQLConnection implements IDatabaseConnection 
 {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost/SPOT";
@@ -33,6 +33,7 @@ public class MySQLConnection
             System.err.println("MySQL driver not found" + e);
         }
     }
+    @Override
     public void connect()
     {
         try { 
@@ -43,6 +44,7 @@ public class MySQLConnection
         }
     }
     
+    @Override
     public void disconnect()
     {
         try
