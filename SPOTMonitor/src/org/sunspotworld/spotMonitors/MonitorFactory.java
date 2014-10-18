@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spotMonitors;
+package org.sunspotworld.spotMonitors;
 
 import com.sun.spot.resources.Resources;
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package spotMonitors;
+package org.sunspotworld.spotMonitors;
 
 import org.sunspotworld.spotRadios.SunspotPort;
 
@@ -11,21 +11,19 @@ import org.sunspotworld.spotRadios.SunspotPort;
  *
  * @author babbleshack
  */
-public interface IThermoMonitor
+public interface ILightMonitor
 {
-    /** 
+	/** 
      * Returns port number for this sensor type
      */
     SunspotPort getPort(); 
-
+    
     /**
-     * return temperature in Degrees Celsius
-     * @return double temp
+     * basically a wrapper
+     * returns the average value of
+     * 17 '1 msec' readings.
+     * @return 
      */
-    double getCelsiusTemp();
-    /**
-     * returns temperature in Fahrenheit
-     * @return double temp
-     */
-    double getFahrenheitTemp();
+    int getLightIntensity();
+    
 }
