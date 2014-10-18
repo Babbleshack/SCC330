@@ -1,15 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * JDBC connection handler for MySQL
+ * Dominic Lindsay
  */
 package org.sunspotworld.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,6 +19,8 @@ public class MySQLConnection implements IDatabaseConnection
     private static final String USERNAME = "babbleshack";
     private static final String PASSWORD = "password";
     private Connection connection = null;
+
+ 
     
     
     public MySQLConnection()
@@ -53,5 +52,15 @@ public class MySQLConnection implements IDatabaseConnection
         } catch (Exception e) {
             System.err.println("connection failed to close! " + e);
         }
-    }  
+    } 
+    /**
+     * returns connection, if connection has not been set, a null 
+     * pointer exception is thrown.
+     * @return 
+     */
+    public Connection getConnection() {
+        if(connection == null)
+            throw new NullPointerException();
+        return connection;
+    }
 }

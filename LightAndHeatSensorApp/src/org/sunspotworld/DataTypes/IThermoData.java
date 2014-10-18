@@ -8,7 +8,7 @@ package org.sunspotworld.DataTypes;
  *
  * @author Babblebase
  */
-public interface IThermoData 
+public interface IThermoData extends ISunSpotData
 {
     double getCelciusData();
     double getFahrenheitData();

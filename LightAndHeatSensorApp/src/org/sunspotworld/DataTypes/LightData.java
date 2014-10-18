@@ -5,6 +5,8 @@
  */
 package org.sunspotworld.DataTypes;
 
+import java.sql.Date;
+
 /**
  *
  * @author Babblebase
@@ -13,6 +15,7 @@ public class LightData implements ILightData
 {   
     private String spotAddress;
     private double LightData;
+    private long time;
     
     public LightData(String spotAddress, double LightData) {
         this.spotAddress = spotAddress;
@@ -34,4 +37,14 @@ public class LightData implements ILightData
     public void setLightData(double LightData) {
         this.LightData = LightData;
     }    
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+
 }
