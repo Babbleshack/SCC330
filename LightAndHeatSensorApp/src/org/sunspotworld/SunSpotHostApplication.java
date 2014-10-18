@@ -28,75 +28,47 @@ import javax.microedition.io.*;
 public class SunSpotHostApplication implements Runnable
 {
 
-    private ILightMonitor lightMonitor; 
-    private IThermoMonitor thermoMonitor;
-       
     //thread for communicating with SPOT
-    private Thread pollingThread = null;
+    // private Thread pollingThread = null;
+    private Thread heatThread = null;
+    private Thread lightThread = null;
 
-    // Init receiving radio
-    IReceivingRadio lightReceivingRadio, thermoReceivingRadio;
-   
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public SunSpotHostApplication()
+    public SunSpotHostApplication() throws Exception
     {
-       try
-       { 
-            lightMonitor = MonitorFactory.createLightMonitor(); 
-            thermoMonitor = MonitorFactory.createThermoMonitor(); 
+        // starts polling thread
+        startPolling();
 
-            lightReceivingRadio = RadiosFactory.createReceivingRadio(lightMonitor.getPort());
-            thermoReceivingRadio = RadiosFactory.createReceivingRadio(thermoMonitor.getPort());
-
-            // starts polling thread
-            startPolling();
-       }
-       catch(Exception e)
-       {
-           System.out.println("Unable initiate polling");
-       }
     }
-     
+
     public void startPolling() throws Exception
     {
         //initiates thread for communication with SPOT device
-        pollingThread = new Thread(this,"pollingService");
-        pollingThread.setDaemon(true);
-        pollingThread.start();
-    }
-    
-    public void run()  
-    {    
-        // main switch reading/polling loop
-        while (true) 
-        {
-            try 
-            {                                
-                // Read light and heat values
-                double  lightValue  = lightReceivingRadio.receiveLight();
-                double  thermoValue   = thermoReceivingRadio.receiveHeat();
+        // pollingThread   = new Thread(this,"pollingService");
+        heatThread      = new Thread(new TReceivingHeat(),"heatService");
+        lightThread     = new Thread(new TReceivingLight(),"lightService");
 
-                // Print out light and heat values
-                System.out.println("Message from "+lightReceivingRadio.getReceivedAddress()+": \t Light " + lightValue + "\t Heat: " + thermoValue);   
-            } 
-            catch (IOException io) 
-            {
-                System.err.println("Caught " + io +  " while polling SPOT");   
-                io.printStackTrace();
-            }
-        }
+        // pollingThread.setDaemon(true);
+        heatThread.setDaemon(true);
+        lightThread.setDaemon(true);
+
+        // pollingThread.start();
+        heatThread.start();
+        lightThread.start();
     }
-    
-    
- 
-    public static void main(String[] args) throws Exception 
+
+    public void run()
+    {
+    }
+
+    public static void main(String[] args) throws Exception
     {
         System.setProperty("java.net.preferIPv4Stack" , "true");
         //registers the application's name with the OTA Command
-        //server & starts the OTA 
+        //server & starts the OTA
         OTACommandServer.start("HostApplication");
-        SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication(); 
-        
-    }    
+        SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication();
+
+    }
 }
