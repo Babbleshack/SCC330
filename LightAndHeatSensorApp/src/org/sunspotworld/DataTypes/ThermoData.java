@@ -13,6 +13,7 @@ public class ThermoData implements IThermoData {
     private String SpotAddress;
     private double FahrenheitData;
     private double CelciusData;
+    private long time;
     
     public ThermoData(String SpotAddress, double FahrenheitData, double CelciusData) {
         this.SpotAddress = SpotAddress;
@@ -43,6 +44,12 @@ public class ThermoData implements IThermoData {
         this.CelciusData = CelciusData;
     }
 
+    public long getTime() {
+        return time;
+    }
 
-    
+    public void setTime(long time) {
+        this.time = time;
+    }
+  
 }

@@ -4,11 +4,15 @@
  */
 package org.sunspotworld.DataTypes;
 
+import java.util.Date;
+
 /**
  *
  * @author Babblebase
  */
 public interface ISunSpotData {
     void setSpotAddress(String addr);
-    String getSpotAddress();
+    void setTime(long time);
+    long getTime();
+    String getSpotAddress();  
 }
