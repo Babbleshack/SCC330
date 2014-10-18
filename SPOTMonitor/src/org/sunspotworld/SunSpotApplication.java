@@ -31,24 +31,30 @@ public class SunSpotApplication extends MIDlet {
     //private ISendingRadio sendingRadio;
     private ILightMonitor lightMonitor;
     private IThermoMonitor thermoMonitor;
-    private ISendingRadio sendingRadio;
+    private ISendingRadio lightSendingRadio, thermoSendingRadio;
     private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
 
     public SunSpotApplication() {
-        System.out.println("VITALI SMELLS OF FLOWERS!");
-        sendingRadio = RadiosFactory.createSendingRadio();
         lightMonitor = MonitorFactory.createLightMonitor(); 
         thermoMonitor = MonitorFactory.createThermoMonitor(); 
+
+        try {
+            lightSendingRadio = RadiosFactory.createSendingRadio(lightMonitor.getPort());
+            thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());
+        } catch (IOException io) {
+            System.out.println("IO Exception while creating sending radios: " + io);
+        }
     }
 
     protected void startApp() throws MIDletStateChangeException {
         BootloaderListenerService.getInstance().start();   // monitor the USB (if connected) and recognize commands from host
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
+        
         while(true)
         {
-            sendingRadio.sendLight(lightMonitor.getLightIntensity());
-            sendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
+            lightSendingRadio.sendLight(lightMonitor.getLightIntensity());
+            thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
             Utils.sleep(SAMPLE_RATE);
         }
 

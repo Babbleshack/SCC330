@@ -13,21 +13,21 @@ import java.io.IOException;
  */
 public class RadiosFactory 
 {
-    public static ISendingRadio createSendingRadio()
+    public static ISendingRadio createSendingRadio(SunspotPort port) throws IOException
     {
         try
         {
-            return new SendingRadio();
+            return new SendingRadio(port);
         } catch (IOException e) {
             System.err.println("IO exception occured during radion int: " + e );
         }
         return null;
     }
-    public static IReceivingRadio createReceivingRadio() 
+    public static IReceivingRadio createReceivingRadio(SunspotPort port) throws IOException
     {
         try
         {
-            return new ReceivingRadio();
+            return new ReceivingRadio(port);
         } catch (IOException e) {
             System.err.println("IO exception occured during radion int: " + e );
         }

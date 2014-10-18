@@ -15,13 +15,4 @@ public interface ILightMonitor
      * Returns port number for this sensor type
      */
     SunspotPort getPort(); 
-    
-    /**
-     * basically a wrapper
-     * returns the average value of
-     * 17 '1 msec' readings.
-     * @return 
-     */
-    int getLightIntensity();
-    
 }

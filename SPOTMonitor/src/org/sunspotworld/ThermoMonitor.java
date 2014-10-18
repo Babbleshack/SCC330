@@ -14,10 +14,22 @@ import java.io.IOException;
 
 public class ThermoMonitor implements IThermoMonitor 
 {
+    private SunspotPort port;
     private ITemperatureInput thermo;
+
     public ThermoMonitor()
     {
+        try {
+            this.port = new SunspotPort(110);
+        } catch (PortOutOfRangeException pe) {
+            System.out.println("Port number out of range: " + pe);
+        }
+
         this.thermo = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
+    }
+
+    public SunspotPort getPort() {
+        return this.port; 
     }
 
     public double getCelsiusTemp() {

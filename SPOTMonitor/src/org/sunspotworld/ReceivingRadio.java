@@ -27,10 +27,10 @@ public class ReceivingRadio implements IReceivingRadio
     
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
 
-    public ReceivingRadio() throws IOException
+    public ReceivingRadio(SunspotPort port) throws IOException
     {
-        radioConn = (RadiogramConnection) Connector.open("radiogram://:" + HOST_PORT);
+        radioConn = (RadiogramConnection) Connector.open("radiogram://:" + port.getPort());
         datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
-        System.out.println("Receiving Radio created");
+        System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
     }
 }

@@ -19,10 +19,7 @@ import javax.microedition.io.*;
  * @author adamcornforth
  */
 public class ReceivingRadio implements IReceivingRadio
-{
-    // Broadcast port on which we listen for tilt data
-    private static final int HOST_PORT = 96;
-    
+{   
     //Connection and datagram variables
     private RadiogramConnection radioConn;
     private Datagram datagram;
@@ -30,11 +27,13 @@ public class ReceivingRadio implements IReceivingRadio
     //thread for communicating with SPOT
     private Thread pollingThread = null;
 
-    public ReceivingRadio() throws IOException
+    private String spotAddress = System.getProperty("IEEE_ADDRESS");
+
+    public ReceivingRadio(SunspotPort port) throws IOException
     {
-        radioConn = (RadiogramConnection) Connector.open("radiogram://:" + HOST_PORT);
+        radioConn = (RadiogramConnection) Connector.open("radiogram://:" + port.getPort());
         datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
-        System.out.println("Receiving Radio created");
+        System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
     }
 
     public String getReceivedAddress() throws IOException

@@ -6,11 +6,8 @@
 package org.sunspotworld;
 
 import com.sun.spot.resources.Resources;
-import com.sun.spot.resources.transducers.Condition;
-import com.sun.spot.resources.transducers.IConditionListener;
-import com.sun.spot.resources.transducers.ILightSensor;
-import com.sun.spot.resources.transducers.SensorEvent;
 import java.io.IOException;
+
 /**
  * Define a Light Monitor 
  * @author babbleshack
@@ -18,7 +15,6 @@ import java.io.IOException;
 public class LightMonitor implements ILightMonitor
 {
     private SunspotPort port; 
-    private ILightSensor lightSensor; //Light Sensor    
     
     public LightMonitor()
     {
@@ -27,23 +23,9 @@ public class LightMonitor implements ILightMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
-        
-        this.lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
     }
     
     public SunspotPort getPort() {
         return this.port; 
-    }
-    
-    public int getLightIntensity() 
-    {
-        try 
-        {
-           return lightSensor.getAverageValue();
-        } catch (IOException ex) {
-           System.err.println("Failed to get light sensor: " + ex);
-        } 
-        return -9999;
-    }
-    
+    }    
 }

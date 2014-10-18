@@ -11,6 +11,11 @@ package org.sunspotworld;
  */
 public interface IThermoMonitor
 {
+    /** 
+     * Returns port number for this sensor type
+     */
+    SunspotPort getPort(); 
+
     /**
      * return temperature in Degrees Celsius
      * @return double temp

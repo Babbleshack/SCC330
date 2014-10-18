@@ -26,8 +26,10 @@ public class SendingRadio implements ISendingRadio
     
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
 
-    public SendingRadio() throws IOException
+    public SendingRadio(SunspotPort port) throws IOException
     {
-
+        radioConn = (RadiogramConnection) Connector.open("radiogram://broadcast:" + port.getPort());
+		System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
+        datagram = radioConn.newDatagram(50); 
     }
 }

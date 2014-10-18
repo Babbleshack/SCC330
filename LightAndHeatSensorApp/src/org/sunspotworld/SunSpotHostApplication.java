@@ -22,12 +22,15 @@ import javax.microedition.io.*;
  */
 public class SunSpotHostApplication implements Runnable
 {
+
+    private ILightMonitor lightMonitor; 
+    private IThermoMonitor thermoMonitor;
        
     //thread for communicating with SPOT
     private Thread pollingThread = null;
 
     // Init receiving radio
-    IReceivingRadio receivingRadio;
+    IReceivingRadio lightReceivingRadio, thermoReceivingRadio;
    
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
@@ -35,8 +38,14 @@ public class SunSpotHostApplication implements Runnable
     {
        try
        { 
-           // starts polling thread
-           startPolling();
+            lightMonitor = MonitorFactory.createLightMonitor(); 
+            thermoMonitor = MonitorFactory.createThermoMonitor(); 
+
+            lightReceivingRadio = RadiosFactory.createReceivingRadio(lightMonitor.getPort());
+            thermoReceivingRadio = RadiosFactory.createReceivingRadio(thermoMonitor.getPort());
+
+            // starts polling thread
+            startPolling();
        }
        catch(Exception e)
        {
@@ -53,27 +62,18 @@ public class SunSpotHostApplication implements Runnable
     }
     
     public void run()  
-    {
-        try 
-        {
-            receivingRadio = (IReceivingRadio)RadiosFactory.createReceivingRadio(); 
-        } 
-        catch (Exception e) 
-        {
-            System.err.println("setUp caught " + e.getMessage());   
-        }
-        
+    {    
         // main switch reading/polling loop
         while (true) 
         {
             try 
             {                                
                 // Read light and heat values
-                double  lightValue  = receivingRadio.receiveLight();
-                double  heatValue   = receivingRadio.receiveHeat();
+                double  lightValue  = lightReceivingRadio.receiveLight();
+                double  thermoValue   = thermoReceivingRadio.receiveHeat();
 
                 // Print out light and heat values
-                System.out.println("Message from "+receivingRadio.getReceivedAddress()+": \t Light " + lightValue + "\t Heat: " + heatValue);   
+                System.out.println("Message from "+lightReceivingRadio.getReceivedAddress()+": \t Light " + lightValue + "\t Heat: " + thermoValue);   
             } 
             catch (IOException io) 
             {
@@ -84,11 +84,11 @@ public class SunSpotHostApplication implements Runnable
     }
     
     
-
+ 
     public static void main(String[] args) throws Exception 
     {
         //registers the application's name with the OTA Command
-      //server & starts the OTA 
+        //server & starts the OTA 
         OTACommandServer.start("SunSpotHostApplication");
         SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication(); 
         
