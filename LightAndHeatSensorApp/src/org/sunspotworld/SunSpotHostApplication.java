@@ -23,22 +23,26 @@ import javax.microedition.io.*;
 
 
 /**
- * Sample Sun SPOT host application
+ * Host application that polls for temperature and 
+ * light updates from the Java Sun SPOTs
  */
 public class SunSpotHostApplication implements Runnable
 {
 
     private ILightMonitor lightMonitor; 
     private IThermoMonitor thermoMonitor;
-       
-    //thread for communicating with SPOT
+        
+    /**
+     * thread for communicating with SPOT
+     * Init receiving radio
+     */
     private Thread pollingThread = null;
-
-    // Init receiving radio
     IReceivingRadio lightReceivingRadio, thermoReceivingRadio;
    
-    // creates an instance of SunSpotHostApplication class and initialises
-    // instance variables
+    /**
+     * creates an instance of SunSpotHostApplication class and initialises
+     * instance variables
+     */
     public SunSpotHostApplication()
     {
        try
@@ -49,7 +53,9 @@ public class SunSpotHostApplication implements Runnable
             lightReceivingRadio = RadiosFactory.createReceivingRadio(lightMonitor.getPort());
             thermoReceivingRadio = RadiosFactory.createReceivingRadio(thermoMonitor.getPort());
 
-            // starts polling thread
+            /**
+             * Starts polling thread
+             */
             startPolling();
        }
        catch(Exception e)
@@ -58,9 +64,11 @@ public class SunSpotHostApplication implements Runnable
        }
     }
      
+    /**
+     * Initiates thread for communication with SPOT device
+     */ 
     public void startPolling() throws Exception
     {
-        //initiates thread for communication with SPOT device
         pollingThread = new Thread(this,"pollingService");
         pollingThread.setDaemon(true);
         pollingThread.start();
@@ -68,16 +76,22 @@ public class SunSpotHostApplication implements Runnable
     
     public void run()  
     {    
-        // main switch reading/polling loop
+        /**
+         * Poll for reading updates
+         */
         while (true) 
         {
             try 
             {                                
-                // Read light and heat values
+                /**
+                 * Read values using radios
+                 */
                 double  lightValue  = lightReceivingRadio.receiveLight();
                 double  thermoValue   = thermoReceivingRadio.receiveHeat();
 
-                // Print out light and heat values
+                /**
+                 * Output received values
+                 */
                 System.out.println("Message from "+lightReceivingRadio.getReceivedAddress()+": \t Light " + lightValue + "\t Heat: " + thermoValue);   
             } 
             catch (IOException io) 
@@ -92,9 +106,16 @@ public class SunSpotHostApplication implements Runnable
  
     public static void main(String[] args) throws Exception 
     {
+        /**
+         * Fixes a strange issue with the SunSpot library not playing nice with 
+         * IPv6 address strings when initialising the shared basestation
+         */
         System.setProperty("java.net.preferIPv4Stack" , "true");
-        //registers the application's name with the OTA Command
-        //server & starts the OTA 
+        
+        /**
+         * registers the application's name with the OTA Command
+         * server & starts the OTA 
+         */
         OTACommandServer.start("HostApplication");
         SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication(); 
         
