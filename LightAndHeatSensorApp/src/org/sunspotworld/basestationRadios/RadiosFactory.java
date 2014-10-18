@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sunspotworld;
+package org.sunspotworld.basestationRadios;
 
+import org.sunspotworld.basestationMonitors.ISendingRadio;
+import org.sunspotworld.basestationMonitors.IReceivingRadio;
 import java.io.IOException;
 
 /**

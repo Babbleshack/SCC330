@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sunspotworld;
+package org.sunspotworld.basestationRadios;
 
+import org.sunspotworld.basestationMonitors.IReceivingRadio;
 import com.sun.spot.peripheral.radio.RadioFactory;
 import com.sun.spot.peripheral.radio.IRadioPolicyManager;
 import com.sun.spot.io.j2me.radiostream.*;
@@ -19,12 +20,14 @@ import javax.microedition.io.*;
  * @author adamcornforth
  */
 public class ReceivingRadio implements IReceivingRadio
-{
-    private static final int HOST_PORT = 96;
-    //sample period in milliseconds
-    private RadiogramConnection radioConn = null;
-    private Datagram  datagram = null;
-    
+{   
+    //Connection and datagram variables
+    private RadiogramConnection radioConn;
+    private Datagram datagram;
+   
+    //thread for communicating with SPOT
+    private Thread pollingThread = null;
+
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
 
     public ReceivingRadio(SunspotPort port) throws IOException
@@ -32,5 +35,22 @@ public class ReceivingRadio implements IReceivingRadio
         radioConn = (RadiogramConnection) Connector.open("radiogram://:" + port.getPort());
         datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
         System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
+    }
+
+    public String getReceivedAddress() throws IOException
+    {
+        return datagram.getAddress();  
+    }
+
+    public double receiveLight() throws IOException
+    {
+        radioConn.receive(datagram); 
+        return datagram.readDouble(); 
+    }
+
+    public double receiveHeat() throws IOException
+    {
+        radioConn.receive(datagram); 
+        return datagram.readDouble(); 
     }
 }

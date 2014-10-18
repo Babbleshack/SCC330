@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sunspotworld;
+package org.sunspotworld.basestationMonitors;
 
 import com.sun.spot.resources.Resources;
 import java.io.IOException;
+import org.sunspotworld.basestationRadios.PortOutOfRangeException;
+import org.sunspotworld.basestationRadios.SunspotPort;
 
 public class ThermoMonitor implements IThermoMonitor 
 {

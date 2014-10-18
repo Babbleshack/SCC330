@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sunspotworld;
+package org.sunspotworld.basestationMonitors;
+
+import java.io.IOException;
 
 /**
  *
- * @author babbleshack
+ * @author adamcornforth
  */
-public interface ILightMonitor
+public interface ISendingRadio 
 {
-	/** 
-     * Returns port number for this sensor type
-     */
-    SunspotPort getPort(); 
+	
 }

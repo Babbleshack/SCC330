@@ -3,25 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sunspotworld;
+package org.sunspotworld.basestationMonitors;
+
+import org.sunspotworld.basestationRadios.SunspotPort;
 
 /**
  *
  * @author babbleshack
  */
-public interface ILightMonitor
+public interface IThermoMonitor
 {
-	/** 
+    /** 
      * Returns port number for this sensor type
      */
     SunspotPort getPort(); 
-    
-    /**
-     * basically a wrapper
-     * returns the average value of
-     * 17 '1 msec' readings.
-     * @return 
-     */
-    int getLightIntensity();
-    
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sunspotworld;
+package spotMonitors;
 
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.Condition;
@@ -11,6 +11,8 @@ import com.sun.spot.resources.transducers.IConditionListener;
 import com.sun.spot.resources.transducers.ITemperatureInput;
 import com.sun.spot.resources.transducers.SensorEvent;
 import java.io.IOException;
+import org.sunspotworld.spotRadios.PortOutOfRangeException;
+import org.sunspotworld.spotRadios.SunspotPort;
 
 public class ThermoMonitor implements IThermoMonitor 
 {

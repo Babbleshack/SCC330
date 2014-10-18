@@ -1,4 +1,6 @@
-package org.sunspotworld;
+package org.sunspotworld.basestationRadios;
+
+import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 
 /**
  * Integer wrapper class for storing a port number for the SunSpots. 

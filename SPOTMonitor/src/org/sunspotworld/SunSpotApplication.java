@@ -6,6 +6,11 @@
 
 package org.sunspotworld;
 
+import org.sunspotworld.spotRadios.RadiosFactory;
+import org.sunspotworld.spotRadios.ISendingRadio;
+import spotMonitors.ILightMonitor;
+import spotMonitors.IThermoMonitor;
+import spotMonitors.MonitorFactory;
 import com.sun.spot.peripheral.radio.RadioFactory;
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.ISwitch;

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sunspotworld;
+package org.sunspotworld.basestationRadios;
 
+import org.sunspotworld.basestationMonitors.ISendingRadio;
 import com.sun.spot.resources.Resources;
 import java.io.IOException;
 
@@ -29,31 +30,7 @@ public class SendingRadio implements ISendingRadio
     public SendingRadio(SunspotPort port) throws IOException
     {
         radioConn = (RadiogramConnection) Connector.open("radiogram://broadcast:" + port.getPort());
-        System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
+		System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
         datagram = radioConn.newDatagram(50); 
-    }
-
-    public void sendLight(double value)
-    {
-        try {
-            datagram.reset();
-            datagram.writeDouble(value);
-            radioConn.send(datagram);
-            System.out.println("Light value " + value + " sent...");
-        } catch (Exception e) {
-            System.err.println("IOException occured while sending Light: " + e);
-        }
-    }
-
-    public void sendHeat(double value)
-    {
-        try {
-            datagram.reset();
-            datagram.writeDouble(value);
-            radioConn.send(datagram);
-            System.out.println("Heat value " + value + " sent...");
-        } catch (IOException e) {
-            System.err.println("IOException occured while sending thermo: " + e);
-        }
     }
 }

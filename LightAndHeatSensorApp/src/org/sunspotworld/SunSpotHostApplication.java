@@ -6,6 +6,11 @@
 
 package org.sunspotworld;
 
+import org.sunspotworld.basestationRadios.RadiosFactory;
+import org.sunspotworld.basestationMonitors.IThermoMonitor;
+import org.sunspotworld.basestationMonitors.ILightMonitor;
+import org.sunspotworld.basestationMonitors.MonitorFactory;
+import org.sunspotworld.basestationMonitors.IReceivingRadio;
 import com.sun.spot.peripheral.radio.RadioFactory;
 import com.sun.spot.peripheral.radio.IRadioPolicyManager;
 import com.sun.spot.io.j2me.radiostream.*;

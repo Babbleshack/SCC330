@@ -1,4 +1,4 @@
-package org.sunspotworld;
+package org.sunspotworld.spotRadios;
 
 /**
  * Integer wrapper class for storing a port number for the SunSpots. 
