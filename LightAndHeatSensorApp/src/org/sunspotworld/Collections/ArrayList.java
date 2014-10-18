@@ -7,13 +7,16 @@
  */
 package org.sunspotworld.Collections;
 
+import java.io.Serializable;
 import java.util.AbstractList;
+import java.util.RandomAccess;
 
 /**
  *
  * @author Babblebase
  */
-public class ArrayList<E> extends AbstractList
+public class ArrayList<E> extends AbstractList implements 
+    RandomAccess, Cloneable, Serializable 
 {
     
     private int numberOfMembers = 0; //keeps track of number of members
@@ -45,12 +48,12 @@ public class ArrayList<E> extends AbstractList
      * @return E Object
      */
     @Override
-    public E get(int i) {
+    public Object get(int i) {
         if(i>numberOfMembers || i<0){
             throw new IndexOutOfBoundsException
                 ("Index: " + i + "Is out of bounds");
         }
-        return (E) members[i];
+        return members[i];
     }
     /**public void add(E e){
         if(e == null)
@@ -106,7 +109,7 @@ public class ArrayList<E> extends AbstractList
      * @param member int 
      * @return object E 
      */
-    public E remove(int ind)
+    public Object remove(int ind)
     {
        if(ind > numberOfMembers || ind < 0)
            throw new IndexOutOfBoundsException("The index: " + ind
