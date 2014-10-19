@@ -14,6 +14,9 @@ hs_err_pid*
 #Mac Crap
 .DS_Store
 
+#Add MySQLConnectionManager to .gitignore as we all have custom connection configs
+LightAndHeatSensorApp/src/org/sunspotworld/DB/MySQLConnectionManager.java
+
 LightAndHeatSensorApp/build
 LightAndHeatSensorApp/j2meclasses
 LightAndHeatSensorApp/suite
