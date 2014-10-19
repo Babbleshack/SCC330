@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 /**
  *
@@ -26,6 +27,39 @@ public class QueryManager implements IQueryManager
     }
 
     /**
+     * Returns a zone id, given a spot address
+     * @param  spot_address [description]
+     * @return              [description]
+     */
+    public int getZoneIdFromSpotAddress(String spot_address) {
+        String getZoneId = "SELECT zone_id FROM Spot_Zone"
+                + " WHERE spot_address = ?";
+        try {
+            /**
+             * Execute select query 
+             */
+            PreparedStatement record = 
+                connection.getConnection().prepareStatement(getZoneId);
+            record.setString(1, spot_address);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            result.next();
+
+            /**
+             * Return result
+             */
+            return result.getInt("zone_id");
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "createLightRecord: " + e);
+                return -1;
+        }
+    }
+
+    /**
      * Insert light Data record to db
      * @param light double
      * @param zone_id int
@@ -40,7 +74,7 @@ public class QueryManager implements IQueryManager
                 connection.getConnection().prepareStatement(insertLightRecord);
             insert.setInt(1, light);
             insert.setString(2, spot_address);
-            insert.setInt(3, 1);
+            insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
             insert.setTimestamp(4, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
@@ -65,7 +99,7 @@ public class QueryManager implements IQueryManager
                 connection.getConnection().prepareStatement(insertThermoRecord);
             insert.setDouble(1, celsiusData);
             insert.setString(2, spot_address);
-            insert.setInt(3, 1);
+            insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
             insert.setTimestamp(4, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
