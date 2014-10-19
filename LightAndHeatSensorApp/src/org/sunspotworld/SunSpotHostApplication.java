@@ -47,6 +47,7 @@ public class SunSpotHostApplication implements Runnable
             test.add((Object)new Integer(i));
         for(i=0;i<15;i++)
             System.out.println(i + " : " + (Integer)test.get(i));
+        System.out.println("List Size after 15 Additions: " + test.size());
         
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
