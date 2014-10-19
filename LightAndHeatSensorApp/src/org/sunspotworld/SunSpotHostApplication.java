@@ -7,7 +7,7 @@
 package org.sunspotworld;
 
 import com.sun.spot.peripheral.ota.OTACommandServer;
-import java.util.ArrayList;
+import org.sunspotworld.Collections.ArrayList;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

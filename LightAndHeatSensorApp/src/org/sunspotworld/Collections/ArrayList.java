@@ -20,7 +20,7 @@ public class ArrayList extends AbstractList implements
 {
     
     private int numberOfMembers = 0; //keeps track of number of members
-    private int space = 0; // keeps track of array size!
+    private int actualSize = 0; // keeps track of array size!
     private static final int INNITIAL_SIZE = 10;
     public static final int NOT_FOUND = -1;
     private Object members[];
@@ -31,7 +31,7 @@ public class ArrayList extends AbstractList implements
     public ArrayList()
     {
         members = new Object[INNITIAL_SIZE];
-        space = members.length;
+        actualSize = members.length;
     }
     /**
      * constructs ArrayList of size length
@@ -40,7 +40,7 @@ public class ArrayList extends AbstractList implements
     public ArrayList(int length)
     {
         members = new Object[length];
-        space = members.length;
+        actualSize = members.length;
     }
     /**
      * get element at index 
@@ -54,54 +54,48 @@ public class ArrayList extends AbstractList implements
         }
         return members[i];
     }
-    /**public void add(Object e){
+    /**
+     * set Obj to index position ind.
+     * returns element previously found at position ind.
+     * @param ind int
+     * @param obj Object
+     * @return Object
+     */
+    public Object set(int ind, Object obj)
+    {
+        if(ind < 0 || ind > numberOfMembers) {
+            throw new ArrayIndexOutOfBoundsException(ind);
+        }
+        Object tmp = members[ind];
+        members[ind] = obj;
+        return tmp;       
+    }
+    public boolean add(Object e){
         if(e == null)
             throw new NullPointerException();
-        if(size == space)
+        if(size() == actualSize)
             increaseSize();
-    }*/
-    /** METHOD BELOW IS BROKE :(
-    @Override
-    public void add(int ind, E e) {
-        if(ind < 0 || ind > size) {
+        add(size(), e);
+        return true;
+    }  
+    //METHOD BELOW IS BROKE :(
+    public void add(int ind, Object e) {
+        if(ind < 0 || ind > this.actualSize) {
             throw new ArrayIndexOutOfBoundsException(ind);
         }
         if(e == null) {
             throw new NullPointerException();
         }
-        if(size == space) {
+        if(size() == actualSize) {
             increaseSize();
         }
         //confuse shuffle :p
-        for(int i = space; i > ind; i--) {
+        for(int i = size(); i > ind; i--) {
             members[i] = members[i - 1];
         }
         members[ind] = e;
-        size++;    /**public void add(E e){
-        if(e == null)
-            throw new NullPointerException();
-        if(size == space)
-            increaseSize();
-    }*/
-    /** METHOD BELOW IS BROKE :(
-    @Override
-    public void add(int ind, E e) {
-        if(ind < 0 || ind > size) {
-            throw new ArrayIndexOutOfBoundsException(ind);
-        }
-        if(e == null) {
-            throw new NullPointerException();
-        }
-        if(size == space) {
-            increaseSize();
-        }
-        //confuse shuffle :p
-        for(int i = space; i > ind; i--) {
-            members[i] = members[i - 1];
-        }
-        members[ind] = e;
-        size++;
-    }*/
+        numberOfMembers++;
+    }
     
     /**
      * removes element at specified position
@@ -163,7 +157,7 @@ public class ArrayList extends AbstractList implements
      */
     public int size()
     {
-        return numberOfMembers;
+        return this.numberOfMembers;
     }
     /**
      * doubles array size.
@@ -172,6 +166,7 @@ public class ArrayList extends AbstractList implements
     {
         Object[] newArray = new Object[members.length * 2];
         System.arraycopy(this.members, 0, newArray, 0, members.length);
+        this.actualSize *= 2;//double available actualSize
         members = newArray;
     }
 }
