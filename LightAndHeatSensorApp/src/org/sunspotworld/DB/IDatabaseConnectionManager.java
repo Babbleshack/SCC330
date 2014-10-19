@@ -4,19 +4,27 @@
  */
 package org.sunspotworld.DB;
 
+import java.sql.Connection;
+
 /**
  *
  * @author Babblebase
  */
-public interface IDatabaseConnection {
+public interface IDatabaseConnectionManager {
     /**
      * creates a JDBC database connection
      */
-    void connect();
+    public void connect();
 
     /**
      * disconnects JDBC database connection
      */
-    void disconnect();
+    public void disconnect();
+    
+    /**
+     * returns connection
+     * @return Connection
+     */
+    public Connection getConnection();
     
 }

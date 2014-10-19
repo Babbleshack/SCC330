@@ -12,25 +12,26 @@ import java.sql.SQLException;
  *
  * @author Babblebase
  */
-public class MySQLConnection implements IDatabaseConnection 
+public class MySQLConnectionManager implements IDatabaseConnectionManager 
 {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost/SPOT";
+    private static final String DB_URL = "jdbc:mysql://localhost/testing";
     private static final String USERNAME = "babbleshack";
-    private static final String PASSWORD = "password";
+    private static final String PASSWORD = "testing";
     private Connection connection = null;
 
  
     
     
-    public MySQLConnection()
+    public MySQLConnectionManager()
     {
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(JDBC_DRIVER);
         } catch (Exception e) {
             System.err.println("MySQL driver not found" + e);
         }
+        this.connect();
     }
     @Override
     public void connect()

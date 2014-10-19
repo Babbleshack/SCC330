@@ -12,9 +12,9 @@ import javax.microedition.io.Connection;
  */
 public class DatabaseConnectionFactory 
 {
-    public static IDatabaseConnection createMySQLConnection()
+    public static IDatabaseConnectionManager createMySQLConnection()
     {
-        return new MySQLConnection();
+        return new MySQLConnectionManager();
     }
     
 }
