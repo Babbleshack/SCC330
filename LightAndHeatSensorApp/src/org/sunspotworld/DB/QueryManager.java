@@ -11,10 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
-/**
- *
- * @author Babblebase
- */
 public class QueryManager implements IQueryManager
 {
     private IDatabaseConnectionManager connection;

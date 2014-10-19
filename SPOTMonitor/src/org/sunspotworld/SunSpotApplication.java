@@ -41,6 +41,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
      */
     private Thread heatThread = null;
     private Thread lightThread = null;
+    private Thread switchThread = null;
 
     public SunSpotApplication() {
         
@@ -54,11 +55,18 @@ public class SunSpotApplication extends MIDlet implements Runnable {
         heatThread = new Thread(new TSendingHeat(),"heatService");
         lightThread = new Thread(new TSendingLight(),"lightService");
 
+        try {
+            switchThread = new Thread(new TDemandSwitch(),"switchService");
+        } catch (IOException io) {
+            System.out.println("Error starting switch listener thread: " + io);
+        }
+
         // heatThread.setDaemon(true);
         // lightThread.setDaemon(true);
 
         heatThread.start();
         lightThread.start();
+        switchThread.start();
     }
 
     public void run()  
