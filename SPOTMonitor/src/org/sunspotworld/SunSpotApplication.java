@@ -21,7 +21,9 @@ import com.sun.spot.util.IEEEAddress;
 import com.sun.spot.util.Utils;
 
 import java.io.IOException;
+import java.lang.SecurityException;
 
+import java.lang.Thread;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
@@ -32,35 +34,49 @@ import javax.microedition.midlet.MIDletStateChangeException;
  * The manifest specifies this class as MIDlet-1, which means it will
  * be selected for execution.
  */
-public class SunSpotApplication extends MIDlet {
-    //private ISendingRadio sendingRadio;
-    private ILightMonitor lightMonitor;
-    private IThermoMonitor thermoMonitor;
-    private ISendingRadio lightSendingRadio, thermoSendingRadio;
-    private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
+public class SunSpotApplication extends MIDlet implements Runnable {
+
+    /**
+     * Threads for communicating with Basestation
+     */
+    private Thread heatThread = null;
+    private Thread lightThread = null;
 
     public SunSpotApplication() {
-        lightMonitor = MonitorFactory.createLightMonitor(); 
-        thermoMonitor = MonitorFactory.createThermoMonitor(); 
-
-        try {
-            lightSendingRadio = RadiosFactory.createSendingRadio(lightMonitor.getPort());
-            thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());
-        } catch (IOException io) {
-            System.out.println("IO Exception while creating sending radios: " + io);
-        }
+        
     }
 
+    /**
+     * Initiate threads for communicating with the basestation
+     */
+    public void startPolling() throws SecurityException
+    {
+        heatThread = new Thread(new TSendingHeat(),"heatService");
+        lightThread = new Thread(new TSendingLight(),"lightService");
+
+        // heatThread.setDaemon(true);
+        // lightThread.setDaemon(true);
+
+        heatThread.start();
+        lightThread.start();
+    }
+
+    public void run()  
+    {    
+    }
+
+    /** 
+     * Starts polling threads
+     * @throws MIDletStateChangeException [description]
+     */
     protected void startApp() throws MIDletStateChangeException {
         BootloaderListenerService.getInstance().start();   // monitor the USB (if connected) and recognize commands from host
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
-        
-        while(true)
-        {
-            lightSendingRadio.sendLight(lightMonitor.getLightIntensity());
-            thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
-            Utils.sleep(SAMPLE_RATE);
+        try {
+            startPolling();
+        } catch(SecurityException se) {
+            System.out.println("The current thread cannot create a thread in the specified thread group: " + se);
         }
 
         //notifyDestroyed();                      // cause the MIDlet to exit
