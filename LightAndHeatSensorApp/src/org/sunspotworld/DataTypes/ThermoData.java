@@ -4,6 +4,8 @@
  */
 package org.sunspotworld.DataTypes;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author Babblebase
@@ -13,7 +15,7 @@ public class ThermoData implements IThermoData {
     private String SpotAddress;
     private double FahrenheitData;
     private double CelciusData;
-    private long time;
+    private Timestamp time;
     
     public ThermoData(String SpotAddress, double FahrenheitData, double CelciusData) {
         this.SpotAddress = SpotAddress;
@@ -44,11 +46,11 @@ public class ThermoData implements IThermoData {
         this.CelciusData = CelciusData;
     }
 
-    public long getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
   

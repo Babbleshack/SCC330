@@ -9,9 +9,9 @@ package org.sunspotworld;
 import com.sun.spot.peripheral.ota.OTACommandServer;
 import org.sunspotworld.Collections.ArrayList;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 /**

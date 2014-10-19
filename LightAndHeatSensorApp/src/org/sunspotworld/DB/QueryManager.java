@@ -6,9 +6,15 @@
 package org.sunspotworld.DB;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.ResultSet;
+import java.util.Calendar;
+import org.sunspotworld.Collections.ArrayList;
+import org.sunspotworld.DataTypes.LightData;
+
+
 
 /**
  *
@@ -135,5 +141,44 @@ public class QueryManager implements IQueryManager
                 + "createLightRecord: " + e);
         } 
     }
+    /**
+     * returns past 7 days of Light Data
+     */
+    public ArrayList getPastWeekLight() {
+        //ArrayList for collection data
+        ArrayList lightDatums;
+        //find timestamps
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp lastWeekTimestamp = findDateRange(currentTimestamp, -1);
+        //queary db for data
+        String getLastWeek = "SELECT * FROM Light WHERE"
+                + "created_at > ? "//is greater than last week
+                + "AND"
+                + "created_at < ? "; //is less than today
+        try {
+            PreparedStatement getData =
+                    connection.getConnection().prepareStatement(getLastWeek);
+            getData.setTimestamp(1, lastWeekTimestamp);
+            getData.setTimestamp(2, currentTimestamp);
+            ResultSet rs = (ResultSet)getData.executeQuery();
+            while(rs.next())
+            {
+                
+                lightDatums.add((Object)new LightData(rs.));
+                
+            }
+            lightDatums.add((Object));
+        } catch (SQLException e) {
+            System.err.println("SQL Exception getting Past Week Light" + e);
+        }
+        
+        
+    }
     
+    private Timestamp findDateRange(Timestamp from, int noOfWeeks){
+        Calendar past = Calendar.getInstance();
+        past.setTimeInMillis(from.getTime());
+        past.add(Calendar.WEEK_OF_YEAR, noOfWeeks);
+        return new Timestamp(past.getTimeInMillis());
+    }   
 } 

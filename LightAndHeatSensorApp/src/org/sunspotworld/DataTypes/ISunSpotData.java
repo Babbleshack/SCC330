@@ -4,7 +4,7 @@
  */
 package org.sunspotworld.DataTypes;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public interface ISunSpotData {
     void setSpotAddress(String addr);
-    void setTime(long time);
-    long getTime();
+    void setTime(Timestamp time);
+    Timestamp getTime();
     String getSpotAddress();  
 }

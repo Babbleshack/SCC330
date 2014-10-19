@@ -5,7 +5,7 @@
  */
 package org.sunspotworld.DataTypes;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -15,12 +15,26 @@ public class LightData implements ILightData
 {   
     private String spotAddress;
     private double LightData;
-    private long time;
+    private Timestamp time;
+    private int zoneID;
     
     public LightData(String spotAddress, double LightData) {
         this.spotAddress = spotAddress;
         this.LightData = LightData;
     }
+    public LightData(String spotAddress, double LightData, Timestamp time) {
+        this.spotAddress = spotAddress;
+        this.LightData = LightData;
+        this.time = time;
+    }
+    public LightData(String spotAddress, double LightData, Timestamp time,
+            int zoneID) {
+        this.spotAddress = spotAddress;
+        this.LightData = LightData;
+        this.time = time;
+        this.zoneID = zoneID;
+    }
+    
 
     public String getSpotAddress() {
         return spotAddress;
@@ -38,11 +52,11 @@ public class LightData implements ILightData
         this.LightData = LightData;
     }    
 
-    public long getTime() {
+    public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(Timestamp time) {
         this.time = time;
     }
 
