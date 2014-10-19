@@ -10,6 +10,7 @@ package org.sunspotworld.DB;
  */
 public interface IQueryManager 
 {
+	public int getZoneIdFromSpotAddress(String spot_address);
     public void createLightRecord(int light, String spot_address, long time);
     public void createThermoRecord(double celciusData,
         String spot_address, long time);
