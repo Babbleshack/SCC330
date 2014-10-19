@@ -64,7 +64,7 @@ public class QueryManager implements IQueryManager
                 connection.getConnection().prepareStatement(insertThermoRecord);
             insert.setDouble(1, celsiusData);
             insert.setInt(2, zone_id);
-            insert.setDate(3, new Timestamp(time));
+            insert.setTimestamp(3, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
