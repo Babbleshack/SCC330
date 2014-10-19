@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 19, 2014 at 07:25 PM
+-- Generation Time: Oct 19, 2014 at 07:27 PM
 -- Server version: 5.5.38-0ubuntu0.14.04.1
 -- PHP Version: 5.5.15RC1
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `Heat`
 --
 
+DROP TABLE IF EXISTS `Heat`;
 CREATE TABLE IF NOT EXISTS `Heat` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `heat_temperature` float(8,2) NOT NULL,
@@ -540,6 +541,7 @@ INSERT INTO `Heat` (`id`, `heat_temperature`, `spot_address`, `zone_id`, `create
 -- Table structure for table `Light`
 --
 
+DROP TABLE IF EXISTS `Light`;
 CREATE TABLE IF NOT EXISTS `Light` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `light_intensity` int(11) NOT NULL,
@@ -1054,6 +1056,7 @@ INSERT INTO `Light` (`id`, `light_intensity`, `spot_address`, `zone_id`, `create
 -- Table structure for table `Spot`
 --
 
+DROP TABLE IF EXISTS `Spot`;
 CREATE TABLE IF NOT EXISTS `Spot` (
   `spot_address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `user_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -1080,6 +1083,7 @@ INSERT INTO `Spot` (`spot_address`, `user_name`, `created_at`, `updated_at`) VAL
 -- Table structure for table `Spot_Zone`
 --
 
+DROP TABLE IF EXISTS `Spot_Zone`;
 CREATE TABLE IF NOT EXISTS `Spot_Zone` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `spot_address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -1105,6 +1109,7 @@ INSERT INTO `Spot_Zone` (`id`, `spot_address`, `zone_id`, `created_at`, `updated
 -- Table structure for table `Zone`
 --
 
+DROP TABLE IF EXISTS `Zone`;
 CREATE TABLE IF NOT EXISTS `Zone` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
