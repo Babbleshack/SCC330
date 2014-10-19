@@ -31,16 +31,17 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createLightRecord(int light, int zone_id, long time) {
+    public void createLightRecord(int light, String spot_address, long time) {
         String insertLightRecord = "INSERT INTO Light"
-                + "(light_intensity, zone_id, created_at)"
-                + ("VALUES (?,?,?)");
+                + "(light_intensity, spot_address, zone_id, created_at)"
+                + ("VALUES (?,?,?,?)");
         try {
             PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertLightRecord);
             insert.setInt(1, light);
-            insert.setInt(2, zone_id);
-            insert.setTimestamp(3, new Timestamp(time));
+            insert.setString(2, spot_address);
+            insert.setInt(3, 1);
+            insert.setTimestamp(4, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
@@ -55,16 +56,17 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createThermoRecord(double celsiusData, int zone_id, long time) {
+    public void createThermoRecord(double celsiusData, String spot_address, long time) {
         String insertThermoRecord = "INSERT INTO Heat"
-                + "(heat_temperature, zone_id, created_at)"
-                + ("VALUES (?,?,?)");
+                + "(heat_temperature, spot_address, zone_id, created_at)"
+                + ("VALUES (?,?,?,?)");
         try {
            PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertThermoRecord);
             insert.setDouble(1, celsiusData);
-            insert.setInt(2, zone_id);
-            insert.setTimestamp(3, new Timestamp(time));
+            insert.setString(2, spot_address);
+            insert.setInt(3, 1);
+            insert.setTimestamp(4, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"

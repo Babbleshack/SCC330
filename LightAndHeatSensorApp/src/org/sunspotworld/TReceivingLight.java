@@ -59,7 +59,7 @@ public class TReceivingLight implements Runnable
                 // Read light and heat values
                 int  lightValue  = lightReceivingRadio.receiveLight();
 
-                queryManager.createLightRecord(lightValue, 1, System.currentTimeMillis());
+                queryManager.createLightRecord(lightValue, lightReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
 
                 // Print out light and heat values
                 System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);
