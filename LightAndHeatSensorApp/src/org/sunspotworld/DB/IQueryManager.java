@@ -15,6 +15,5 @@ public interface IQueryManager
             int zone_id, long time);
     public void createSpotRecord(String spot_id);
     public void createZoneRecord(String title);
-    
-    
+    public void createSpotZoneRecord(String spot_address, int spot_id);
 }
