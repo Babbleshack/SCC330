@@ -6,20 +6,8 @@
 
 package org.sunspotworld;
 
-import org.sunspotworld.basestationRadios.RadiosFactory;
-import org.sunspotworld.basestationMonitors.IThermoMonitor;
-import org.sunspotworld.basestationMonitors.ILightMonitor;
-import org.sunspotworld.basestationMonitors.MonitorFactory;
-import org.sunspotworld.basestationMonitors.IReceivingRadio;
-import com.sun.spot.peripheral.radio.RadioFactory;
-import com.sun.spot.peripheral.radio.IRadioPolicyManager;
-import com.sun.spot.io.j2me.radiostream.*;
-import com.sun.spot.io.j2me.radiogram.*;
 import com.sun.spot.peripheral.ota.OTACommandServer;
-import com.sun.spot.util.IEEEAddress;
-
-import java.io.*;
-import javax.microedition.io.*;
+import java.util.ArrayList;
 
 
 /**
@@ -40,6 +28,22 @@ public class SunSpotHostApplication implements Runnable
      */
     public SunSpotHostApplication() throws Exception
     {
+        ArrayList test = new ArrayList();
+        int i;
+        //test adding
+        for(i=0;i<10;i++)
+            test.add((Object)new Integer(i));
+        for(i=0;i<10;i++)
+            System.out.println(i + " : " + (Integer)test.get(i));
+        for(i=9;i>-1;i--)
+            test.remove(i);
+        System.out.println("List Size After Delete: " + test.size());        
+        //test auto resize
+        for(i=0;i<15;i++)
+            test.add((Object)new Integer(i));
+        for(i=0;i<15;i++)
+            System.out.println(i + " : " + (Integer)test.get(i));
+        
         startPolling();
     }
 

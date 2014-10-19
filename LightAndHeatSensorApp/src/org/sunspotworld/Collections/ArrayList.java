@@ -7,13 +7,16 @@
  */
 package org.sunspotworld.Collections;
 
+import java.io.Serializable;
 import java.util.AbstractList;
+import java.util.RandomAccess;
 
 /**
  *
  * @author Babblebase
  */
-public class ArrayList<E> extends AbstractList
+public class ArrayList extends AbstractList implements 
+    RandomAccess, Cloneable, Serializable 
 {
     
     private int numberOfMembers = 0; //keeps track of number of members
@@ -42,17 +45,16 @@ public class ArrayList<E> extends AbstractList
     /**
      * get element at index 
      * @param i int
-     * @return E Object
+     * @return Object Object
      */
-    @Override
-    public E get(int i) {
+    public Object get(int i) {
         if(i>numberOfMembers || i<0){
             throw new IndexOutOfBoundsException
                 ("Index: " + i + "Is out of bounds");
         }
-        return (E) members[i];
+        return members[i];
     }
-    /**public void add(E e){
+    /**public void add(Object e){
         if(e == null)
             throw new NullPointerException();
         if(size == space)
@@ -106,7 +108,7 @@ public class ArrayList<E> extends AbstractList
      * @param member int 
      * @return object E 
      */
-    public E remove(int ind)
+    public Object remove(int ind)
     {
        if(ind > numberOfMembers || ind < 0)
            throw new IndexOutOfBoundsException("The index: " + ind
@@ -115,7 +117,7 @@ public class ArrayList<E> extends AbstractList
        for(int i=ind + 1 ; i<numberOfMembers; i++)
            members[i - 1] = members[i];
        numberOfMembers--;
-       return (E)temp;
+       return (Object)temp;
     }
     /**
      * remove first occurrence of specified Object
@@ -168,10 +170,8 @@ public class ArrayList<E> extends AbstractList
      */
     private void increaseSize()
     {
-        Object newSize[] = new Object[members.length * 2];
-        System.arraycopy(members.length, 0, newSize, 0, members.length);
-        members = newSize;
+        Object[] newArray = new Object[members.length * 2];
+        System.arraycopy(this.members, 0, newArray, 0, members.length);
+        members = newArray;
     }
-    
-
 }
