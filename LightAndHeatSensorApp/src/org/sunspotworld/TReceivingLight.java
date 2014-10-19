@@ -12,6 +12,9 @@ import org.sunspotworld.basestationMonitors.IReceivingRadio;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 
+import org.sunspotworld.DB.DatabaseConnectionFactory;
+import org.sunspotworld.DB.MySQLConnectionManager;
+import org.sunspotworld.DB.QueryManager;
 
 /**
  * Sample Sun SPOT host application
@@ -20,6 +23,7 @@ public class TReceivingLight implements Runnable
 {
 
     private ILightMonitor lightMonitor;
+    private QueryManager queryManager;
 
     // Init receiving radio
     IReceivingRadio lightReceivingRadio;
@@ -32,6 +36,7 @@ public class TReceivingLight implements Runnable
         {
             lightMonitor = MonitorFactory.createLightMonitor();
             lightReceivingRadio = RadiosFactory.createReceivingRadio(lightMonitor.getPort());
+            queryManager = new QueryManager();
         }
         catch(Exception e)
         {
@@ -52,7 +57,9 @@ public class TReceivingLight implements Runnable
             try
             {
                 // Read light and heat values
-                double  lightValue  = lightReceivingRadio.receiveLight();
+                int  lightValue  = lightReceivingRadio.receiveLight();
+
+                queryManager.createLightRecord(lightValue, 1, System.currentTimeMillis());
 
                 // Print out light and heat values
                 System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);

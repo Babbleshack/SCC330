@@ -42,10 +42,10 @@ public class ReceivingRadio implements IReceivingRadio
         return datagram.getAddress();  
     }
 
-    public double receiveLight() throws IOException
+    public int receiveLight() throws IOException
     {
         radioConn.receive(datagram); 
-        return datagram.readDouble(); 
+        return datagram.readInt(); 
     }
 
     public double receiveHeat() throws IOException

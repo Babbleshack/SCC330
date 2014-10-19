@@ -9,6 +9,10 @@ package org.sunspotworld;
 import com.sun.spot.peripheral.ota.OTACommandServer;
 import java.util.ArrayList;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 
 /**
  * Host application that polls for temperature and 
@@ -44,6 +48,12 @@ public class SunSpotHostApplication implements Runnable
         for(i=0;i<15;i++)
             System.out.println(i + " : " + (Integer)test.get(i));
         
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (Exception ex) {
+            System.out.println("com.mysql.jdbc.Driver could not be instantiated");
+        }
+
         startPolling();
     }
 

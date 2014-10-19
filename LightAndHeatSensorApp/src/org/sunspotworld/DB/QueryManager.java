@@ -1,10 +1,12 @@
 /*
  * Handles quearies to Database
  * Dominic Lindsay
+ * Adam Cornforth
  */
 package org.sunspotworld.DB;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -29,45 +31,44 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createLightRecord(double light, int zone_id, long time) {
+    public void createLightRecord(int light, int zone_id, long time) {
         String insertLightRecord = "INSERT INTO Light"
                 + "(light_intensity, zone_id, created_at)"
-                + ("?,?,?");
+                + ("VALUES (?,?,?)");
         try {
             PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertLightRecord);
-            insert.setDouble(1, light);
+            insert.setInt(1, light);
             insert.setInt(2, zone_id);
-            insert.setDate(3, new Date(time));
+            insert.setTimestamp(3, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createLightRecord: " + e);
         }
     }
+
     /**
      * insert Thermonitor record to db
-     * @param celciusData double
+     * @param celsiusData double
      * @param fahrenheitData double
-     * @param zone_id int 
+     * @param zone_id int
      * @param time long
      */
-    public void createThermoRecord(double celciusData, double fahrenheitData,
-            int zone_id, long time) {
+    public void createThermoRecord(double celsiusData, int zone_id, long time) {
         String insertThermoRecord = "INSERT INTO Heat"
-                + "(celcius_data, fahrenheit_data, zone_id, created_at)"
-                + ("?,?,?,?");
+                + "(heat_temperature, zone_id, created_at)"
+                + ("VALUES (?,?,?)");
         try {
            PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertThermoRecord);
-            insert.setDouble(1, celciusData);
-            insert.setDouble(2, fahrenheitData);
-            insert.setInt(3, zone_id);
+            insert.setDouble(1, celsiusData);
+            insert.setInt(2, zone_id);
             insert.setDate(3, new Date(time));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
-                + "createLightRecord: " + e);
+                + "createThermoRecord: " + e);
         }
     }
 
@@ -78,7 +79,7 @@ public class QueryManager implements IQueryManager
     public void createSpotRecord(String spot_address) {
         String insertSpotRecord = "INSERT INTO Spot"
                 + "(spot_id, created_at)"
-                + "(?,?)";
+                + "VALUES (?,?)";
         try {
            PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertSpotRecord);
@@ -98,7 +99,7 @@ public class QueryManager implements IQueryManager
     public void createZoneRecord(String title) {
         String insertZoneRecord = "INSERT INTO Zone"
                 + "(title, created_at)"
-                + "(?,?)";
+                + "VALUES (?,?)";
         try {
            PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertZoneRecord);
@@ -119,7 +120,7 @@ public class QueryManager implements IQueryManager
     public void createSpotZoneRecord(String spot_address, int spot_id) {
         String insertSpotZoneRecord = "INSERT INTO Spot_Zone"
                 + "(spot_address, spot_id, created_at)"
-                + "(?,?,?)";           
+                + "VALUES (?,?,?)";           
         try {
            PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertSpotZoneRecord);
@@ -131,10 +132,6 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createLightRecord: " + e);
         } 
-    }
-
-    public void createThermoRecord(double celciusData, Double fahrenheitData, int zone_id, long time) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 } 

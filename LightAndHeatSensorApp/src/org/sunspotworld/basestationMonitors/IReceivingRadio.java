@@ -23,7 +23,7 @@ public interface IReceivingRadio
 	 * Receives a datagram sent by the SendingRadio containing light data
 	 * @return light data
 	 */
-	public double receiveLight() throws IOException;
+	public int receiveLight() throws IOException;
 
 	/**
 	 * Receives a datagram sent by the SendingRadio containing heat data
