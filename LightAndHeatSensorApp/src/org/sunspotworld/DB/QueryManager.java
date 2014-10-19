@@ -52,7 +52,7 @@ public class QueryManager implements IQueryManager
      * @param zone_id int 
      * @param time long
      */
-    public void createThermoRecord(double celciusData, Double fahrenheitData,
+    public void createThermoRecord(double celciusData, double fahrenheitData,
             int zone_id, long time) {
         String insertThermoRecord = "INSET INTO Heat"
                 + "(celcius_data, fahrenheit_data, zone_id, created_at)"
@@ -131,6 +131,10 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createLightRecord: " + e);
         } 
+    }
+
+    public void createThermoRecord(double CelciusData, Double fahrenheitData, int zone_id, long time) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 } 

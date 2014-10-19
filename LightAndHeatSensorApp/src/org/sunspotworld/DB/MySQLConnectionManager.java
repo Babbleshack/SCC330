@@ -33,7 +33,6 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
         }
         this.connect();
     }
-    @Override
     public void connect()
     {
         try { 
@@ -43,8 +42,6 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
             System.err.println("Failed to connect to DB" + ex);
         }
     }
-    
-    @Override
     public void disconnect()
     {
         try

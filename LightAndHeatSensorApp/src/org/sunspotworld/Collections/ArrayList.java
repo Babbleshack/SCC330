@@ -15,7 +15,7 @@ import java.util.RandomAccess;
  *
  * @author Babblebase
  */
-public class ArrayList<E> extends AbstractList implements 
+public class ArrayList extends AbstractList implements 
     RandomAccess, Cloneable, Serializable 
 {
     
@@ -45,9 +45,8 @@ public class ArrayList<E> extends AbstractList implements
     /**
      * get element at index 
      * @param i int
-     * @return E Object
+     * @return Object Object
      */
-    @Override
     public Object get(int i) {
         if(i>numberOfMembers || i<0){
             throw new IndexOutOfBoundsException
@@ -55,7 +54,7 @@ public class ArrayList<E> extends AbstractList implements
         }
         return members[i];
     }
-    /**public void add(E e){
+    /**public void add(Object e){
         if(e == null)
             throw new NullPointerException();
         if(size == space)
@@ -118,7 +117,7 @@ public class ArrayList<E> extends AbstractList implements
        for(int i=ind + 1 ; i<numberOfMembers; i++)
            members[i - 1] = members[i];
        numberOfMembers--;
-       return (E)temp;
+       return (Object)temp;
     }
     /**
      * remove first occurrence of specified Object
@@ -171,10 +170,8 @@ public class ArrayList<E> extends AbstractList implements
      */
     private void increaseSize()
     {
-        Object newSize[] = new Object[members.length * 2];
-        System.arraycopy(members.length, 0, newSize, 0, members.length);
-        members = newSize;
+        Object[] newArray = new Object[members.length * 2];
+        System.arraycopy(this.members, 0, newArray, 0, members.length);
+        members = newArray;
     }
-    
-
 }
