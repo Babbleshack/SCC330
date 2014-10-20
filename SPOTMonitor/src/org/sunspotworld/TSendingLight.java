@@ -24,8 +24,10 @@ public class TSendingLight implements Runnable
     // Init sending radio
     ISendingRadio lightSendingRadio;
 
-    // creates an instance of SunSpotHostApplication class and initialises
-    // instance variables
+    /**
+     * Instantiates the monitor and sending radio required
+     * for sending light data to the base station
+     */
     public TSendingLight()
     {
         try

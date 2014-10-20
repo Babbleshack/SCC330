@@ -24,8 +24,10 @@ public class TSendingHeat implements Runnable
     // Init sending radio
     ISendingRadio thermoSendingRadio;
 
-    // creates an instance of SunSpotHostApplication class and initialises
-    // instance variables
+    /**
+     * Instantiates the monitor and sending radio required
+     * for sending thermo data to the base station
+     */
     public TSendingHeat()
     {
         try

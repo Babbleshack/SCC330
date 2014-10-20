@@ -61,9 +61,6 @@ public class SunSpotApplication extends MIDlet implements Runnable {
             System.out.println("Error starting switch listener thread: " + io);
         }
 
-        // heatThread.setDaemon(true);
-        // lightThread.setDaemon(true);
-
         heatThread.start();
         lightThread.start();
         switchThread.start();
