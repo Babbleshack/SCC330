@@ -19,8 +19,6 @@ import javax.microedition.io.*;
  */
 public class SendingRadio implements ISendingRadio
 {
-	private static final int HOST_PORT = 96;
-    //sample period in milliseconds
     private RadiogramConnection radioConn = null;
     private Datagram  datagram = null;
     

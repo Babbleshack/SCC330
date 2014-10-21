@@ -54,6 +54,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     {
         heatThread = new Thread(new TSendingHeat(),"heatService");
         lightThread = new Thread(new TSendingLight(),"lightService");
+        // TSendingAccel
 
         try {
             switchThread = new Thread(new TDemandSwitch(),"switchService");
