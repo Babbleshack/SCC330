@@ -53,4 +53,10 @@ public class ReceivingRadio implements IReceivingRadio
         radioConn.receive(datagram); 
         return datagram.readDouble(); 
     }
+    
+    public double receiveAccel() throws IOException
+    {
+        radioConn.receive(datagram); 
+        return datagram.readDouble(); 
+    }
 }
