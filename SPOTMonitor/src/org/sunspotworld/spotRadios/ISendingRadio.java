@@ -24,4 +24,10 @@ public interface ISendingRadio
 	 * @param  value the light value to send to the basestation
 	 */
 	public void sendHeat(double value);
+        
+        /**
+	 * Builds a datagram that sends accel data to the basestation
+	 * @param  value the accel value to send to the basestation
+	 */
+	public void sendAccel(double value);
 }
