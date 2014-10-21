@@ -14,25 +14,25 @@ import java.sql.Timestamp;
 public class LightData implements ILightData 
 {   
     private String spotAddress;
-    private double LightData;
+    private double lightData;
     private Timestamp time;
-    private int zoneID;
+    private int zoneId;
     
-    public LightData(String spotAddress, double LightData) {
+    public LightData(String spotAddress, double lightData) {
         this.spotAddress = spotAddress;
-        this.LightData = LightData;
+        this.lightData = lightData;
     }
-    public LightData(String spotAddress, double LightData, Timestamp time) {
+    public LightData(String spotAddress, double lightData, Timestamp time) {
         this.spotAddress = spotAddress;
-        this.LightData = LightData;
+        this.lightData = lightData;
         this.time = time;
     }
-    public LightData(String spotAddress, double LightData, Timestamp time,
-            int zoneID) {
+    public LightData(String spotAddress, double lightData, Timestamp time,
+            int zoneId) {
         this.spotAddress = spotAddress;
-        this.LightData = LightData;
+        this.lightData = lightData;
         this.time = time;
-        this.zoneID = zoneID;
+        this.zoneId = zoneId;
     }
     
 
@@ -45,11 +45,11 @@ public class LightData implements ILightData
     }
 
     public double getLightData() {
-        return LightData;
+        return lightData;
     }
 
-    public void setLightData(double LightData) {
-        this.LightData = LightData;
+    public void setLightData(double lightData) {
+        this.lightData = lightData;
     }    
 
     public Timestamp getTime() {
@@ -58,6 +58,14 @@ public class LightData implements ILightData
 
     public void setTime(Timestamp time) {
         this.time = time;
+    }
+
+    public int getZoneId(){
+        return this.zoneId;
+    }
+
+    public void setZoneId(int zoneId) {
+        this.zoneId = zoneId;
     }
 
 

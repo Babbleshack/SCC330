@@ -12,38 +12,37 @@ import java.sql.Timestamp;
  */
 public class ThermoData implements IThermoData {
 
-    private String SpotAddress;
-    private double FahrenheitData;
-    private double CelciusData;
+    private String spotAddress;
+    private double celciusData;
     private Timestamp time;
+    private int zoneId;
+
+    public ThermoData(String spotAddress, double celciusData, 
+        Timestamp time, int zoneId) {
+        this.spotAddress = spotAddress;
+        this.celciusData = celciusData;
+        this.time = time;
+        this.zoneId = zoneId;
+    }
+    public ThermoData(String spotAddress, double FahrenheitData, double celciusData) {
+        this.spotAddress = spotAddress;
+        this.celciusData = celciusData;
+    }
     
-    public ThermoData(String SpotAddress, double FahrenheitData, double CelciusData) {
-        this.SpotAddress = SpotAddress;
-        this.FahrenheitData = FahrenheitData;
-        this.CelciusData = CelciusData;
-    }
     public String getSpotAddress() {
-        return SpotAddress;
+        return spotAddress;
     }
 
-    public void setSpotAddress(String SpotAddress) {
-        this.SpotAddress = SpotAddress;
-    }
-
-    public double getFahrenheitData() {
-        return FahrenheitData;
-    }
-
-    public void setFahrenheitData(double FahrenheitData) {
-        this.FahrenheitData = FahrenheitData;
+    public void setSpotAddress(String spotAddress) {
+        this.spotAddress = spotAddress;
     }
 
     public double getCelciusData() {
-        return CelciusData;
+        return celciusData;
     }
 
-    public void setCelciusData(double CelciusData) {
-        this.CelciusData = CelciusData;
+    public void setCelciusData(double celciusData) {
+        this.celciusData = celciusData;
     }
 
     public Timestamp getTime() {
@@ -52,6 +51,16 @@ public class ThermoData implements IThermoData {
 
     public void setTime(Timestamp time) {
         this.time = time;
+    }
+
+    public int getZoneId()
+    {
+        return this.zoneId;
+    }
+
+    public void setZoneId(int zoneId)
+    {
+        this.zoneId = zoneId;
     }
   
 }
