@@ -54,4 +54,16 @@ public class SendingRadio implements ISendingRadio
             System.err.println("IOException occured while sending thermo: " + e);
         }
     }
+
+    public void sendAccel(double value)
+    {
+        try {
+            datagram.reset();
+            datagram.writeDouble(value);
+            radioConn.send(datagram);
+            System.out.println("Accel value " + value + " sent...");
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending thermo: " + e);
+        }
+    }
 }
