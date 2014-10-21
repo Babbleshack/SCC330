@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Thermomonitor Interface
+ * Dominic Lindsay 
  */
 package org.sunspotworld.spotMonitors;
 
@@ -23,9 +22,4 @@ public interface IThermoMonitor
      * @return double temp
      */
     double getCelsiusTemp();
-    /**
-     * returns temperature in Fahrenheit
-     * @return double temp
-     */
-    double getFahrenheitTemp();
 }
