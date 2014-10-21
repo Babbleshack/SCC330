@@ -2,32 +2,32 @@ package org.sunspotworld;
 
 import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
-import org.sunspotworld.spotMonitors.IThermoMonitor;
+import org.sunspotworld.spotMonitors.IAccelMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import com.sun.spot.util.Utils;
 
 /**
- * Thread to send Thermo data
+ * Thread to send Acceleration data
  */
-public class TSendingHeat implements Runnable
+public class TSendingAccel implements Runnable
 {
-    private IThermoMonitor thermoMonitor;
+    private IAccelMonitor accelMonitor;
     private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
 
     // Init sending radio
-    ISendingRadio thermoSendingRadio;
+    ISendingRadio accelSendingRadio;
 
     /**
      * Instantiates the monitor and sending radio required
-     * for sending thermo data to the base station
+     * for sending accel data to the base station
      */
-    public TSendingHeat()
+    public TSendingAccel()
     {
         try
         {
-            thermoMonitor = MonitorFactory.createThermoMonitor();
-            thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());
+            accelMonitor = MonitorFactory.createAccelMonitor();
+            accelSendingRadio = RadiosFactory.createSendingRadio(accelMonitor.getPort());
         }
         catch(Exception e)
         {
@@ -44,8 +44,8 @@ public class TSendingHeat implements Runnable
         // main switch reading/polling loop
         while (true)
         {
-            // Send thermo reading
-            thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
+            // Send light reading
+            accelSendingRadio.sendAccel(accelMonitor.getAccel());
             Utils.sleep(SAMPLE_RATE);
         }
     }
