@@ -108,6 +108,29 @@ public class QueryManager implements IQueryManager
                 + "createThermoRecord: " + e);
         }
     }
+    /**
+     * Insert Accel Data record to db
+     * @param accel double
+     * @param zone_id int
+     * @param time long
+     */
+    public void createAccelRecord(int accelData, String spot_address, long time) {
+        String insertAccelRecord = "INSERT INTO Acceleration"
+                + "(acceleration, spot_address, zone_id, created_at)"
+                + ("VALUES (?,?,?,?)");
+        try {
+            PreparedStatement insert = 
+                connection.getConnection().prepareStatement(insertLightRecord);
+            insert.setInt(1, accelData);
+            insert.setString(2, spot_address);
+            insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+            insert.setTimestamp(4, new Timestamp(time));
+            insert.executeUpdate();
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "createAccelRecord: " + e);
+        }
+    }
 
     /**
      * insert Spot Record into DB
@@ -209,7 +232,7 @@ public class QueryManager implements IQueryManager
 
      public ArrayList getPastWeekThermo() {
         //ArrayList for collection data
-        ArrayList ThermoDatums = new ArrayList();
+        ArrayList thermoDatums = new ArrayList();
         //find timestamps
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         Timestamp lastWeekTimestamp = findDateRange(currentTimestamp, -1);
@@ -228,7 +251,7 @@ public class QueryManager implements IQueryManager
         //ArrayList for collection data
         while(rs.next())
         {
-        ThermoDatums.add((Object)new LightData(
+        thermoDatums.add((Object)new ThermoData(
             rs.getString("spot_address"),
             rs.getDouble("heat_temperature"),
             rs.getTimestamp("created_at"),
@@ -239,6 +262,39 @@ public class QueryManager implements IQueryManager
             System.err.println("SQL Exception getting Past Week Heat" + e);
         }
         return ThermoDatums;
+    }
+    public ArrayList getPastAccelThermo() {
+        //ArrayList for collection data
+        ArrayList accelDatums = new ArrayList();
+        //find timestamps
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp lastWeekTimestamp = findDateRange(currentTimestamp, -1);
+        //queary db for data
+        String getLastWeek = "SELECT * FROM Acceleration WHERE "
+            + "created_at >= ? "//is greater than last week
+            + "AND "
+            + "created_at <= ? "; //is less than today
+        PreparedStatement getData;
+        try {
+            getData =
+                connection.getConnection().prepareStatement(getLastWeek);
+            getData.setTimestamp(1, lastWeekTimestamp);
+            getData.setTimestamp(2, currentTimestamp);
+            ResultSet rs = (ResultSet)getData.executeQuery();
+        //ArrayList for collection data
+        while(rs.next())
+        {
+        accelDatums.add((Object)new AccelData(
+            rs.getString("spot_address"),
+            rs.getDouble("acceleration"),
+            rs.getTimestamp("created_at"),
+            rs.getInt("zone_id")
+            ));
+        }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception getting Past Week Heat" + e);
+        }
+        return accelDatums;
     }
     
     private Timestamp findDateRange(Timestamp from, int noOfWeeks){

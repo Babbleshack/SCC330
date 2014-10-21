@@ -14,6 +14,4 @@ public interface IAccelData
     void SetTime(Timestamp time);
     int getZoneId();
     void setZoneId(int zoneId);
-
-
 }
