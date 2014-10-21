@@ -13,7 +13,8 @@ import java.sql.ResultSet;
 import java.util.Calendar;
 import org.sunspotworld.Collections.ArrayList;
 import org.sunspotworld.DataTypes.LightData;
-
+import org.sunspotworld.DataTypes.ThermoData;
+import org.sunspotworld.DataTypes.AccelData;
 
 
 public class QueryManager implements IQueryManager
