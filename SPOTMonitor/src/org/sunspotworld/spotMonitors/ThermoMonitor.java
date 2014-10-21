@@ -1,3 +1,8 @@
+/**
+ * Thermonitor Monitor
+ * Dominic Lindsay
+ */
+
 package org.sunspotworld.spotMonitors;
 
 import com.sun.spot.resources.Resources;
