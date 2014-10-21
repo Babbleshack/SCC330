@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sunspotworld.spotMonitors;
 
 import com.sun.spot.resources.Resources;
@@ -14,7 +9,7 @@ import java.io.IOException;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
 
-public class ThermoMonitor implements IThermoMonitor 
+public class ThermoMonitor implements IThermoMonitor
 {
     private SunspotPort port;
     private ITemperatureInput thermo;
@@ -31,11 +26,11 @@ public class ThermoMonitor implements IThermoMonitor
     }
 
     public SunspotPort getPort() {
-        return this.port; 
+        return this.port;
     }
 
     public double getCelsiusTemp() {
-        try 
+        try
         {
             return thermo.getCelsius();
         } catch (IOException ex) {
@@ -44,9 +39,9 @@ public class ThermoMonitor implements IThermoMonitor
         return -9999;
     }
 
-    public double getFahrenheitTemp() 
+    public double getFahrenheitTemp()
     {
-        try 
+        try
         {
             return thermo.getFahrenheit();
         } catch (IOException ex) {
@@ -54,5 +49,5 @@ public class ThermoMonitor implements IThermoMonitor
         }
         return -9999;
     }
-    
+
 }
