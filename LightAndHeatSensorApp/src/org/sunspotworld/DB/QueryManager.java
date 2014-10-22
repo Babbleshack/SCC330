@@ -34,7 +34,7 @@ public class QueryManager implements IQueryManager
      * @return              [description]
      */
     public int getZoneIdFromSpotAddress(String spot_address) {
-        String getZoneId = "SELECT zone_id FROM Spot_Zone"
+        String getZoneId = "SELECT zone_id FROM zone_spot"
                 + " WHERE spot_address = ?";
         try {
             /**
@@ -48,12 +48,16 @@ public class QueryManager implements IQueryManager
              * Access ResultSet for zone_id
              */
             ResultSet result = record.executeQuery();
-            result.next();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return result.getInt("zone_id");
 
-            /**
-             * Return result
-             */
-            return result.getInt("zone_id");
+            } else {
+                return -1; 
+            }
+
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "getZoneId: " + e);
@@ -65,12 +69,12 @@ public class QueryManager implements IQueryManager
      * Returns a job_id, given a spot address and field column
      */
     public int getJobIdFromSpotAddressReadingField(String spot_address, String column_name) {
-        String getJobId = "SELECT Job.id" 
-         + "FROM Job, Spot, Object, Sensor"
+        String getJobId = "SELECT Job.id " 
+         + "FROM Job, Spot, Object, Sensor "
          + "WHERE Spot.spot_address = ? "
-         + "AND Object.spot_id = Spot.id"
-         + "AND Job.object_id = Object.id"
-         + "AND Sensor.field = ?"
+         + "AND Object.spot_id = Spot.id "
+         + "AND Job.object_id = Object.id "
+         + "AND Sensor.field = ? "
          + "AND Sensor.id = Job.sensor_id";
 
         try {
@@ -79,21 +83,28 @@ public class QueryManager implements IQueryManager
              */
             PreparedStatement record = 
                 connection.getConnection().prepareStatement(getJobId);
+
             record.setString(1, spot_address);
             record.setString(2, column_name);
 
             /**
-             * Access ResultSet for zone_id
+             * Access ResultSet for job_id
              */
             ResultSet result = record.executeQuery();
-            result.next();
-
-            /**
-             * Return result
-             */
-            return result.getInt("Job.id");
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                int job_id = result.getInt("Job.id");
+                System.out.println("Job id: " + job_id);
+                return job_id; 
+            } else {
+                System.out.println("No results to get job_id ");
+                return -1; 
+            }
+            
         } catch (SQLException e) {
-                System.err.println("SQL Exception while preparing/Executing"
+                System.err.println("SQL Exception while preparing/Executing "
                 + "getJobId: " + e);
                 return -1;
         }
@@ -110,14 +121,19 @@ public class QueryManager implements IQueryManager
                 + "(light_intensity, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            PreparedStatement insert = 
-                connection.getConnection().prepareStatement(insertLightRecord);
-            insert.setInt(1, light);
-            insert.setString(2, spot_address);
-            insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
-            insert.setInt(4, this.getJobIdFromSpotAddressReadingField(spot_address, "light_intensity"));
-            insert.setTimestamp(5, new Timestamp(time));
-            insert.executeUpdate();
+            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "light_intensity");
+            if(job_id > 0) {
+                PreparedStatement insert = 
+                    connection.getConnection().prepareStatement(insertLightRecord);
+                insert.setInt(1, light);
+                insert.setString(2, spot_address);
+                insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+                insert.setInt(4, job_id);
+                insert.setTimestamp(5, new Timestamp(time));
+                insert.executeUpdate();
+            } else {
+                System.out.println("No job_id for this light reading!");
+            }
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createLightRecord: " + e);
@@ -136,14 +152,19 @@ public class QueryManager implements IQueryManager
                 + "(heat_temperature, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-           PreparedStatement insert = 
-                connection.getConnection().prepareStatement(insertThermoRecord);
-            insert.setDouble(1, celsiusData);
-            insert.setString(2, spot_address);
-            insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
-            insert.setInt(4, this.getJobIdFromSpotAddressReadingField(spot_address, "heat_temperature"));
-            insert.setTimestamp(5, new Timestamp(time));
-            insert.executeUpdate();
+            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "heat_temperature");
+            if(job_id > 0) {
+               PreparedStatement insert = 
+                    connection.getConnection().prepareStatement(insertThermoRecord);
+                insert.setDouble(1, celsiusData);
+                insert.setString(2, spot_address);
+                insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+                insert.setInt(4, job_id);
+                insert.setTimestamp(5, new Timestamp(time));
+                insert.executeUpdate();
+            } else {
+                System.out.println("No job_id for this heat reading!");
+            }
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createThermoRecord: " + e);
@@ -160,14 +181,19 @@ public class QueryManager implements IQueryManager
                 + "(acceleration, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            PreparedStatement insert = 
-                connection.getConnection().prepareStatement(insertAccelRecord);
-            insert.setDouble(1, accelData);
-            insert.setString(2, spot_address);
-            insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
-            insert.setInt(4, this.getJobIdFromSpotAddressReadingField(spot_address, "acceleration"));
-            insert.setTimestamp(5, new Timestamp(time));
-            insert.executeUpdate();
+            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "acceleration");
+            if(job_id > 0) {
+                PreparedStatement insert = 
+                    connection.getConnection().prepareStatement(insertAccelRecord);
+                insert.setDouble(1, accelData);
+                insert.setString(2, spot_address);
+                insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+                insert.setInt(4, job_id);
+                insert.setTimestamp(5, new Timestamp(time));
+                insert.executeUpdate();
+            } else {
+                System.out.println("No job_id for this acceleration reading!");
+            }
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createAccelRecord: " + e);
@@ -220,7 +246,7 @@ public class QueryManager implements IQueryManager
      * @param spot_id int
      */
     public void createSpotZoneRecord(String spot_address, int spot_id) {
-        String insertSpotZoneRecord = "INSERT INTO Spot_Zone"
+        String insertSpotZoneRecord = "INSERT INTO zone_spot"
                 + "(spot_address, spot_id, created_at)"
                 + "VALUES (?,?,?)";           
         try {
