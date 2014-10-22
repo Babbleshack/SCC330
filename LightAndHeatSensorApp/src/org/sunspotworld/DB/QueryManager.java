@@ -115,14 +115,14 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createAccelRecord(int accelData, String spot_address, long time) {
+    public void createAccelRecord(double accelData, String spot_address, long time) {
         String insertAccelRecord = "INSERT INTO Acceleration"
                 + "(acceleration, spot_address, zone_id, created_at)"
                 + ("VALUES (?,?,?,?)");
         try {
             PreparedStatement insert = 
-                connection.getConnection().prepareStatement(insertLightRecord);
-            insert.setInt(1, accelData);
+                connection.getConnection().prepareStatement(insertAccelRecord);
+            insert.setDouble(1, accelData);
             insert.setString(2, spot_address);
             insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
             insert.setTimestamp(4, new Timestamp(time));
@@ -262,7 +262,7 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
             System.err.println("SQL Exception getting Past Week Heat" + e);
         }
-        return ThermoDatums;
+        return thermoDatums;
     }
     public ArrayList getPastAccelThermo() {
         //ArrayList for collection data
