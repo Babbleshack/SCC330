@@ -53,16 +53,20 @@ public class TReceivingLight implements Runnable
         // main switch reading/polling loop
         while (true)
         {
-            System.out.println("Waiting for light info ...");
             try
             {
                 // Read light and heat values
                 int  lightValue  = lightReceivingRadio.receiveLight();
 
-                queryManager.createLightRecord(lightValue, lightReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
-
                 // Print out light and heat values
                 System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);
+
+                try
+                {
+                    queryManager.createLightRecord(lightValue, lightReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
+                } catch (NullPointerException npe) {
+                    System.out.println("lightService: queryManager - NullPointerException");
+                }
             }
             catch (IOException io)
             {

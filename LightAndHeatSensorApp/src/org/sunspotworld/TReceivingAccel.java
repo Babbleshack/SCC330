@@ -48,16 +48,20 @@ public class TReceivingAccel implements Runnable
         // main switch reading/polling loop
         while (true)
         {
-            System.out.println("Waiting for accel info ...");
             try
             {
                 // Read accel
                 double  accelValue   = accelReceivingRadio.receiveAccel();
 
-                queryManager.createAccelRecord(accelValue, accelReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
-
                 // Print out accel
                 System.out.println("Message from " + accelReceivingRadio.getReceivedAddress() + " - " + "acceleration: " + accelValue);
+
+                try
+                {
+                    queryManager.createAccelRecord(accelValue, accelReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
+                } catch (NullPointerException npe) {
+                    System.out.println("accelService: queryManager - NullPointerException");
+                }
             }
             catch (IOException io)
             {
