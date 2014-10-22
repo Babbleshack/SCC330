@@ -10,12 +10,12 @@ import java.sql.Timestamp;
  */
 public interface ILightData extends ISunSpotData 
 {
-	String getSpotAddress();
-	void setSpotAddress();
-    void setLightData(double data);
     double getLightData();
+	String getSpotAddress();
     Timestamp getTime();
-    void SetTime(Timestamp time);
     int getZoneId();
+	void setSpotAddress(String setSpotAddress);
+    void setLightData(double data);
+    void setTime(Timestamp time);
     void setZoneId(int zoneId);
 }

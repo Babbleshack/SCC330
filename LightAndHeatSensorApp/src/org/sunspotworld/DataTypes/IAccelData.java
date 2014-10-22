@@ -9,11 +9,11 @@ import java.sql.Timestamp;
 public interface IAccelData 
 {
 	String getSpotAddress();
-	void setSpotAddress();
-    void setAccelData(double data);
     double getAccelData();
     Timestamp getTime();
-    void SetTime(Timestamp time);
     int getZoneId();
+	void setSpotAddress(String setSpotAddress);
+    void setAccelData(double data);
+    void setTime(Timestamp time);
     void setZoneId(int zoneId);
 }
