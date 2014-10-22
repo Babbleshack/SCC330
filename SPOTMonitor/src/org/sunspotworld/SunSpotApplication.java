@@ -30,7 +30,7 @@ import javax.microedition.midlet.MIDletStateChangeException;
 /**
  * The startApp method of this class is called by the VM to start the
  * application.
- * 
+ *
  * The manifest specifies this class as MIDlet-1, which means it will
  * be selected for execution.
  */
@@ -41,10 +41,11 @@ public class SunSpotApplication extends MIDlet implements Runnable {
      */
     private Thread heatThread = null;
     private Thread lightThread = null;
+    private Thread accelThread = null;
     private Thread switchThread = null;
 
     public SunSpotApplication() {
-        
+
     }
 
     /**
@@ -54,7 +55,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     {
         heatThread = new Thread(new TSendingHeat(),"heatService");
         lightThread = new Thread(new TSendingLight(),"lightService");
-        // TSendingAccel
+        accelThread = new Thread(new TSendingAccel(),"accelService");
 
         try {
             switchThread = new Thread(new TDemandSwitch(),"switchService");
@@ -64,14 +65,15 @@ public class SunSpotApplication extends MIDlet implements Runnable {
 
         heatThread.start();
         lightThread.start();
+        accelThread.start();
         switchThread.start();
     }
 
-    public void run()  
-    {    
+    public void run()
+    {
     }
 
-    /** 
+    /**
      * Starts polling threads
      * @throws MIDletStateChangeException [description]
      */
@@ -101,4 +103,4 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     protected void destroyApp(boolean unconditional) throws MIDletStateChangeException {
     }
 }
-  
+

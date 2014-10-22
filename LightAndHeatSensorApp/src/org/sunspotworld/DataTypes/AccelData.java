@@ -6,7 +6,6 @@ package org.sunspotworld.DataTypes;
 
 import java.sql.Timestamp;
 
-
 public class AccelData implements IAccelData
 {
 	private String spotAddress;
@@ -15,7 +14,7 @@ public class AccelData implements IAccelData
 	private int zoneId;
 
 
-	public String getSpotAddress() {
+    public String getSpotAddress() {
         return spotAddress;
     }
 

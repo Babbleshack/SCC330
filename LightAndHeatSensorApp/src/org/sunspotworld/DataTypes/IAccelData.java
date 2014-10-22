@@ -4,6 +4,8 @@
  */
 package org.sunspotworld.DataTypes;
 
+import java.sql.Timestamp;
+
 public interface IAccelData 
 {
 	String getSpotAddress();

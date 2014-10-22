@@ -7,14 +7,14 @@ package org.sunspotworld;
 
 import java.io.IOException;
 import org.sunspotworld.basestationMonitors.IReceivingRadio;
-import org.sunspotworld.basestationMonitors.IaccelMonitor;
+import org.sunspotworld.basestationMonitors.IAccelMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 
 import org.sunspotworld.DB.DatabaseConnectionFactory;
 import org.sunspotworld.DB.MySQLConnectionManager;
 import org.sunspotworld.DB.QueryManager;
-public class TReceivingAcceleration implements Runnable
+public class TReceivingAccel implements Runnable
 {
 
     private IAccelMonitor accelMonitor;
@@ -52,7 +52,7 @@ public class TReceivingAcceleration implements Runnable
             try
             {
                 // Read accel
-                double  accelValue   = accelReceivingRadio.receiveaccel();
+                double  accelValue   = accelReceivingRadio.receiveAccel();
 
                 queryManager.createAccelRecord(accelValue, accelReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
 
@@ -66,4 +66,4 @@ public class TReceivingAcceleration implements Runnable
             }
         }
     }
-}p
+}

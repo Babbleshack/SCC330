@@ -30,4 +30,10 @@ public interface IReceivingRadio
 	 * @return heat data
 	 */
 	public double receiveHeat() throws IOException;
+
+	/**
+	 * Receives a datagram sent by the SendingRadio containing accel data
+	 * @return heat data
+	 */
+	public double receiveAccel() throws IOException;
 }

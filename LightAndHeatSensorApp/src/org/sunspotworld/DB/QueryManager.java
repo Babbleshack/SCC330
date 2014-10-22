@@ -56,7 +56,45 @@ public class QueryManager implements IQueryManager
             return result.getInt("zone_id");
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
-                + "createLightRecord: " + e);
+                + "getZoneId: " + e);
+                return -1;
+        }
+    }
+
+    /**
+     * Returns a job_id, given a spot address and field column
+     */
+    public int getJobIdFromSpotAddressReadingField(String spot_address, String column_name) {
+        String getJobId = "SELECT Job.id" 
+         + "FROM Job, Spot, Object, Sensor"
+         + "WHERE Spot.spot_address = ? "
+         + "AND Object.spot_id = Spot.id"
+         + "AND Job.object_id = Object.id"
+         + "AND Sensor.field = ?"
+         + "AND Sensor.id = Job.sensor_id";
+
+        try {
+            /**
+             * Execute select query 
+             */
+            PreparedStatement record = 
+                connection.getConnection().prepareStatement(getZoneId);
+            record.setString(1, spot_address);
+            record.setString(2, column_name);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            result.next();
+
+            /**
+             * Return result
+             */
+            return result.getInt("Job.id");
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "getJobId: " + e);
                 return -1;
         }
     }
@@ -69,15 +107,16 @@ public class QueryManager implements IQueryManager
      */
     public void createLightRecord(int light, String spot_address, long time) {
         String insertLightRecord = "INSERT INTO Light"
-                + "(light_intensity, spot_address, zone_id, created_at)"
-                + ("VALUES (?,?,?,?)");
+                + "(light_intensity, spot_address, zone_id, job_id, created_at)"
+                + ("VALUES (?,?,?,?,?)");
         try {
             PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertLightRecord);
             insert.setInt(1, light);
             insert.setString(2, spot_address);
             insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
-            insert.setTimestamp(4, new Timestamp(time));
+            insert.setInt(4, this.getJobIdFromSpotAddressReadingField(spot_address, "light_intensity"));
+            insert.setTimestamp(5, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
@@ -94,15 +133,16 @@ public class QueryManager implements IQueryManager
      */
     public void createThermoRecord(double celsiusData, String spot_address, long time) {
         String insertThermoRecord = "INSERT INTO Heat"
-                + "(heat_temperature, spot_address, zone_id, created_at)"
-                + ("VALUES (?,?,?,?)");
+                + "(heat_temperature, spot_address, zone_id, job_id, created_at)"
+                + ("VALUES (?,?,?,?,?)");
         try {
            PreparedStatement insert = 
                 connection.getConnection().prepareStatement(insertThermoRecord);
             insert.setDouble(1, celsiusData);
             insert.setString(2, spot_address);
             insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
-            insert.setTimestamp(4, new Timestamp(time));
+            insert.setInt(4, this.getJobIdFromSpotAddressReadingField(spot_address, "heat_temperature"));
+            insert.setTimestamp(5, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
@@ -115,17 +155,18 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createAccelRecord(int accelData, String spot_address, long time) {
+    public void createAccelRecord(double accelData, String spot_address, long time) {
         String insertAccelRecord = "INSERT INTO Acceleration"
-                + "(acceleration, spot_address, zone_id, created_at)"
-                + ("VALUES (?,?,?,?)");
+                + "(acceleration, spot_address, zone_id, job_id, created_at)"
+                + ("VALUES (?,?,?,?,?)");
         try {
             PreparedStatement insert = 
-                connection.getConnection().prepareStatement(insertLightRecord);
-            insert.setInt(1, accelData);
+                connection.getConnection().prepareStatement(insertAccelRecord);
+            insert.setDouble(1, accelData);
             insert.setString(2, spot_address);
             insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
-            insert.setTimestamp(4, new Timestamp(time));
+            insert.setInt(4, this.getJobIdFromSpotAddressReadingField(spot_address, "acceleration"));
+            insert.setTimestamp(5, new Timestamp(time));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
@@ -262,7 +303,7 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
             System.err.println("SQL Exception getting Past Week Heat" + e);
         }
-        return ThermoDatums;
+        return thermoDatums;
     }
     public ArrayList getPastAccelThermo() {
         //ArrayList for collection data

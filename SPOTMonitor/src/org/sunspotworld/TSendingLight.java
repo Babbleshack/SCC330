@@ -1,9 +1,3 @@
-/*
- * SunSpotHostApplication.java
- *
- * Created on 13-Oct-2014 23:19:07;
- */
-
 package org.sunspotworld;
 
 import java.io.IOException;
@@ -14,7 +8,7 @@ import org.sunspotworld.spotRadios.RadiosFactory;
 import com.sun.spot.util.Utils;
 
 /**
- * Sample Sun SPOT host application
+ * Thread to send Light data
  */
 public class TSendingLight implements Runnable
 {

@@ -1,6 +1,7 @@
 /*
- * Acceleromer monitor Interface
+ * Accelerometer monitor Interface
  */
+
 package org.sunspotworld.spotMonitors;
 
 import org.sunspotworld.spotRadios.SunspotPort;
@@ -8,6 +9,13 @@ import org.sunspotworld.spotRadios.SunspotPort;
 public interface IAccelMonitor
 {
     /**
-     * Vitali work here
+     * Returns port number for this sensor type
      */
+    SunspotPort getPort();
+
+    /**
+     * Returns Acceleration
+     * @return  Vector sum of the acceleration along the X, Y & Z axes.
+     */
+    double getAccel();
 }
