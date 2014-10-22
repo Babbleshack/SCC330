@@ -16,7 +16,7 @@ public interface IQueryManager
     public void createLightRecord(int light, String spot_address,
     	 long time);
     public void createAccelRecord(int accelData, String spot_address,
-    		long time)
+    		long time);
     public void createThermoRecord(double celciusData,
         String spot_address, long time);
     public void createSpotRecord(String spot_id);
