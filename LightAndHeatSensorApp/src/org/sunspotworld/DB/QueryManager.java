@@ -78,7 +78,7 @@ public class QueryManager implements IQueryManager
              * Execute select query 
              */
             PreparedStatement record = 
-                connection.getConnection().prepareStatement(getZoneId);
+                connection.getConnection().prepareStatement(getJobId);
             record.setString(1, spot_address);
             record.setString(2, column_name);
 

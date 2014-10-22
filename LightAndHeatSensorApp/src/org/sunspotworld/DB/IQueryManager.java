@@ -13,12 +13,10 @@ import org.sunspotworld.Collections.ArrayList;
 public interface IQueryManager 
 {
 	public int getZoneIdFromSpotAddress(String spot_address);
-    public void createLightRecord(int light, String spot_address,
-    	 long time);
-    public void createAccelRecord(int accelData, String spot_address,
-    		long time);
-    public void createThermoRecord(double celciusData,
-        String spot_address, long time);
+    public int getJobIdFromSpotAddressReadingField(String spot_address, String column_name);
+    public void createLightRecord(int light, String spot_address, long time);
+    public void createAccelRecord(double accelData, String spot_address, long time);
+    public void createThermoRecord(double celciusData, String spot_address, long time);
     public void createSpotRecord(String spot_id);
     public void createZoneRecord(String title);
     public void createSpotZoneRecord(String spot_address, int spot_id);
