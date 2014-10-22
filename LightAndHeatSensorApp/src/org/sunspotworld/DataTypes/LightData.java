@@ -35,7 +35,6 @@ public class LightData implements ILightData
         this.zoneId = zoneId;
     }
     
-
     public String getSpotAddress() {
         return spotAddress;
     }

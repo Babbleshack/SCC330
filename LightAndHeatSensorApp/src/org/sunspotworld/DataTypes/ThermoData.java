@@ -62,5 +62,4 @@ public class ThermoData implements IThermoData {
     {
         this.zoneId = zoneId;
     }
-  
 }

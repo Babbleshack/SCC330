@@ -11,12 +11,12 @@ import java.sql.Timestamp;
  */
 public interface IThermoData extends ISunSpotData
 {
-	String getSpotAddress();
-	void setSpotAddress();
+    String getSpotAddress();
+    void setSpotAddress(String spotAddress);
     double getCelciusData();
     void setCelciusData(double data);
     Timestamp getTime();
-    void SetTime(Timestamp time);
+    void setTime(Timestamp time);
     int getZoneId();
     void setZoneId(int zoneId);
 }
