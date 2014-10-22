@@ -49,15 +49,4 @@ public class AccelData implements IAccelData
         this.zoneId = zoneId;
     }
 
-	String getSpotAddress()
-	{
-
-	}
-	void setSpotAddress();
-    void setAccelData(double data);
-    double getAccelData();
-    Timestamp getTime();
-    void SetTime(Timestamp time);
-    int getZoneId();
-    void setZoneId(int zoneId);
 }
