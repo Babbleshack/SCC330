@@ -53,16 +53,20 @@ public class TReceivingHeat implements Runnable
         // main switch reading/polling loop
         while (true)
         {
-            System.out.println("Waiting for heat info ...");
             try
             {
                 // Read light and heat values
                 double  thermoValue   = thermoReceivingRadio.receiveHeat();
 
-                queryManager.createThermoRecord(thermoValue, thermoReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
-
                 // Print out light and heat values
                 System.out.println("Message from " + thermoReceivingRadio.getReceivedAddress() + " - " + "Heat: " + thermoValue);
+
+                try
+                {
+                    queryManager.createThermoRecord(thermoValue, thermoReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
+                } catch (NullPointerException npe) {
+                    System.out.println("heatService: queryManager - NullPointerException");
+                }
             }
             catch (IOException io)
             {
