@@ -12,7 +12,15 @@ public class AccelData implements IAccelData
 	private double accelData;
 	private Timestamp time;
 	private int zoneId;
-
+    public AccelData(String spotAddress, double accelData,
+        Timestamp time, int zoneId)
+    {
+        this.spotAddress = spotAddress;
+        this.accelData = accelData;
+        this.time = time;
+        this.zoneId = zoneId;
+    }
+    
 
     public String getSpotAddress() {
         return spotAddress;
