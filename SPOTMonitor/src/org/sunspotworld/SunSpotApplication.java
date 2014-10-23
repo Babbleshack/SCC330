@@ -8,6 +8,9 @@ package org.sunspotworld;
 
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.ISendingRadio;
+import org.sunspotworld.spotRadios.IReceivingRadio;
+import org.sunspotworld.spotRadios.SunspotPort;
+import org.sunspotworld.spotRadios.PortOutOfRangeException;
 
 import org.sunspotworld.spotMonitors.LightMonitor;
 import org.sunspotworld.spotMonitors.ThermoMonitor;
@@ -47,6 +50,8 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread accelThread = null;
     private Thread switchThread = null;
 
+    private ISendingRadio discoverMeRadio;
+
     public SunSpotApplication() {
 
     }
@@ -71,11 +76,18 @@ public class SunSpotApplication extends MIDlet implements Runnable {
      */
     public void startPolling() throws SecurityException
     {
+        try {
+            discoverMeRadio = RadiosFactory.createSendingRadio(new SunspotPort(90));
+        } catch (PortOutOfRangeException p) {
+            System.out.println("Discover me radio port out of range: " + p);
+        } catch (IOException io) {
+            System.out.println("Exception while creating discover me radio: " + io);
+        }
 
-        // int[] ports = receivingRadio.getPorts(); 
+        int[] ports = discoverMeRadio.discoverMe(); 
 
-        // for (int i = 0;i < ports.length; i++) 
-        //     observer.startSensor(ports[i]);
+        for (int i = 0;i < ports.length; i++) 
+            System.out.println("Port " + i + ":" + ports[i]);
 
         heatThread = new Thread(new TSendingHeat(),"heatService");
         lightThread = new Thread(new TSendingLight(),"lightService");

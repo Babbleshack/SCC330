@@ -28,6 +28,59 @@ public class QueryManager implements IQueryManager
         connection = DatabaseConnectionFactory.createMySQLConnection();
     }
 
+    public Boolean isSpotExists(String spot_address) {
+        String isSpotExists = "SELECT * FROM Spot WHERE spot_address = ?";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record = 
+                connection.getConnection().prepareStatement(isSpotExists);
+            record.setString(1, spot_address);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            
+            /**
+             * Return result
+             */
+            if(result.next()) 
+                return true;
+            else
+                return false; 
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "isSpotExists: " + e);
+                return false;
+        }
+    }
+
+    /**
+     * Insert spot record into db
+     * @param spot_address
+     * @param time long
+     */
+    public void createSpotRecord(String spot_address, long time) {
+        String insertSpotRecord = "INSERT INTO Spot"
+                + "(spot_address, created_at, updated_at)"
+                + ("VALUES (?,?,?)");
+        try {
+            PreparedStatement insert = 
+                connection.getConnection().prepareStatement(insertSpotRecord);
+            insert.setString(1, spot_address);
+            insert.setTimestamp(2, new Timestamp(time));
+            insert.setTimestamp(3, new Timestamp(time));
+            insert.executeUpdate();
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "insertSpotRecord: " + e);
+        }
+    }
+
     /**
      * Returns a zone id, given a spot address
      * @param  spot_address [description]
@@ -59,7 +112,7 @@ public class QueryManager implements IQueryManager
             }
 
         } catch (SQLException e) {
-                System.err.println("SQL Exception while preparing/Executing"
+                System.err.println("SQL Exception while preparing/Executing "
                 + "getZoneId: " + e);
                 return -1;
         }

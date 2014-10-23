@@ -10,6 +10,7 @@ import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotMonitors.IThermoMonitor;
 import org.sunspotworld.spotMonitors.ILightMonitor;
+import org.sunspotworld.spotMonitors.IAccelMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import com.sun.spot.util.Utils;
@@ -29,8 +30,9 @@ public class TDemandSwitch implements Runnable, ISwitchListener
     // Init sending radio
     IThermoMonitor thermoMonitor;
     ILightMonitor lightMonitor;
+    IAccelMonitor accelMonitor;
 
-    ISendingRadio thermoSendingRadio, lightSendingRadio;
+    ISendingRadio thermoSendingRadio, lightSendingRadio, accelSendingRadio;
 
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
@@ -42,9 +44,11 @@ public class TDemandSwitch implements Runnable, ISwitchListener
         {
             thermoMonitor = MonitorFactory.createThermoMonitor();
             lightMonitor = MonitorFactory.createLightMonitor();
+            accelMonitor = MonitorFactory.createAccelMonitor();
 
             thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());
             lightSendingRadio = RadiosFactory.createSendingRadio(lightMonitor.getPort());
+            accelSendingRadio = RadiosFactory.createSendingRadio(accelMonitor.getPort());
         }
         catch(Exception e)
         {
@@ -64,6 +68,7 @@ public class TDemandSwitch implements Runnable, ISwitchListener
     public void switchReleased(SwitchEvent evt) {
         thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
         lightSendingRadio.sendLight(lightMonitor.getLightIntensity());
+        accelSendingRadio.sendAccel(accelMonitor.getAccel());
     }
 
     public void startPolling() throws Exception
