@@ -17,9 +17,9 @@ public class MonitorFactory
     {
         return new LightMonitor();
     }
-    public static IThermoMonitor createThermoMonitor()
+    public static IThermoMonitor createThermoMonitor(int threshold)
     {
-        return new ThermoMonitor();
+        return new ThermoMonitor(threshold);
     }
     public static IAccelMonitor createAccelMonitor()
     {

@@ -50,6 +50,10 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread accelThread = null;
     private Thread switchThread = null;
 
+    private static final int MOCK_HEAT_THRESHOLD = 20;
+    private static final int MOCK_LIGHT_THRESHOLD = 0;
+
+
     private ISendingRadio discoverMeRadio;
 
     public SunSpotApplication() {
@@ -89,12 +93,12 @@ public class SunSpotApplication extends MIDlet implements Runnable {
         for (int i = 0;i < ports.length; i++) 
             System.out.println("Port " + i + ":" + ports[i]);
 
-        heatThread = new Thread(new TSendingHeat(),"heatService");
+        heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
         lightThread = new Thread(new TSendingLight(),"lightService");
         accelThread = new Thread(new TSendingAccel(),"accelService");
 
         try {
-            switchThread = new Thread(new TDemandSwitch(),"switchService");
+            switchThread = new Thread(new TDemandSwitch(20),"switchService");
         } catch (IOException io) {
             System.out.println("Error starting switch listener thread: " + io);
         }

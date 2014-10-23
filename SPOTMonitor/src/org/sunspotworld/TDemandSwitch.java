@@ -26,23 +26,24 @@ import com.sun.spot.resources.transducers.SwitchEvent;
 public class TDemandSwitch implements Runnable, ISwitchListener
 {
     private ISwitch sw1;
-    
+    private static final int DEFAULT_THRESHOLD = 9999;
     // Init sending radio
     IThermoMonitor thermoMonitor;
     ILightMonitor lightMonitor;
     IAccelMonitor accelMonitor;
 
+
     ISendingRadio thermoSendingRadio, lightSendingRadio, accelSendingRadio;
 
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TDemandSwitch() throws IOException
+    public TDemandSwitch(int heat_threshold) throws IOException
     {
         sw1 = (ISwitch) Resources.lookup(ISwitch.class, "SW1");
         sw1.addISwitchListener(this);       // enable automatic notification of switches
         try
         {
-            thermoMonitor = MonitorFactory.createThermoMonitor();
+            thermoMonitor = MonitorFactory.createThermoMonitor(DEFAULT_THRESHOLD);
             lightMonitor = MonitorFactory.createLightMonitor();
             accelMonitor = MonitorFactory.createAccelMonitor();
 
