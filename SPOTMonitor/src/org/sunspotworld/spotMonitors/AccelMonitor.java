@@ -5,8 +5,9 @@ import com.sun.spot.resources.transducers.IAccelerometer3D;
 import java.io.IOException;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
+import org.sunspotworld.Patterns.Observable;
 
-public class AccelMonitor implements IAccelMonitor
+public class AccelMonitor extends Observable implements IAccelMonitor
 {
     private SunspotPort port;
     private static final int portNum = 130;

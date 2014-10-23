@@ -10,11 +10,13 @@ import com.sun.spot.resources.transducers.Condition;
 import com.sun.spot.resources.transducers.IConditionListener;
 import com.sun.spot.resources.transducers.ITemperatureInput;
 import com.sun.spot.resources.transducers.SensorEvent;
-import java.io.IOException;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
+import org.sunspotworld.Patterns.Observable;
+import java.io.IOException;
 
-public class ThermoMonitor implements IThermoMonitor
+
+public class ThermoMonitor extends Observable implements IThermoMonitor
 {
     private SunspotPort port;
     private static final int portNum = 110;

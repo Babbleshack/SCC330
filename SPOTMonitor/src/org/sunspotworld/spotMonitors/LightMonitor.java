@@ -8,11 +8,12 @@ import com.sun.spot.resources.transducers.SensorEvent;
 import java.io.IOException;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
+import org.sunspotworld.Patterns.Observable;
 /**
  * Define a Light Monitor
  * @author babbleshack
  */
-public class LightMonitor implements ILightMonitor
+public class LightMonitor extends Observable implements ILightMonitor
 {
     private SunspotPort port;
     private static final int portNum = 120;
