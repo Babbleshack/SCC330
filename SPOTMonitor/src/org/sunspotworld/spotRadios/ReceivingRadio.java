@@ -42,6 +42,8 @@ public class ReceivingRadio implements IReceivingRadio
             spot_address = datagram.readUTF();
             System.out.println("Sun SPOT address " + spotAddress + " has received a discover response with the recipient of " + spot_address);
         }
+
+        
         
         int[] portsThresholds = {110, 30, 120, 40, 130, -1};
 

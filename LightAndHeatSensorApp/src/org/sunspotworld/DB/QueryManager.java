@@ -5,6 +5,7 @@
  */
 package org.sunspotworld.DB;
 
+import java.lang.Integer;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -166,7 +167,7 @@ public class QueryManager implements IQueryManager
     /**
      * Returns all job_ids for a given a spot address
      */
-    public ArrayList<Integer> getJobIdsFromSpotAddressReadingField(String spot_address) {
+    public ArrayList getJobIdsFromSpotAddressReadingField(String spot_address) {
         String query = "SELECT Job.id "
          + "FROM Job "
          + "LEFT JOIN Sensor "
@@ -191,35 +192,32 @@ public class QueryManager implements IQueryManager
              */
             ResultSet result = record.executeQuery();
 
-            if(result.next()) {
-                /**
-                 * Return result
-                 */
-                ArrayList<Integer> output_array = new ArrayList<Integer>();
+            /**
+             * Return result
+             */
+            ArrayList output_array = new ArrayList();
 
-                while (rset.next()) {
-                    output_array.add(rset.getInt("Job.id"));
-                    System.out.println("Job id: " + rset.getInt("Job.id"));
-                }
-
-                //System.out.println("Sensor port: " + job_id);
-                return output_array;
-            } else {
-                System.out.println("No results to get job_id ");
-                return -1;
+            while (result.next()) {
+                output_array.add(result.getInt("Job.id"));
+                System.out.println("Job id: " + result.getInt("Job.id"));
             }
 
+            if(output_array.size() == 0) 
+                System.out.println("No results to get job_id ");
+                
+            return output_array;
+                
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getJobId: " + e);
-                return -1;
+                return new ArrayList();
         }
     }
 
         /**
      * Returns all job_ids for a given a spot address
      */
-    public ArrayList<Integer> getSensorPortsFromSpotAddressReadingField(String spot_address) {
+    public ArrayList getSensorPortsFromSpotAddressReadingField(String spot_address) {
         String query = "Sensor.port_number "
          + "FROM Job "
          + "LEFT JOIN Sensor "
@@ -244,28 +242,25 @@ public class QueryManager implements IQueryManager
              */
             ResultSet result = record.executeQuery();
 
-            if(result.next()) {
-                /**
-                 * Return result
-                 */
-                ArrayList<Integer> output_array = new ArrayList<Integer>();
+            /**
+             * Return result
+             */
+            ArrayList output_array = new ArrayList();
 
-                while (rset.next()) {
-                    output_array.add(rset.getInt("Sensor.port_number"));
-                    System.out.println("Sensor port: " + rset.getInt("Sensor.port_number"));
-                }
-
-                //System.out.println("Sensor port: " + job_id);
-                return output_array;
-            } else {
-                System.out.println("No results to get job_id ");
-                return -1;
+            while (result.next()) {
+                output_array.add(result.getInt("Sensor.port_number"));
+                System.out.println("Sensor port: " + result.getInt("Sensor.port_number"));
             }
+
+            if(output_array.size() == 0) 
+                System.out.println("No results to get Sensor port number ");
+                
+            return output_array;
 
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getJobId: " + e);
-                return -1;
+                return new ArrayList();
         }
     }
 
