@@ -5,7 +5,6 @@
  */
 package org.sunspotworld.DB;
 
-import java.lang.Integer;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
