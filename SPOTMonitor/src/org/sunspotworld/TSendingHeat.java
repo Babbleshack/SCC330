@@ -7,6 +7,8 @@ import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import com.sun.spot.util.Utils;
 
+// import java.util.Observer;
+
 /**
  * Thread to send Thermo data
  */
@@ -27,6 +29,7 @@ public class TSendingHeat implements Runnable
         try
         {
             thermoMonitor = MonitorFactory.createThermoMonitor();
+            // thermoMonitor.addObserver(this);
             thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());
         }
         catch(Exception e)
@@ -49,4 +52,9 @@ public class TSendingHeat implements Runnable
             Utils.sleep(SAMPLE_RATE);
         }
     }
+
+    // public void update(Object o, Object arg)
+    // {
+    //     thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
+    // }
 }

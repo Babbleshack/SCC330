@@ -8,8 +8,11 @@ package org.sunspotworld;
 
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.ISendingRadio;
-import org.sunspotworld.spotMonitors.ILightMonitor;
-import org.sunspotworld.spotMonitors.IThermoMonitor;
+
+import org.sunspotworld.spotMonitors.LightMonitor;
+import org.sunspotworld.spotMonitors.ThermoMonitor;
+import org.sunspotworld.spotMonitors.AccelMonitor;
+
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import com.sun.spot.peripheral.radio.RadioFactory;
 import com.sun.spot.resources.Resources;
@@ -48,11 +51,32 @@ public class SunSpotApplication extends MIDlet implements Runnable {
 
     }
 
+    // public startSensor(int port) 
+    // {
+    //     switch(port) {
+    //         case LightMonitor.getStaticPort():
+    //             lightThread = new Thread(new TSendingLight(),"lightService");
+    //             break;
+    //         case HeatMonitor.getStaticPort():
+    //             heatThread = new Thread(new TSendingHeat(),"heatService");
+    //             break;
+    //         case AccelMonitor.getStaticPort():
+    //             accelThread = new Thread(new TSendingAccel(),"accelService"); 
+    //             break;
+    //     }
+    // }
+
     /**
      * Initiate threads for communicating with the basestation
      */
     public void startPolling() throws SecurityException
     {
+
+        // int[] ports = receivingRadio.getPorts(); 
+
+        // for (int i = 0;i < ports.length; i++) 
+        //     observer.startSensor(ports[i]);
+
         heatThread = new Thread(new TSendingHeat(),"heatService");
         lightThread = new Thread(new TSendingLight(),"lightService");
         accelThread = new Thread(new TSendingAccel(),"accelService");

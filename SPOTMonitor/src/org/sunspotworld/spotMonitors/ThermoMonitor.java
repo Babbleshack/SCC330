@@ -17,12 +17,13 @@ import org.sunspotworld.spotRadios.SunspotPort;
 public class ThermoMonitor implements IThermoMonitor
 {
     private SunspotPort port;
+    private static final int portNum = 110;
     private ITemperatureInput thermo;
 
     public ThermoMonitor()
     {
         try {
-            this.port = new SunspotPort(110);
+            this.port = new SunspotPort(portNum);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
@@ -32,6 +33,10 @@ public class ThermoMonitor implements IThermoMonitor
 
     public SunspotPort getPort() {
         return this.port;
+    }
+
+    public static int getStaticPort() {
+        return portNum;
     }
 
     public double getCelsiusTemp() {

@@ -15,12 +15,13 @@ import org.sunspotworld.spotRadios.SunspotPort;
 public class LightMonitor implements ILightMonitor
 {
     private SunspotPort port;
+    private static final int portNum = 120;
     private ILightSensor lightSensor; //Light Sensor
 
     public LightMonitor()
     {
         try {
-            this.port = new SunspotPort(120);
+            this.port = new SunspotPort(portNum);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
@@ -30,6 +31,10 @@ public class LightMonitor implements ILightMonitor
 
     public SunspotPort getPort() {
         return this.port;
+    }
+
+    public static int getStaticPort() {
+        return portNum;
     }
 
     public int getLightIntensity()
