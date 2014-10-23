@@ -25,9 +25,16 @@ public interface ISendingRadio
 	 */
 	public void sendHeat(double value);
         
-        /**
+    /**
 	 * Builds a datagram that sends accel data to the basestation
 	 * @param  value the accel value to send to the basestation
 	 */
 	public void sendAccel(double value);
+
+	/**
+	 * Method that send a "discover me" message to the base station
+	 * and blocks until ports are received in response from the 
+	 * basestation
+	 */
+	public int[] discoverMe();
 }

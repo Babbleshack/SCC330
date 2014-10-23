@@ -59,4 +59,10 @@ public class ReceivingRadio implements IReceivingRadio
         radioConn.receive(datagram); 
         return datagram.readDouble(); 
     }
+
+    public String receiveDiscoverMe() throws IOException
+    {
+        radioConn.receive(datagram);
+        return datagram.getAddress();
+    }
 }

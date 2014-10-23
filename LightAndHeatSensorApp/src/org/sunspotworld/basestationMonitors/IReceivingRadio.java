@@ -36,4 +36,11 @@ public interface IReceivingRadio
 	 * @return heat data
 	 */
 	public double receiveAccel() throws IOException;
+
+	/**
+	 * Gets the latest discoverMe requests and returns the 
+	 * address of the spot that has sent the datagram
+	 * @return String address
+	 */
+	public String receiveDiscoverMe() throws IOException;
 }

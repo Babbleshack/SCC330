@@ -39,7 +39,7 @@ public class SendingRadio implements ISendingRadio
             radioConn.send(datagram);
             System.out.println("Light value " + value + " sent...");
         } catch (Exception e) {
-            System.err.println("IOException occured while sending Light: " + e);
+            System.err.println("IOException occured while sending light: " + e);
         }
     }
 
@@ -63,7 +63,23 @@ public class SendingRadio implements ISendingRadio
             radioConn.send(datagram);
             System.out.println("Accel value " + value + " sent...");
         } catch (IOException e) {
-            System.err.println("IOException occured while sending thermo: " + e);
+            System.err.println("IOException occured while sending accel: " + e);
         }
+    }
+
+    public int[] discoverMe() {
+        try {
+            datagram.reset();
+            radioConn.send(datagram);
+            System.out.println("DiscoverME request sent..."); 
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending discovery request: " + e);
+        } 
+
+        Utils.sleep(5000);
+
+        int[] r = {110, 120};
+
+        return r;
     }
 }
