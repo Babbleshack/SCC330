@@ -11,14 +11,13 @@ import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.Patterns.Observable;
 /**
  * Define a Light Monitor
- * @author babbleshack
+ * @author Dominic Lindsay
  */
 public class LightMonitor extends Observable implements ILightMonitor
 {
     private SunspotPort port;
     private static final int portNum = 120;
     private ILightSensor lightSensor; //Light Sensor
-
     public LightMonitor()
     {
         try {
@@ -26,18 +25,14 @@ public class LightMonitor extends Observable implements ILightMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
-
         this.lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
     }
-
     public SunspotPort getPort() {
         return this.port;
     }
-
     public static int getStaticPort() {
         return portNum;
     }
-
     public int getLightIntensity()
     {
         try
@@ -48,5 +43,4 @@ public class LightMonitor extends Observable implements ILightMonitor
         }
         return -9999;
     }
-
 }
