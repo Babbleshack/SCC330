@@ -9,6 +9,7 @@ import org.sunspotworld.basestationMonitors.ISendingRadio;
 import com.sun.spot.resources.Resources;
 import java.io.IOException;
 
+import org.sunspotworld.Collections.ArrayList;
 import com.sun.spot.util.Utils;
 import com.sun.spot.io.j2me.radiogram.*;
 
@@ -34,18 +35,18 @@ public class SendingRadio implements ISendingRadio
         datagram = radioConn.newDatagram(50); 
     }
 
-    public void sendDiscoverReponse(String spot_address, int[] ports, int[] thresholds) 
+    public void sendDiscoverReponse(String spot_address, ArrayList portsThresholds) 
     {
         try {
             datagram.reset();
             // write spot_address first
             datagram.writeUTF(spot_address);
-            datagram.writeInt(ports.length + thresholds.length);
+            datagram.writeInt(portsThresholds.size());
 
             // now write ports + thresh
-            for (int i = 0; i < ports.length; i++) {
-                datagram.writeInt(ports[i]);
-                datagram.writeInt(thresholds[i]);
+            for (int i = 0; i < portsThresholds.size(); i++) {
+                datagram.writeInt((Integer)portsThresholds.get(i));
+                datagram.writeInt((Integer)portsThresholds.get(i));
             }
             
             radioConn.send(datagram);

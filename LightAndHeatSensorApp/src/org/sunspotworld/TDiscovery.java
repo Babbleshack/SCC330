@@ -13,6 +13,7 @@ import org.sunspotworld.basestationMonitors.IThermoMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
+import org.sunspotworld.Collections.ArrayList;
 
 import org.sunspotworld.DB.DatabaseConnectionFactory;
 import org.sunspotworld.DB.MySQLConnectionManager;
@@ -75,11 +76,11 @@ public class TDiscovery implements Runnable
                 }
 
                 // 2. Get all jobs + sensors + sensor ports attached to this SPOT
-                int[] ports = {110, 120, 130}; 
-                int[] thresholds = {30, 40, -1};
+                
+                ArrayList portThresholds = queryManager.getSensorPortsJobThresholdsFromSpotAddress(spot_address);
 
                 // 3. Send list of ports back to SPOT 
-                responseRadio.sendDiscoverReponse(spot_address, ports, thresholds);
+                responseRadio.sendDiscoverReponse(spot_address, portThresholds);
             }
             catch (IOException io)
             {

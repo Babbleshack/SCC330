@@ -164,10 +164,61 @@ public class QueryManager implements IQueryManager
     }
 
     /**
-     * Returns all job_ids for a given a spot address
+     * Returns all sensor ports for a given a spot address
      */
-    public ArrayList getJobIdsFromSpotAddressReadingField(String spot_address) {
-        String query = "SELECT Job.id "
+    public ArrayList getSensorPortsJobThresholdsFromSpotAddress(String spot_address) {
+        String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold` "
+         + "FROM Job "
+         + "LEFT JOIN Sensor "
+         + "ON Sensor.id = Job.sensor_id "
+         + "LEFT JOIN Object "
+         + "ON Object.id = Job.object_id "
+         + "LEFT JOIN Spot "
+         + "ON Spot.id = Object.spot_id "
+         + "WHERE Spot.spot_address = ? ";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(query);
+
+            record.setString(1, spot_address);
+
+            /**
+             * Access ResultSet for job_id
+             */
+            ResultSet result = record.executeQuery();
+
+            /**
+             * Return result
+             */
+            ArrayList output_array = new ArrayList();
+
+            while (result.next()) {
+                output_array.add(result.getInt("Sensor.port_number"));
+                output_array.add(result.getInt("Job.threshold"));
+                System.out.println("Sensor port " + result.getInt("Sensor.port_number") + " threshold: " + result.getInt("Job.threshold"));
+            }
+
+            if(output_array.size() == 0) 
+                System.out.println("No results to get Sensor port number ");
+                
+            return output_array;
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getJobId: " + e);
+                return new ArrayList();
+        }
+    }
+
+    /**
+     * Returns all sensor thresholds for a given a spot address
+     */
+    public ArrayList getSensorThresholdsFromSpotAddress(String spot_address) {
+        String query = "SELECT Job.threshold "
          + "FROM Job "
          + "LEFT JOIN Sensor "
          + "ON Sensor.id = Job.sensor_id "
@@ -206,56 +257,6 @@ public class QueryManager implements IQueryManager
                 
             return output_array;
                 
-        } catch (SQLException e) {
-                System.err.println("SQL Exception while preparing/Executing "
-                + "getJobId: " + e);
-                return new ArrayList();
-        }
-    }
-
-        /**
-     * Returns all job_ids for a given a spot address
-     */
-    public ArrayList getSensorPortsFromSpotAddressReadingField(String spot_address) {
-        String query = "Sensor.port_number "
-         + "FROM Job "
-         + "LEFT JOIN Sensor "
-         + "ON Sensor.id = Job.sensor_id "
-         + "LEFT JOIN Object "
-         + "ON Object.id = Job.object_id "
-         + "LEFT JOIN Spot "
-         + "ON Spot.id = Object.spot_id "
-         + "WHERE Spot.spot_address = ? ";
-
-        try {
-            /**
-             * Execute select query
-             */
-            PreparedStatement record =
-                connection.getConnection().prepareStatement(query);
-
-            record.setString(1, spot_address);
-
-            /**
-             * Access ResultSet for job_id
-             */
-            ResultSet result = record.executeQuery();
-
-            /**
-             * Return result
-             */
-            ArrayList output_array = new ArrayList();
-
-            while (result.next()) {
-                output_array.add(result.getInt("Sensor.port_number"));
-                System.out.println("Sensor port: " + result.getInt("Sensor.port_number"));
-            }
-
-            if(output_array.size() == 0) 
-                System.out.println("No results to get Sensor port number ");
-                
-            return output_array;
-
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getJobId: " + e);

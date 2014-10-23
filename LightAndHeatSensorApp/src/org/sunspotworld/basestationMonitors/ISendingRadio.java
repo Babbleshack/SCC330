@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package org.sunspotworld.basestationMonitors;
-
+import org.sunspotworld.Collections.ArrayList;
 import java.io.IOException;
 
 /**
@@ -18,5 +18,5 @@ public interface ISendingRadio
 	 * ports so that the given spot_address sun SPOT knows 
 	 * what its responsibilities are
 	 */
-	public void sendDiscoverReponse(String spot_address, int[] ports, int[] thresholds);
+	public void sendDiscoverReponse(String spot_address, ArrayList portsThresholds);
 }

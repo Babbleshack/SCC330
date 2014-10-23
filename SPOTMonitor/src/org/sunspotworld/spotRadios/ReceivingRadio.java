@@ -34,6 +34,10 @@ public class ReceivingRadio implements IReceivingRadio
         System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
     }
 
+    /**
+     * Receives the discovey response and returns an array of integers, 
+     * containing the port numbers and sensor thresholds
+     */
     public int[] receiveDiscoverResponse() throws IOException
     {
         String spot_address = "";
@@ -43,9 +47,13 @@ public class ReceivingRadio implements IReceivingRadio
             System.out.println("Sun SPOT address " + spotAddress + " has received a discover response with the recipient of " + spot_address);
         }
 
+        int datagramLength = datagram.readInt(); 
+        int[] portsThresholds = new int[datagramLength];
         
-        
-        int[] portsThresholds = {110, 30, 120, 40, 130, -1};
+        for (int i = 0;i < datagram.readInt(); i += 2) {
+            portsThresholds[i] = datagram.readInt();    
+            portsThresholds[i+1] = datagram.readInt();  
+        }
 
         return portsThresholds;
     }
