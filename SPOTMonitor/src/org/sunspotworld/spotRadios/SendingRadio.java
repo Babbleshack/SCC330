@@ -67,7 +67,7 @@ public class SendingRadio implements ISendingRadio
         }
     }
 
-    public int[] discoverMe() {
+    public void discoverMe() {
         try {
             datagram.reset();
             radioConn.send(datagram);
@@ -75,11 +75,5 @@ public class SendingRadio implements ISendingRadio
         } catch (IOException e) {
             System.err.println("IOException occured while sending discovery request: " + e);
         } 
-
-        Utils.sleep(5000);
-
-        int[] r = {110, 120};
-
-        return r;
     }
 }

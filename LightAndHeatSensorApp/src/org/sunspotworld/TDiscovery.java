@@ -8,6 +8,7 @@ package org.sunspotworld;
 
 import java.io.IOException;
 import org.sunspotworld.basestationMonitors.IReceivingRadio;
+import org.sunspotworld.basestationMonitors.ISendingRadio;
 import org.sunspotworld.basestationMonitors.IThermoMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
@@ -28,6 +29,7 @@ public class TDiscovery implements Runnable
 
     // Init receiving radio
     IReceivingRadio discoveryRadio;
+    ISendingRadio responseRadio; 
 
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
@@ -36,6 +38,7 @@ public class TDiscovery implements Runnable
         try
         {
             discoveryRadio = RadiosFactory.createReceivingRadio(new SunspotPort(90));
+            responseRadio = RadiosFactory.createSendingRadio(new SunspotPort(90));
             queryManager = new QueryManager();
         }
         catch(Exception e)
@@ -64,7 +67,7 @@ public class TDiscovery implements Runnable
                 // Query to see if this SPOT exists
                 if(!queryManager.isSpotExists(spot_address)) {
                     System.out.println("Spot does not exist");
-                    
+
                     // If spot does not exist: insert spot, with no user id
                     queryManager.createSpotRecord(spot_address, System.currentTimeMillis());
                 } else {
@@ -72,7 +75,11 @@ public class TDiscovery implements Runnable
                 }
 
                 // 2. Get all jobs + sensors + sensor ports attached to this SPOT
+                int[] ports = {110, 120, 130}; 
+                int[] thresholds = {30, 40, -1};
+
                 // 3. Send list of ports back to SPOT 
+                responseRadio.sendDiscoverReponse(spot_address, ports, thresholds);
             }
             catch (IOException io)
             {

@@ -33,4 +33,25 @@ public class SendingRadio implements ISendingRadio
 		System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
         datagram = radioConn.newDatagram(50); 
     }
+
+    public void sendDiscoverReponse(String spot_address, int[] ports, int[] thresholds) 
+    {
+        try {
+            datagram.reset();
+            // write spot_address first
+            datagram.writeUTF(spot_address);
+            datagram.writeInt(ports.length + thresholds.length);
+
+            // now write ports + thresh
+            for (int i = 0; i < ports.length; i++) {
+                datagram.writeInt(ports[i]);
+                datagram.writeInt(thresholds[i]);
+            }
+            
+            radioConn.send(datagram);
+            System.out.println("Ports and thresholds send to  " + spot_address + "");
+        } catch (Exception e) {
+            System.err.println("IOException occured while sending ports: " + e);
+        }
+    }
 }

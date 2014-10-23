@@ -13,5 +13,10 @@ import java.io.IOException;
  */
 public interface ISendingRadio 
 {
-	
+	/**
+	 * Method that broadcasts a spot_address and a list of
+	 * ports so that the given spot_address sun SPOT knows 
+	 * what its responsibilities are
+	 */
+	public void sendDiscoverReponse(String spot_address, int[] ports, int[] thresholds);
 }

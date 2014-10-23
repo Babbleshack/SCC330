@@ -33,4 +33,18 @@ public class ReceivingRadio implements IReceivingRadio
         datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
         System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
     }
+
+    public int[] receiveDiscoverResponse() throws IOException
+    {
+        String spot_address = "";
+        while(!spot_address.equals(spotAddress)) {
+            radioConn.receive(datagram); 
+            spot_address = datagram.readUTF();
+            System.out.println("Sun SPOT address " + spotAddress + " has received a discover response with the recipient of " + spot_address);
+        }
+        
+        int[] portsThresholds = {110, 30, 120, 40, 130, -1};
+
+        return portsThresholds;
+    }
 }

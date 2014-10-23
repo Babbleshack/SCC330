@@ -32,9 +32,7 @@ public interface ISendingRadio
 	public void sendAccel(double value);
 
 	/**
-	 * Method that send a "discover me" message to the base station
-	 * and blocks until ports are received in response from the 
-	 * basestation
+	 * Method that sends a "discover me" message to the base station
 	 */
-	public int[] discoverMe();
+	public void discoverMe();
 }

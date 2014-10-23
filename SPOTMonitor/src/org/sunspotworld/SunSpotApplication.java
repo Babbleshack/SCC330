@@ -51,6 +51,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread switchThread = null;
 
     private ISendingRadio discoverMeRadio;
+    private IReceivingRadio discoverRequestRadio;
 
     public SunSpotApplication() {
 
@@ -78,16 +79,24 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     {
         try {
             discoverMeRadio = RadiosFactory.createSendingRadio(new SunspotPort(90));
+            discoverRequestRadio = RadiosFactory.createReceivingRadio(new SunspotPort(90));
         } catch (PortOutOfRangeException p) {
             System.out.println("Discover me radio port out of range: " + p);
         } catch (IOException io) {
             System.out.println("Exception while creating discover me radio: " + io);
         }
 
-        int[] ports = discoverMeRadio.discoverMe(); 
+        discoverMeRadio.discoverMe(); 
 
-        for (int i = 0;i < ports.length; i++) 
-            System.out.println("Port " + i + ":" + ports[i]);
+        int[] portsThresholds = null;
+        try {
+            portsThresholds = discoverRequestRadio.receiveDiscoverResponse(); 
+        } catch (IOException io) {
+            System.out.println("Exception while receiving discover response: " + io);
+        }
+
+        for (int i = 0;i < portsThresholds.length; i += 2) 
+            System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
 
         heatThread = new Thread(new TSendingHeat(),"heatService");
         lightThread = new Thread(new TSendingLight(),"lightService");

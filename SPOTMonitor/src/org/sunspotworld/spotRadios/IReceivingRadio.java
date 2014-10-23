@@ -12,5 +12,10 @@ import java.io.IOException;
  */
 public interface IReceivingRadio 
 {
-	
+	/**
+	 * Gets the latest discoverRequest requests and returns the 
+	 * address of the spot that has sent the datagram
+	 * @return String address
+	 */
+	public int[] receiveDiscoverResponse() throws IOException;
 }
