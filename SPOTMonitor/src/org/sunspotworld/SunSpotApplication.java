@@ -15,6 +15,7 @@ import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotMonitors.LightMonitor;
 import org.sunspotworld.spotMonitors.ThermoMonitor;
 import org.sunspotworld.spotMonitors.AccelMonitor;
+import org.sunspotworld.spotMonitors.MotionMonitor;
 
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import com.sun.spot.peripheral.radio.RadioFactory;
@@ -49,6 +50,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread lightThread = null;
     private Thread accelThread = null;
     private Thread switchThread = null;
+    private Thread motionThread = null;
 
     private static final int MOCK_HEAT_THRESHOLD = 20;
     private static final int MOCK_LIGHT_THRESHOLD = 0;
@@ -96,6 +98,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
         heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
         lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
         accelThread = new Thread(new TSendingAccel(),"accelService");
+        //motionThread = new Thread(new TSendingMotion(), "motionService");
 
         try {
             switchThread = new Thread(new TDemandSwitch(20),"switchService");
