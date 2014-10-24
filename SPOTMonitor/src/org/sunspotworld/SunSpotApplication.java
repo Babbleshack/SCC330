@@ -101,8 +101,10 @@ public class SunSpotApplication extends MIDlet implements Runnable {
             System.out.println("Exception while receiving discover response: " + io);
         }
 
-        for (int i = 0;i < portsThresholds.length; i += 2) 
-            System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
+        if(portsThresholds != null) {
+            for (int i = 0;i < portsThresholds.length; i += 2) 
+                System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
+        }
 
         heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
         lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
