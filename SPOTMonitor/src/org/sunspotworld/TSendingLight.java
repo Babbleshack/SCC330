@@ -3,17 +3,20 @@ package org.sunspotworld;
 import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotMonitors.ILightMonitor;
+import org.sunspotworld.spotMonitors.LightMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
+import org.sunspotworld.Patterns.Observer;
+import org.sunspotworld.Patterns.Observable;
 import com.sun.spot.util.Utils;
 
 /**
  * Thread to send Light data
  */
-public class TSendingLight implements Runnable
+public class TSendingLight implements Runnable, Observer
 {
     private ILightMonitor lightMonitor;
-    private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
+    private static final int SAMPLE_RATE = 30 * 1000; //60 seconds
 
     // Init sending radio
     ISendingRadio lightSendingRadio;
@@ -22,12 +25,13 @@ public class TSendingLight implements Runnable
      * Instantiates the monitor and sending radio required
      * for sending light data to the base station
      */
-    public TSendingLight()
+    public TSendingLight(int threshold)
     {
         try
         {
-            lightMonitor = MonitorFactory.createLightMonitor();
+            lightMonitor = MonitorFactory.createLightMonitor(threshold);
             lightSendingRadio = RadiosFactory.createSendingRadio(lightMonitor.getPort());
+            ((LightMonitor)lightMonitor).addObserver((Object)this);
         }
         catch(Exception e)
         {
@@ -48,5 +52,19 @@ public class TSendingLight implements Runnable
             lightSendingRadio.sendLight(lightMonitor.getLightIntensity());
             Utils.sleep(SAMPLE_RATE);
         }
+    }
+     /**
+     * Message received from monitor
+     * pass to radio
+     */
+    public void update(Observable o, Object arg)
+    {
+        System.out.println("Received Notification" + ((ILightMonitor)o).getLightIntensity());
+        lightSendingRadio.sendLight(((ILightMonitor)o).getLightIntensity());
+    }
+    public void update(Observable o)
+    {
+        System.out.println(" UPDATE " + ((ILightMonitor)o).getLightIntensity());
+        lightSendingRadio.sendLight(((ILightMonitor)o).getLightIntensity());
     }
 }

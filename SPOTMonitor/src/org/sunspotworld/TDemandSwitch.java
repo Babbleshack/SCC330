@@ -44,7 +44,7 @@ public class TDemandSwitch implements Runnable, ISwitchListener
         try
         {
             thermoMonitor = MonitorFactory.createThermoMonitor(DEFAULT_THRESHOLD);
-            lightMonitor = MonitorFactory.createLightMonitor();
+            lightMonitor = MonitorFactory.createLightMonitor(DEFAULT_THRESHOLD);
             accelMonitor = MonitorFactory.createAccelMonitor();
 
             thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());

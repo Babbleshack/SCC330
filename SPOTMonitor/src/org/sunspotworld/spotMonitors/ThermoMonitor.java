@@ -12,21 +12,22 @@ import com.sun.spot.resources.transducers.ITemperatureInput;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.Patterns.Observable;
-import java.io.IOException;import com.sun.spot.resources.transducers.SensorEvent;
+import java.io.IOException;
+import com.sun.spot.resources.transducers.SensorEvent;
 
 
 
 public class ThermoMonitor extends Observable implements IThermoMonitor
 {
-    private static final int SECOND = 1000; 
-    private static final int SAMPLE_RATE = SECOND;
     private SunspotPort port;
     private static final int portNum = 110;
     private ITemperatureInput thermo;
     private final int threshold; 
     //define condition and callback
-    IConditionListener thermoCheck;
-    Condition hitThreshold;
+    private IConditionListener thermoCheck;
+    private Condition hitThreshold;
+    private static final int SECOND = 1000; 
+    private static final int SAMPLE_RATE = SECOND;
     public ThermoMonitor(int threshold)
     {
         this.thermo = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
@@ -47,8 +48,6 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
-                System.out.println("Thermo Condition Met");
-                System.out.println("Temperature: " + ThermoMonitor.this.getCelsiusTemp());
                 ThermoMonitor.this.notifyObservers((Object)new Double(ThermoMonitor.this.getCelsiusTemp()));
             }
         };
