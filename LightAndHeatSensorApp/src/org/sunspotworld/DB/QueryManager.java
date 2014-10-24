@@ -265,6 +265,36 @@ public class QueryManager implements IQueryManager
     }
 
     /**
+     * Insert motion Data record to db
+     * @param motion int
+     * @param zone_id int
+     * @param time long
+     */
+    public void createMotionRecord(int motion, String spot_address, long time) {
+        String insertMotionRecord = "INSERT INTO Motion"
+                + "(motion, spot_address, zone_id, job_id, created_at)"
+                + ("VALUES (?,?,?,?,?)");
+        try {
+            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "motion");
+            if(job_id > 0) {
+                PreparedStatement insert =
+                    connection.getConnection().prepareStatement(insertMotionRecord);
+                insert.setInt(1, motion);
+                insert.setString(2, spot_address);
+                insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+                insert.setInt(4, job_id);
+                insert.setTimestamp(5, new Timestamp(time));
+                insert.executeUpdate();
+            } else {
+                System.out.println("No job_id for this motion reading!");
+            }
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "createMotionRecord: " + e);
+        }
+    }
+
+    /**
      * Insert light Data record to db
      * @param light double
      * @param zone_id int
