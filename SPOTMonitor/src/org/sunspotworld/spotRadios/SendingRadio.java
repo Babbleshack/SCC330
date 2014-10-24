@@ -66,6 +66,19 @@ public class SendingRadio implements ISendingRadio
             System.err.println("IOException occured while sending accel: " + e);
         }
     }
+    public void sendMotionTime(long value)
+    {
+        try {
+            datagram.reset();
+            datagram.writeLong(value);
+            radioConn.send(datagram);
+            System.out.println("Motion time value " + value + " sent...");
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending Motion Time: " + e);
+        
+        }
+    }
+
 
     public void discoverMe() {
         try {

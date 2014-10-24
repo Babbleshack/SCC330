@@ -3,14 +3,17 @@ package org.sunspotworld;
 import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotMonitors.IAccelMonitor;
+import org.sunspotworld.spotMonitors.AccelMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
+import org.sunspotworld.Patterns.Observer;
+import org.sunspotworld.Patterns.Observable;
 import com.sun.spot.util.Utils;
 
 /**
  * Thread to send Acceleration data
  */
-public class TSendingAccel implements Runnable
+public class TSendingAccel implements Runnable, Observer
 {
     private IAccelMonitor accelMonitor;
     private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
@@ -28,6 +31,7 @@ public class TSendingAccel implements Runnable
         {
             accelMonitor = MonitorFactory.createAccelMonitor();
             accelSendingRadio = RadiosFactory.createSendingRadio(accelMonitor.getPort());
+            ((AccelMonitor)accelMonitor).addObserver((Object)this);
         }
         catch(Exception e)
         {
@@ -48,5 +52,17 @@ public class TSendingAccel implements Runnable
             accelSendingRadio.sendAccel(accelMonitor.getAccel());
             Utils.sleep(SAMPLE_RATE);
         }
+    }
+     /**
+     * Message received from monitor
+     * pass to radio
+     */
+    public void update(Observable o, Object arg)
+    {
+        accelSendingRadio.sendAccel(((IAccelMonitor)o).getAccel());
+    }
+    public void update(Observable o)
+    {
+        accelSendingRadio.sendAccel(((IAccelMonitor)o).getAccel());
     }
 }

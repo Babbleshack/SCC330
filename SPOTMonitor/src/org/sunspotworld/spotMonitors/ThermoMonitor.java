@@ -9,26 +9,60 @@ import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.Condition;
 import com.sun.spot.resources.transducers.IConditionListener;
 import com.sun.spot.resources.transducers.ITemperatureInput;
-import com.sun.spot.resources.transducers.SensorEvent;
-import java.io.IOException;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
+import org.sunspotworld.Patterns.Observable;
+import java.io.IOException;
+import com.sun.spot.resources.transducers.SensorEvent;
 
-public class ThermoMonitor implements IThermoMonitor
+
+
+public class ThermoMonitor extends Observable implements IThermoMonitor
 {
     private SunspotPort port;
     private static final int portNum = 110;
     private ITemperatureInput thermo;
-
-    public ThermoMonitor()
+    private final int threshold; 
+    //define condition and callback
+    private IConditionListener thermoCheck;
+    private Condition conditionMet;
+    private static final int SECOND = 1000; 
+    private static final int SAMPLE_RATE = SECOND;
+    public ThermoMonitor(int threshold)
     {
+        this.thermo = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
         try {
             this.port = new SunspotPort(portNum);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
-
-        this.thermo = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
+        this.threshold = threshold;
+        this.prepareConditions();
+    }
+    /**
+     * innitializes conditions and starts them
+     */
+    private void prepareConditions()
+    {
+        thermoCheck = new IConditionListener()
+        {
+            public void conditionMet(SensorEvent evt, Condition condition)
+            {
+                ThermoMonitor.this.hasChanged();
+                ThermoMonitor.this.notifyObservers((Object)new Double(ThermoMonitor.this.getCelsiusTemp()));
+            }
+        };
+        //innitialise the checking condition
+        conditionMet = new Condition(thermo, thermoCheck, SAMPLE_RATE)
+        {
+          public boolean isMet(SensorEvent evt)
+          {
+            if(ThermoMonitor.this.getCelsiusTemp() >= threshold)
+                return true;
+            return false;
+          }  
+        };
+        conditionMet.start();    
     }
 
     public SunspotPort getPort() {

@@ -3,8 +3,11 @@ package org.sunspotworld;
 import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotMonitors.IThermoMonitor;
+import org.sunspotworld.spotMonitors.ThermoMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
+import org.sunspotworld.Patterns.Observer;
+import org.sunspotworld.Patterns.Observable;
 import com.sun.spot.util.Utils;
 
 // import java.util.Observer;
@@ -12,7 +15,7 @@ import com.sun.spot.util.Utils;
 /**
  * Thread to send Thermo data
  */
-public class TSendingHeat implements Runnable
+public class TSendingHeat implements Runnable, Observer
 {
     private IThermoMonitor thermoMonitor;
     private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
@@ -24,13 +27,13 @@ public class TSendingHeat implements Runnable
      * Instantiates the monitor and sending radio required
      * for sending thermo data to the base station
      */
-    public TSendingHeat()
+    public TSendingHeat(int threshold)
     {
         try
         {
-            thermoMonitor = MonitorFactory.createThermoMonitor();
-            // thermoMonitor.addObserver(this);
+            thermoMonitor = MonitorFactory.createThermoMonitor(threshold);
             thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());
+            ((ThermoMonitor)thermoMonitor).addObserver((Object)this);
         }
         catch(Exception e)
         {
@@ -52,9 +55,16 @@ public class TSendingHeat implements Runnable
             Utils.sleep(SAMPLE_RATE);
         }
     }
-
-    // public void update(Object o, Object arg)
-    // {
-    //     thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
-    // }
+    /**
+     * Message received from monitor
+     * pass to radio
+     */
+    public void update(Observable o, Object arg)
+    {
+        thermoSendingRadio.sendHeat(((IThermoMonitor)o).getCelsiusTemp());
+    }
+    public void update(Observable o)
+    {
+        thermoSendingRadio.sendHeat(((IThermoMonitor)o).getCelsiusTemp());
+    }
 }
