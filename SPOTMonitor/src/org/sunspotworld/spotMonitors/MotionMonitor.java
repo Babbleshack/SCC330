@@ -47,7 +47,7 @@ public class MotionMonitor extends Observable implements IMotionMonitor
     	toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
 		ITriColorLEDArray leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
 		led = leds.getLED(0);
-		led.setOn();
+		//led.setOn();
 		demo = EDemoBoard.getInstance();
 		this.irSensor = irSensor = demo.getScalarInputs()[EDemoBoard.A0];
         try {
@@ -77,6 +77,7 @@ public class MotionMonitor extends Observable implements IMotionMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
+            System.out.println("CHECK MOTION");
             if(MotionMonitor.this.getSensorValue() == HIGH)
                 return true;
             return false;
@@ -121,6 +122,10 @@ public class MotionMonitor extends Observable implements IMotionMonitor
     public long getMotionTime()
     {
     	return this.lastMotion; 
+    }
+    public SunspotPort getPort()
+    {
+        return this.port;
     }
 
 }

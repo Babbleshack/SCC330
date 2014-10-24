@@ -2,7 +2,7 @@ package org.sunspotworld;
 
 import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
-import org.sunspotworld.spotMonitors.IMotionMoniter;
+import org.sunspotworld.spotMonitors.IMotionMonitor;
 import org.sunspotworld.spotMonitors.MotionMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
@@ -11,11 +11,11 @@ import org.sunspotworld.Patterns.Observable;
 import com.sun.spot.util.Utils;
 
 /**
- * Thread to send Acceleration data
+ * Thread to send Motion data
  */
 public class TSendingMotion implements Runnable, Observer
 {
-    private IMotionMoniter MotionMonitor;
+    private IMotionMonitor MotionMonitor;
     private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
 
     // Init sending radio
@@ -23,13 +23,13 @@ public class TSendingMotion implements Runnable, Observer
 
     /**
      * Instantiates the monitor and sending radio required
-     * for sending accel data to the base station
+     * for sending motion data to the base station
      */
     public TSendingMotion()
     {
         try
         {
-            MotionMonitor = MonitorFactory.createAccelMonitor();
+            MotionMonitor = MonitorFactory.createMotionMonitor();
             motionSendingRadio = RadiosFactory.createSendingRadio(MotionMonitor.getPort());
             ((MotionMonitor)MotionMonitor).addObserver((Object)this);
         }
@@ -49,7 +49,7 @@ public class TSendingMotion implements Runnable, Observer
         while (true)
         {
             // Send light reading
-            motionSendingRadio.sendMotion(MotionMonitor.getSensorValue());
+            motionSendingRadio.sendMotionTime(MotionMonitor.getMotionTime());
             Utils.sleep(SAMPLE_RATE);
         }
     }
@@ -59,10 +59,10 @@ public class TSendingMotion implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
-        motionSendingRadio.sendMotionTime(((IMotionMoniter)o).getMotionTime());
+        motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getMotionTime());
     }
     public void update(Observable o)
     {
-        motionSendingRadio.sendMotionTime(((IMotionMoniter)o).getMotionTime());
+        motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getMotionTime());
     }
 }

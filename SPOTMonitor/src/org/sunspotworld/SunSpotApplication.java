@@ -98,7 +98,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
         heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
         lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
         accelThread = new Thread(new TSendingAccel(),"accelService");
-        //motionThread = new Thread(new TSendingMotion(), "motionService");
+        motionThread = new Thread(new TSendingMotion(), "motionService");
 
         try {
             switchThread = new Thread(new TDemandSwitch(20),"switchService");
@@ -110,6 +110,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
         lightThread.start();
         accelThread.start();
         switchThread.start();
+        motionThread.start();
     }
 
     public void run()

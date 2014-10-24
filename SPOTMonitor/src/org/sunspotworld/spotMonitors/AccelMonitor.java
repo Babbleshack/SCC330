@@ -16,8 +16,8 @@ public class AccelMonitor extends Observable implements IAccelMonitor
     private static final int portNum = 130;
     private IAccelerometer3D accelSensor; //Accelerometer Sensor
     //threshold stuff
-    private static final double MIN_G = 0.9;
-    private static final double MAX_G = 1.1;
+    private static final double MIN_G = 0.8;
+    private static final double MAX_G = 1.2;
     private IConditionListener accelCheck;
     private Condition conditionMet;
     private static final int SECOND = 1000; 
