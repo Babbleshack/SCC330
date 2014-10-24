@@ -51,14 +51,14 @@ public class TReceivingMotion implements Runnable
             try
             {
                 // Read accel
-                long  motionValue   = motionReceivingRadio.receiveAccel();
+                long  motionValue = motionReceivingRadio.receiveMotion();
 
                 // Print out accel
-                System.out.println("Message from " + motionReceivingRadio.getReceivedAddress() + " - " + "acceleration: " + accelValue);
+                System.out.println("Message from " + motionReceivingRadio.getReceivedAddress() + " - " + "motion: " + motionValue);
 
                 try
                 {
-                    queryManager.createMotionRecord(accelValue, motionReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
+                    queryManager.createMotionRecord(1, motionReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
                 } catch (NullPointerException npe) {
                     System.out.println("MotionService: queryManager - NullPointerException");
                 }
