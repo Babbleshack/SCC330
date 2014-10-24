@@ -59,12 +59,10 @@ public class TSendingAccel implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
-        System.out.println("ACCELERATION UPDATE: " + ((IAccelMonitor)o).getAccel());
         accelSendingRadio.sendAccel(((IAccelMonitor)o).getAccel());
     }
     public void update(Observable o)
     {
-        System.out.println("ACCELERATION UPDATE: " + ((IAccelMonitor)o).getAccel());
         accelSendingRadio.sendAccel(((IAccelMonitor)o).getAccel());
     }
 }
