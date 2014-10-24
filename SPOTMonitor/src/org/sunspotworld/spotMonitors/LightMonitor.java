@@ -17,16 +17,53 @@ public class LightMonitor extends Observable implements ILightMonitor
 {
     private SunspotPort port;
     private static final int portNum = 120;
-    private ILightSensor lightSensor; //Light Sensor
-    public LightMonitor()
+    private final ILightSensor lightSensor; //Light Sensor
+    //threshold stuff
+    private final int threshold;
+    private IConditionListener lightCheck;
+    private Condition conditionMet;
+    private static final int SECOND = 1000; 
+    private static final int SAMPLE_RATE = 2 * SECOND;
+    public LightMonitor(int threshold)
     {
+        this.lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
         try {
             this.port = new SunspotPort(portNum);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
-        this.lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
+        this.prepareConditions();
+        this.threshold = threshold;
+        System.out.println("Threshold = " + this.threshold);
     }
+    /**
+     * innitializes conditions and starts them
+     */
+    private void prepareConditions()
+    {
+        lightCheck = new IConditionListener()
+        {
+            public void conditionMet(SensorEvent evt, Condition condition)
+            {
+                System.out.println("Light Condition Met");
+                System.out.println("Lumens: " + LightMonitor.this.getLightIntensity());
+                LightMonitor.this.notifyObservers((Object)new Double(LightMonitor.this.getLightIntensity()));
+            }
+        };
+        //innitialise the checking condition
+        conditionMet = new Condition(lightSensor, lightCheck, SAMPLE_RATE)
+        {
+          public boolean isMet(SensorEvent evt)
+          {
+            if(LightMonitor.this.getLightIntensity() >= threshold)
+                return true;
+            return false;
+          }  
+        };
+        conditionMet.start();    
+    }
+
+
     public SunspotPort getPort() {
         return this.port;
     }

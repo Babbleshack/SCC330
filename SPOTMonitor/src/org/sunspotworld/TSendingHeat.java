@@ -3,6 +3,7 @@ package org.sunspotworld;
 import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotMonitors.IThermoMonitor;
+import org.sunspotworld.spotMonitors.ThermoMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.Patterns.Observer;
@@ -31,8 +32,8 @@ public class TSendingHeat implements Runnable, Observer
         try
         {
             thermoMonitor = MonitorFactory.createThermoMonitor(threshold);
-            // thermoMonitor.addObserver(this);
             thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());
+            ((ThermoMonitor)thermoMonitor).addObserver((Object)this);
         }
         catch(Exception e)
         {
@@ -60,11 +61,10 @@ public class TSendingHeat implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
-        System.out.println("Received Notification" + ((IThermoMonitor)o).getCelsiusTemp());
-        //thermoSendingRadio.sendHeat();
+        thermoSendingRadio.sendHeat(((IThermoMonitor)o).getCelsiusTemp());
     }
     public void update(Observable o)
     {
-        System.out.println(((IThermoMonitor)o).getCelsiusTemp());
+        thermoSendingRadio.sendHeat(((IThermoMonitor)o).getCelsiusTemp());
     }
 }
