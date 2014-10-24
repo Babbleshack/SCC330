@@ -48,6 +48,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
+                ThermoMonitor.this.hasChanger();
                 ThermoMonitor.this.notifyObservers((Object)new Double(ThermoMonitor.this.getCelsiusTemp()));
             }
         };

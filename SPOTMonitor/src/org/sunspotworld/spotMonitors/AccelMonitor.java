@@ -41,6 +41,7 @@ public class AccelMonitor extends Observable implements IAccelMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
+                AccelMonitor.this.hasChanged();
                 AccelMonitor.this.notifyObservers((Object)new Double(AccelMonitor.this.getAccel()));
             }
         };

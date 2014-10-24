@@ -23,7 +23,7 @@ public class LightMonitor extends Observable implements ILightMonitor
     private IConditionListener lightCheck;
     private Condition conditionMet;
     private static final int SECOND = 1000; 
-    private static final int SAMPLE_RATE = 2 * SECOND;
+    private static final int SAMPLE_RATE = SECOND;
     public LightMonitor(int threshold)
     {
         this.lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
@@ -44,6 +44,7 @@ public class LightMonitor extends Observable implements ILightMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
+                LightMonitor.this.hasChanged();
                 LightMonitor.this.notifyObservers((Object)new Double(LightMonitor.this.getLightIntensity()));
             }
         };
