@@ -25,7 +25,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     private final int threshold; 
     //define condition and callback
     private IConditionListener thermoCheck;
-    private Condition hitThreshold;
+    private Condition conditionMet;
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
     public ThermoMonitor(int threshold)
@@ -52,7 +52,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
             }
         };
         //innitialise the checking condition
-        hitThreshold = new Condition(thermo, thermoCheck, SAMPLE_RATE)
+        conditionMet = new Condition(thermo, thermoCheck, SAMPLE_RATE)
         {
           public boolean isMet(SensorEvent evt)
           {
@@ -61,7 +61,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
             return false;
           }  
         };
-        hitThreshold.start();    
+        conditionMet.start();    
     }
 
     public SunspotPort getPort() {

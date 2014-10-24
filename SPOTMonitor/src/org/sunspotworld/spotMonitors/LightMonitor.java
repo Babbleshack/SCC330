@@ -34,7 +34,6 @@ public class LightMonitor extends Observable implements ILightMonitor
         }
         this.prepareConditions();
         this.threshold = threshold;
-        System.out.println("Threshold = " + this.threshold);
     }
     /**
      * innitializes conditions and starts them
@@ -45,8 +44,6 @@ public class LightMonitor extends Observable implements ILightMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
-                System.out.println("Light Condition Met");
-                System.out.println("Lumens: " + LightMonitor.this.getLightIntensity());
                 LightMonitor.this.notifyObservers((Object)new Double(LightMonitor.this.getLightIntensity()));
             }
         };
