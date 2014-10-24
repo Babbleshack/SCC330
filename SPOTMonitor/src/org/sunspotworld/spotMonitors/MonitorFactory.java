@@ -25,4 +25,8 @@ public class MonitorFactory
     {
     	return new AccelMonitor();
     }
+    public static IMotionMonitor createMotionMonitor()
+    {
+        return new MotionMonitor();
+    }
 }

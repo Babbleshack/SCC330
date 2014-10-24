@@ -3,7 +3,7 @@
  * Dominic Lindsay
  */
 package org.sunspotworld.spotMonitors;
-public interface IMovementMonitor {
+public interface IMotionMonitor {
 	public long getMovementTime();
 	public int getSensorValue();
 }

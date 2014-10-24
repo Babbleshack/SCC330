@@ -16,7 +16,7 @@ import com.sun.spot.resources.transducers.IToneGenerator;
 import com.sun.spot.resources.transducers.Condition;
 import com.sun.spot.resources.transducers.IConditionListener;
 import com.sun.spot.resources.transducers.SensorEvent;
-import org.sunspotworld.spotMonitors.IMovementMonitor;
+import org.sunspotworld.spotMonitors.IMotionMoniter;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.Patterns.Observer;
@@ -24,7 +24,7 @@ import org.sunspotworld.Patterns.Observable;
 import com.sun.spot.util.Utils;
 import java.io.IOException;
 
-public class MovementMoniter extends Observable implements IMovementMonitor
+public class MotionMoniter extends Observable implements IMotionMoniter
 {
 	private long lastMotion = 0;
 	private ITriColorLED led;
@@ -42,7 +42,7 @@ public class MovementMoniter extends Observable implements IMovementMonitor
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
 
-    public MovementMoniter()  
+    public MotionMoniter()  
     {
     	toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
 		ITriColorLEDArray leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
@@ -68,8 +68,8 @@ public class MovementMoniter extends Observable implements IMovementMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
-                MovementMoniter.this.hasChanged();
-                MovementMoniter.this.notifyObservers((Object)new Long(System.currentTimeMillis()));
+                MotionMoniter.this.hasChanged();
+                MotionMoniter.this.notifyObservers((Object)new Long(System.currentTimeMillis()));
             }
         };
         //innitialise the checking condition
@@ -77,7 +77,7 @@ public class MovementMoniter extends Observable implements IMovementMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(MovementMoniter.this.getSensorValue() == HIGH)
+            if(MotionMoniter.this.getSensorValue() == HIGH)
                 return true;
             return false;
           }  
