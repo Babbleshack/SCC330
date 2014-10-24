@@ -60,6 +60,12 @@ public class ReceivingRadio implements IReceivingRadio
         return datagram.readDouble(); 
     }
 
+    public int receiveMotion() throws IOException
+    {
+        radioConn.receive(datagram)
+        return datagram.readLong();
+    }
+
     public String receiveDiscoverMe() throws IOException
     {
         radioConn.receive(datagram);
