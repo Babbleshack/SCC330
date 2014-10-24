@@ -4,6 +4,6 @@
  */
 package org.sunspotworld.spotMonitors;
 public interface IMotionMonitor {
-	public long getMovementTime();
+	public long getMotionTime();
 	public int getSensorValue();
 }

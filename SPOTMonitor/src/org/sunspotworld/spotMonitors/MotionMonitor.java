@@ -2,7 +2,7 @@
  * Motion Moniter
  * Dominic Lindsay
  */
-package org.sun.sunspotworld.spotMonitors;
+package org.sunspotworld.spotMonitors;
 
 //resources
 import com.sun.spot.resources.Resources;
@@ -16,7 +16,7 @@ import com.sun.spot.resources.transducers.IToneGenerator;
 import com.sun.spot.resources.transducers.Condition;
 import com.sun.spot.resources.transducers.IConditionListener;
 import com.sun.spot.resources.transducers.SensorEvent;
-import org.sunspotworld.spotMonitors.IMotionMoniter;
+import org.sunspotworld.spotMonitors.IMotionMonitor;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.Patterns.Observer;
@@ -24,7 +24,7 @@ import org.sunspotworld.Patterns.Observable;
 import com.sun.spot.util.Utils;
 import java.io.IOException;
 
-public class MotionMoniter extends Observable implements IMotionMoniter
+public class MotionMonitor extends Observable implements IMotionMonitor
 {
 	private long lastMotion = 0;
 	private ITriColorLED led;
@@ -42,7 +42,7 @@ public class MotionMoniter extends Observable implements IMotionMoniter
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
 
-    public MotionMoniter()  
+    public void MotionMonitor()  
     {
     	toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
 		ITriColorLEDArray leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
@@ -68,8 +68,8 @@ public class MotionMoniter extends Observable implements IMotionMoniter
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
-                MotionMoniter.this.hasChanged();
-                MotionMoniter.this.notifyObservers((Object)new Long(System.currentTimeMillis()));
+                MotionMonitor.this.hasChanged();
+                MotionMonitor.this.notifyObservers((Object)new Long(System.currentTimeMillis()));
             }
         };
         //innitialise the checking condition
@@ -77,7 +77,7 @@ public class MotionMoniter extends Observable implements IMotionMoniter
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(MotionMoniter.this.getSensorValue() == HIGH)
+            if(MotionMonitor.this.getSensorValue() == HIGH)
                 return true;
             return false;
           }  
@@ -118,7 +118,7 @@ public class MotionMoniter extends Observable implements IMotionMoniter
             return -1;
        }   
     }
-    public long getMovementTime()
+    public long getMotionTime()
     {
     	return this.lastMotion; 
     }
