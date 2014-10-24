@@ -4,7 +4,7 @@
  */
 package org.sunspotworld.spotMonitors;
 
-import com.sun.spot.resources.Resources;
+//import com.sun.spot.resources.Resources;
 
 public class MonitorFactory 
 {
@@ -22,6 +22,13 @@ public class MonitorFactory
     }
     public static IMotionMonitor createMotionMonitor()
     {
-        return new MotionMonitor();
+        System.out.println("CALLING MOTION MONITOR");
+        IMotionMonitor motion = new MotionMonitor();
+        if(motion == null)
+            System.out.println("Motion Moniter failed to innit");
+        //return new MotionMonitor();
+        System.out.println("SENSOR VALUE : "+ motion.getSensorValue());
+        System.out.println("EXITING FACTORY");
+        return motion;
     }
 }

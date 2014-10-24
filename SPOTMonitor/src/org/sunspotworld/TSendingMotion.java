@@ -15,11 +15,11 @@ import com.sun.spot.util.Utils;
  */
 public class TSendingMotion implements Runnable, Observer
 {
-    private IMotionMonitor MotionMonitor;
+    private IMotionMonitor motionMonitor;
     private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
 
     // Init sending radio
-    ISendingRadio motionSendingRadio;
+    private ISendingRadio motionSendingRadio;
 
     /**
      * Instantiates the monitor and sending radio required
@@ -27,16 +27,21 @@ public class TSendingMotion implements Runnable, Observer
      */
     public TSendingMotion()
     {
+        System.out.println("TSENDINGMMOTION CONTROLLER");
+        motionMonitor = MonitorFactory.createMotionMonitor();
+
         try
         {
-            MotionMonitor = MonitorFactory.createMotionMonitor();
-            motionSendingRadio = RadiosFactory.createSendingRadio(MotionMonitor.getPort());
-            ((MotionMonitor)MotionMonitor).addObserver((Object)this);
+          // motionMonitor = MonitorFactory.createMotionMonitor();
+            motionSendingRadio = RadiosFactory.createSendingRadio(((MotionMonitor)motionMonitor).getPort());
+            
         }
         catch(Exception e)
         {
-           System.out.println("Unable initiate thermo sending radio");
+           System.out.println("Unable initiate MOTION sending radio" 
+             + e);
         }
+        ((MotionMonitor)motionMonitor).addObserver((Object)this);
     }
 
     public void startPolling() throws Exception
@@ -49,7 +54,7 @@ public class TSendingMotion implements Runnable, Observer
         while (true)
         {
             // Send light reading
-            motionSendingRadio.sendMotionTime(MotionMonitor.getMotionTime());
+            //motionSendingRadio.sendMotionTime(motionMonitor.getMotionTime());
             Utils.sleep(SAMPLE_RATE);
         }
     }
@@ -59,10 +64,12 @@ public class TSendingMotion implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
+        System.out.println("MOTION DETECTED!");
         motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getMotionTime());
     }
     public void update(Observable o)
     {
+        System.out.println("MOTION DETECTED!");
         motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getMotionTime());
     }
 }

@@ -27,13 +27,18 @@ import java.io.IOException;
 public class MotionMonitor extends Observable implements IMotionMonitor
 {
 	private long lastMotion = 0;
-	private ITriColorLED led;
-    private IToneGenerator toneGen;
-    private IScalarInput irSensor;
-	private IConditionListener motionCheck;
+    private EDemoBoard demo = EDemoBoard.getInstance(); //returns an instance of EDemoBoard through which the I/O pins can be accessed
+    private ITriColorLEDArray leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
+    private IToneGenerator toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
+    private IScalarInput irSensor = irSensor = demo.getScalarInputs()[EDemoBoard.A0];
+    private ITriColorLED led = leds.getLED(0);
+   // private IToneGenerator toneGen;
+    //private IScalarInput irSensor;
+    private IConditionListener motionCheck;
     private Condition conditionMet;
     private SunspotPort port;
-    private EDemoBoard demo; //returns an instance of EDemoBoard through which the I/O pins can be accessed
+
+
     private static final int PORTNUM = 140;
     private static final double FREQ = 50.0;
     private static final int FREQ_DUR = 100;
@@ -42,12 +47,11 @@ public class MotionMonitor extends Observable implements IMotionMonitor
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
 
-    public void MotionMonitor()  
+    public MotionMonitor()  
     {
-    	toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
-		ITriColorLEDArray leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
-		led = leds.getLED(0);
-		//led.setOn();
+        System.out.println("ENTERED MOTION MONITOR CONSTRUCTOR");
+        led.setRGB(250, 0, 0);
+		led.setOn();
 		demo = EDemoBoard.getInstance();
 		this.irSensor = irSensor = demo.getScalarInputs()[EDemoBoard.A0];
         try {
@@ -55,7 +59,13 @@ public class MotionMonitor extends Observable implements IMotionMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
+        System.out.println("ABout to start preparing motion conditions");
         this.prepareConditions();
+        try {
+            System.out.println("Motion Monitor" + irSensor.getValue());
+        } catch (Exception e) {
+            System.err.println("IO EXCEPTION WHILE READING MOTION SENSORE " + e);
+        }
     }
 
     
