@@ -59,12 +59,10 @@ public class TSendingLight implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
-        System.out.println("Received Notification" + ((ILightMonitor)o).getLightIntensity());
         lightSendingRadio.sendLight(((ILightMonitor)o).getLightIntensity());
     }
     public void update(Observable o)
     {
-        System.out.println(" UPDATE " + ((ILightMonitor)o).getLightIntensity());
         lightSendingRadio.sendLight(((ILightMonitor)o).getLightIntensity());
     }
 }
