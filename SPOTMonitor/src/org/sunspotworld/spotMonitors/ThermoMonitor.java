@@ -14,6 +14,8 @@ import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.Patterns.Observable;
 import java.io.IOException;
 import com.sun.spot.resources.transducers.SensorEvent;
+import com.sun.spot.util.Utils;
+
 
 
 
@@ -57,8 +59,10 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(ThermoMonitor.this.getCelsiusTemp() >= threshold)
+            if(ThermoMonitor.this.getCelsiusTemp() >= threshold) {
+                // Utils.sleep(SECOND*5);
                 return true;
+            }
             return false;
           }  
         };

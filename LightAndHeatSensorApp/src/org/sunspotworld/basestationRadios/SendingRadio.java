@@ -45,13 +45,26 @@ public class SendingRadio implements ISendingRadio
 
             // now write ports + thresh
             for (int i = 0; i < portsThresholds.size(); i += 2) {
-                System.out.println("Port " + (Integer)portsThresholds.get(i) + " sent thresh " + (Integer)portsThresholds.get(i+1));
+                switch((Integer)portsThresholds.get(i)) {
+                    case 110:
+                        System.out.println("SPOT has job of sensing heat");
+                        break;
+                    case 120:
+                        System.out.println("SPOT has job of sensing light");
+                        break;
+                    case 130:
+                        System.out.println("SPOT has job of sensing accelleration");
+                        break;
+                    case 140:
+                        System.out.println("SPOT has job of sensing motion");
+                        break;
+                }
+
                 datagram.writeInt((Integer)portsThresholds.get(i));
                 datagram.writeInt((Integer)portsThresholds.get(i+1));
             }
             
             radioConn.send(datagram);
-            System.out.println("Ports and thresholds of length (" + portsThresholds.size() + ") sent to  " + spot_address + "");
         } catch (Exception e) {
             System.err.println("IOException occured while sending ports: " + e);
         }

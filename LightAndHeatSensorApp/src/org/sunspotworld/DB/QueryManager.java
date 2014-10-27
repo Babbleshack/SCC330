@@ -199,7 +199,6 @@ public class QueryManager implements IQueryManager
             while (result.next()) {
                 output_array.add(result.getInt("Sensor.port_number"));
                 output_array.add(result.getInt("Job.threshold"));
-                System.out.println("Sensor port " + result.getInt("Sensor.port_number") + " threshold: " + result.getInt("Job.threshold"));
             }
 
             if(output_array.size() == 0) 
