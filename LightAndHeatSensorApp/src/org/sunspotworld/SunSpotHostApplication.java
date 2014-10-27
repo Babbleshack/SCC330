@@ -52,13 +52,13 @@ public class SunSpotHostApplication implements Runnable
         lightThread = new Thread(new TReceivingLight(),"lightService");
         accelThread = new Thread(new TReceivingAccel(),"accelService");
 
-        generalThread.setDaemon(true);
+        // generalThread.setDaemon(true);
         discoveryThread.setDaemon(true);
         heatThread.setDaemon(true);
         lightThread.setDaemon(true);
         accelThread.setDaemon(true);
 
-        generalThread.start();
+        // generalThread.start();
         discoveryThread.start();
         heatThread.start();
         lightThread.start();
