@@ -9,6 +9,9 @@ import java.io.IOException;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.Patterns.Observable;
+import com.sun.spot.util.Utils;
+
+
 /**
  * Define a Light Monitor
  * @author Dominic Lindsay
@@ -54,7 +57,7 @@ public class LightMonitor extends Observable implements ILightMonitor
           public boolean isMet(SensorEvent evt)
           {
             if(LightMonitor.this.getLightIntensity() >= threshold) {
-                Utils.sleep(SECOND*5);
+                // Utils.sleep(SECOND*5);
                 return true;
             }
             return false;
