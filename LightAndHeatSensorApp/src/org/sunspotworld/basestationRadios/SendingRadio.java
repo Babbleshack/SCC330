@@ -44,7 +44,8 @@ public class SendingRadio implements ISendingRadio
             datagram.writeInt(portsThresholds.size());
 
             // now write ports + thresh
-            for (int i = 0; i < portsThresholds.size(); i+= 2) {
+            for (int i = 0; i < portsThresholds.size(); i += 2) {
+                System.out.println("Port " + (Integer)portsThresholds.get(i) + " sent thresh " + (Integer)portsThresholds.get(i+1));
                 datagram.writeInt((Integer)portsThresholds.get(i));
                 datagram.writeInt((Integer)portsThresholds.get(i+1));
             }
