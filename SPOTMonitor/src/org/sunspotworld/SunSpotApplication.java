@@ -68,12 +68,12 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     {
         switch(port) {
             case 110:
-                lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
-                lightThread.start();
-                break;
-            case 120:
                 heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
                 heatThread.start();
+                break;
+            case 120:
+                lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
+                lightThread.start();
                 break;
             case 130:
                 accelThread = new Thread(new TSendingAccel(),"accelService"); 
