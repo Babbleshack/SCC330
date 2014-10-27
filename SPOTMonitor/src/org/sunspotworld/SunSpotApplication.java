@@ -120,7 +120,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
         }
 
         try {
-            switchThread = new Thread(new TDemandSwitch(MOCK_HEAT_THRESHOLD),"switchService");
+            // switchThread = new Thread(new TDemandSwitch(MOCK_HEAT_THRESHOLD),"switchService");
         } catch (IOException io) {
             System.out.println("Error starting switch listener thread: " + io);
         }
