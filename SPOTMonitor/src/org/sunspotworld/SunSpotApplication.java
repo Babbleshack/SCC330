@@ -63,20 +63,27 @@ public class SunSpotApplication extends MIDlet implements Runnable {
 
     }
 
-    // public startSensor(int port) 
-    // {
-    //     switch(port) {
-    //         case LightMonitor.getStaticPort():
-    //             lightThread = new Thread(new TSendingLight(),"lightService");
-    //             break;
-    //         case HeatMonitor.getStaticPort():
-    //             heatThread = new Thread(new TSendingHeat(),"heatService");
-    //             break;
-    //         case AccelMonitor.getStaticPort():
-    //             accelThread = new Thread(new TSendingAccel(),"accelService"); 
-    //             break;
-    //     }
-    // }
+    public startSensor(int port) 
+    {
+        switch(port) {
+            case LightMonitor.getStaticPort():
+                lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
+                lightThread.start();
+                break;
+            case HeatMonitor.getStaticPort():
+                heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
+                heatThread.start();
+                break;
+            case AccelMonitor.getStaticPort():
+                accelThread = new Thread(new TSendingAccel(),"accelService"); 
+                accelThread.start();
+                break;
+            case MotionMonitor.getStaticPort():
+                motionThread = new Thread(new TSendingMotion(), "motionService");
+                motionThread.start();
+                break;
+        }
+    }
 
     /**
      * Initiate threads for communicating with the basestation
@@ -101,27 +108,19 @@ public class SunSpotApplication extends MIDlet implements Runnable {
             System.out.println("Exception while receiving discover response: " + io);
         }
 
+        // Dispatch threads
         if(portsThresholds != null) {
-            for (int i = 0;i < portsThresholds.length; i += 2) 
+            for (int i = 0;i < portsThresholds.length; i += 2) {
                 System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
+                this.startSensor(portsThresholds[i]);
+            }
         }
-
-        heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
-        lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
-        accelThread = new Thread(new TSendingAccel(),"accelService");
-        motionThread = new Thread(new TSendingMotion(), "motionService");
 
         try {
             switchThread = new Thread(new TDemandSwitch(MOCK_HEAT_THRESHOLD),"switchService");
         } catch (IOException io) {
             System.out.println("Error starting switch listener thread: " + io);
         }
-
-        heatThread.start();
-        lightThread.start();
-        accelThread.start();
-        switchThread.start();
-        motionThread.start();
     }
 
     public void run()
