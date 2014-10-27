@@ -79,6 +79,11 @@ public class TDiscovery implements Runnable
                 // 2. Get all jobs + sensors + sensor ports attached to this SPOT
                 
                 ArrayList portThresholds = queryManager.getSensorPortsJobThresholdsFromSpotAddress(spot_address);
+                for (int i =0 ;i< portThresholds.size();i+=2) {
+                    System.out.println("Port: " + portThresholds.get(i) + " "
+                         + "Threshold: " + portThresholds.get(i+1));
+                    
+                }
 
                 // 3. Send list of ports back to SPOT 
                 responseRadio.sendDiscoverReponse(spot_address, portThresholds);
