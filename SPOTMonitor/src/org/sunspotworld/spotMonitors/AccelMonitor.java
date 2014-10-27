@@ -21,7 +21,7 @@ public class AccelMonitor extends Observable implements IAccelMonitor
     private IConditionListener accelCheck;
     private Condition conditionMet;
     private static final int SECOND = 1000; 
-    private static final int SAMPLE_RATE =SECOND;
+    private static final int SAMPLE_RATE =SECOND/3;
     public AccelMonitor()
     {
         this.accelSensor = (IAccelerometer3D) Resources.lookup(IAccelerometer3D.class);
@@ -52,6 +52,7 @@ public class AccelMonitor extends Observable implements IAccelMonitor
           {
             if(AccelMonitor.this.getAccel() < MIN_G || AccelMonitor.this.getAccel() > MAX_G) {
                 System.out.println("Accelerometer reading: " + AccelMonitor.this.getAccel());
+                Utils.sleep(SECOND*5);
                 return true;
             }
             return false;

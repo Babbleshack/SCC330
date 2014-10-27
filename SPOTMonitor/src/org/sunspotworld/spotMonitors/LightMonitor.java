@@ -53,8 +53,10 @@ public class LightMonitor extends Observable implements ILightMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(LightMonitor.this.getLightIntensity() >= threshold)
+            if(LightMonitor.this.getLightIntensity() >= threshold) {
+                Utils.sleep(SECOND*5);
                 return true;
+            }
             return false;
           }  
         };

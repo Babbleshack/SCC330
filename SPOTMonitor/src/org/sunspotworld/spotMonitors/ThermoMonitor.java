@@ -57,8 +57,10 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(ThermoMonitor.this.getCelsiusTemp() >= threshold)
+            if(ThermoMonitor.this.getCelsiusTemp() >= threshold) {
+                Utils.sleep(SECOND*5);
                 return true;
+            }
             return false;
           }  
         };
