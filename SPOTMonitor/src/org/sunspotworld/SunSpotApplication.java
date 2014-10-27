@@ -64,23 +64,27 @@ public class SunSpotApplication extends MIDlet implements Runnable {
 
     }
 
-    public void startSensor(int port) 
+    public void startSensor(int port, int threshold) 
     {
         switch(port) {
             case 110:
-                heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
+                heatThread = new Thread(new TSendingHeat(threshold),"heatService");
+                System.out.println("Thread started for sensing heat (thresh " + threshold + ")");
                 heatThread.start();
                 break;
             case 120:
-                lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
+                lightThread = new Thread(new TSendingLight(threshold),"lightService");
+                System.out.println("Thread started for sensing light (thresh " + threshold + ")");
                 lightThread.start();
                 break;
             case 130:
-                accelThread = new Thread(new TSendingAccel(),"accelService"); 
+                accelThread = new Thread(new TSendingAccel(),"accelService");
+                System.out.println("Thread started for sensing accelleration (thresh " + threshold + ")"); 
                 accelThread.start();
                 break;
             case 140:
                 motionThread = new Thread(new TSendingMotion(), "motionService");
+                System.out.println("Thread started for sensing motion (thresh " + threshold + ")");
                 motionThread.start();
                 break;
         }
@@ -113,17 +117,12 @@ public class SunSpotApplication extends MIDlet implements Runnable {
         if(portsThresholds != null) {
             for (int i = 0;i < portsThresholds.length; i += 2) {
                 System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
-                this.startSensor(portsThresholds[i]);
+                this.startSensor(portsThresholds[i], portsThresholds[i+1]);
             }
         } else {
             System.out.println("No ports and thresholds");
         }
 
-        try {
-            // switchThread = new Thread(new TDemandSwitch(MOCK_HEAT_THRESHOLD),"switchService");
-        } catch (IOException io) {
-            System.out.println("Error starting switch listener thread: " + io);
-        }
     }
 
     public void run()

@@ -49,7 +49,7 @@ public class TSendingLight implements Runnable, Observer
         while (true)
         {
             // Send light reading
-            lightSendingRadio.sendLight(lightMonitor.getLightIntensity());
+            // lightSendingRadio.sendLight(lightMonitor.getLightIntensity());
             Utils.sleep(SAMPLE_RATE);
         }
     }
