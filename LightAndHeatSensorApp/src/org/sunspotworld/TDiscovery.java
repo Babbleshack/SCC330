@@ -57,6 +57,7 @@ public class TDiscovery implements Runnable
         // main switch reading/polling loop
         while (true)
         {
+            System.out.println("Start discovery...");
             try
             {
                 // Read light and heat values

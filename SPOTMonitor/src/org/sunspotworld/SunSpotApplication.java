@@ -51,6 +51,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread accelThread = null;
     private Thread switchThread = null;
     private Thread motionThread = null;
+    private Thread discoverMeThread = null;
 
     private static final int MOCK_HEAT_THRESHOLD = 30;
     private static final int MOCK_LIGHT_THRESHOLD = 20;
@@ -91,7 +92,6 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     public void startPolling() throws SecurityException
     {
         try {
-            discoverMeRadio = RadiosFactory.createSendingRadio(new SunspotPort(90));
             discoverRequestRadio = RadiosFactory.createReceivingRadio(new SunspotPort(90));
         } catch (PortOutOfRangeException p) {
             System.out.println("Discover me radio port out of range: " + p);
@@ -99,7 +99,8 @@ public class SunSpotApplication extends MIDlet implements Runnable {
             System.out.println("Exception while creating discover me radio: " + io);
         }
 
-        discoverMeRadio.discoverMe(); 
+        discoverMeThread = new Thread(new TDiscoverMe(),"discoverMeService");
+        discoverMeThread.start();
 
         int[] portsThresholds = null;
         try {
