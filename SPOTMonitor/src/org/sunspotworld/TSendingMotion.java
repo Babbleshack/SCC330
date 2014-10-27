@@ -27,7 +27,6 @@ public class TSendingMotion implements Runnable, Observer
      */
     public TSendingMotion()
     {
-        System.out.println("TSENDINGMMOTION CONTROLLER");
         motionMonitor = MonitorFactory.createMotionMonitor();
 
         try
