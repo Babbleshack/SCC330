@@ -63,7 +63,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
 
     }
 
-    public startSensor(int port) 
+    public void startSensor(int port) 
     {
         switch(port) {
             case LightMonitor.getStaticPort():
