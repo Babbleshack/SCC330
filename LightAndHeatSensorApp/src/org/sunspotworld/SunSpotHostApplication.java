@@ -27,7 +27,7 @@ public class SunSpotHostApplication implements Runnable
     /**
      * Threads for communicating with SPOT
      */
-    private Thread generalThread = null;
+    // private Thread generalThread = null;
     private Thread discoveryThread = null;
     private Thread heatThread = null;
     private Thread lightThread = null;
@@ -46,7 +46,7 @@ public class SunSpotHostApplication implements Runnable
      */
     public void startPolling() throws Exception
     {
-        generalThread = new Thread(new TGeneral(),"generalService");
+        // generalThread = new Thread(new TGeneral(),"generalService");
         discoveryThread = new Thread(new TDiscovery(),"discoveryService");
         heatThread = new Thread(new TReceivingHeat(),"heatService");
         lightThread = new Thread(new TReceivingLight(),"lightService");
