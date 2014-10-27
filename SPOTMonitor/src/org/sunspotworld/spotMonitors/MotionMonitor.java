@@ -114,7 +114,7 @@ public class MotionMonitor extends Observable implements IMotionMonitor
                //motion detected
             	lastMotion = System.currentTimeMillis(); 
                 led.setRGB(0, INTENSITY, 0);
-         		toneGen.startTone(FREQ, FREQ_DUR);
+         		// toneGen.startTone(FREQ, FREQ_DUR);
             }
             else
             {
