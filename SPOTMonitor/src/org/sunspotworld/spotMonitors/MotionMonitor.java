@@ -28,12 +28,10 @@ public class MotionMonitor extends Observable implements IMotionMonitor
 {
 	private long lastMotion = 0;
     private EDemoBoard demo = EDemoBoard.getInstance(); //returns an instance of EDemoBoard through which the I/O pins can be accessed
-    private ITriColorLEDArray leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
-    private IToneGenerator toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
+    private ITriColorLEDArray leds;
+    private IToneGenerator toneGen;
     private IScalarInput irSensor = irSensor = demo.getScalarInputs()[EDemoBoard.A0];
     private ITriColorLED led = leds.getLED(0);
-   // private IToneGenerator toneGen;
-    //private IScalarInput irSensor;
     private IConditionListener motionCheck;
     private Condition conditionMet;
     private SunspotPort port;
@@ -49,6 +47,8 @@ public class MotionMonitor extends Observable implements IMotionMonitor
 
     public MotionMonitor()  
     {
+        leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
+        toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
         led.setRGB(250, 0, 0);
 		led.setOn();
 		demo = EDemoBoard.getInstance();
@@ -59,11 +59,6 @@ public class MotionMonitor extends Observable implements IMotionMonitor
             System.out.println("Port number out of range: " + pe);
         }
         this.prepareConditions();
-        try {
-            System.out.println("Motion Monitor" + irSensor.getValue());
-        } catch (Exception e) {
-            System.err.println("IO EXCEPTION WHILE READING MOTION SENSORE " + e);
-        }
     }
 
     
@@ -86,7 +81,6 @@ public class MotionMonitor extends Observable implements IMotionMonitor
           public boolean isMet(SensorEvent evt)
           {
             if(MotionMonitor.this.getSensorValue() == HIGH) {
-                System.out.println("Motion detected: " + MotionMonitor.this.getSensorValue());
                 return true;
             }
             return false;
@@ -113,7 +107,7 @@ public class MotionMonitor extends Observable implements IMotionMonitor
                //motion detected
             	lastMotion = System.currentTimeMillis(); 
                 led.setRGB(0, INTENSITY, 0);
-         		// toneGen.startTone(FREQ, FREQ_DUR);
+         		toneGen.startTone(FREQ, FREQ_DUR);
             }
             else
             {
