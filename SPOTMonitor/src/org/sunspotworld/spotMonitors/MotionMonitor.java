@@ -49,7 +49,6 @@ public class MotionMonitor extends Observable implements IMotionMonitor
 
     public MotionMonitor()  
     {
-        System.out.println("ENTERED MOTION MONITOR CONSTRUCTOR");
         led.setRGB(250, 0, 0);
 		led.setOn();
 		demo = EDemoBoard.getInstance();
@@ -59,7 +58,6 @@ public class MotionMonitor extends Observable implements IMotionMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
-        System.out.println("ABout to start preparing motion conditions");
         this.prepareConditions();
         try {
             System.out.println("Motion Monitor" + irSensor.getValue());
@@ -87,9 +85,10 @@ public class MotionMonitor extends Observable implements IMotionMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            System.out.println("CHECK MOTION");
-            if(MotionMonitor.this.getSensorValue() == HIGH)
+            if(MotionMonitor.this.getSensorValue() == HIGH) {
+                System.out.println("Motion detected: " + MotionMonitor.this.getSensorValue());
                 return true;
+            }
             return false;
           }  
         };
