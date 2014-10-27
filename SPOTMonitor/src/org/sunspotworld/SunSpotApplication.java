@@ -66,19 +66,19 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     public void startSensor(int port) 
     {
         switch(port) {
-            case LightMonitor.getStaticPort():
+            case 110:
                 lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
                 lightThread.start();
                 break;
-            case HeatMonitor.getStaticPort():
+            case 120:
                 heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
                 heatThread.start();
                 break;
-            case AccelMonitor.getStaticPort():
+            case 130:
                 accelThread = new Thread(new TSendingAccel(),"accelService"); 
                 accelThread.start();
                 break;
-            case MotionMonitor.getStaticPort():
+            case 140:
                 motionThread = new Thread(new TSendingMotion(), "motionService");
                 motionThread.start();
                 break;
@@ -114,6 +114,8 @@ public class SunSpotApplication extends MIDlet implements Runnable {
                 System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
                 this.startSensor(portsThresholds[i]);
             }
+        } else {
+            System.out.println("No ports and thresholds");
         }
 
         try {

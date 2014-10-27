@@ -49,7 +49,7 @@ public class TSendingAccel implements Runnable, Observer
         while (true)
         {
             // Send light reading
-            accelSendingRadio.sendAccel(accelMonitor.getAccel());
+            // accelSendingRadio.sendAccel(accelMonitor.getAccel());
             Utils.sleep(SAMPLE_RATE);
         }
     }
