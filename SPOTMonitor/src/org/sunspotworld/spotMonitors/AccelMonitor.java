@@ -51,8 +51,8 @@ public class AccelMonitor extends Observable implements IAccelMonitor
           public boolean isMet(SensorEvent evt)
           {
             if(AccelMonitor.this.getAccel() < MIN_G || AccelMonitor.this.getAccel() > MAX_G) {
-                return true;
                 System.out.println("Accelerometer reading: " + AccelMonitor.this.getAccel());
+                return true;
             }
             return false;
           }  
