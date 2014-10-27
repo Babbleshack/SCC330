@@ -44,13 +44,13 @@ public class SendingRadio implements ISendingRadio
             datagram.writeInt(portsThresholds.size());
 
             // now write ports + thresh
-            for (int i = 0; i < portsThresholds.size(); i++) {
+            for (int i = 0; i < portsThresholds.size(); i+= 2) {
                 datagram.writeInt((Integer)portsThresholds.get(i));
-                datagram.writeInt((Integer)portsThresholds.get(i));
+                datagram.writeInt((Integer)portsThresholds.get(i+1));
             }
             
             radioConn.send(datagram);
-            System.out.println("Ports and thresholds send to  " + spot_address + "");
+            System.out.println("Ports and thresholds of length (" + portsThresholds.size() + ") sent to  " + spot_address + "");
         } catch (Exception e) {
             System.err.println("IOException occured while sending ports: " + e);
         }
