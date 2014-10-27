@@ -83,6 +83,7 @@ public class SendingRadio implements ISendingRadio
     public void discoverMe() {
         try {
             datagram.reset();
+            datagram.writeUTF(spotAddress);
             radioConn.send(datagram);
             System.out.println("DiscoverME request sent..."); 
         } catch (IOException e) {
