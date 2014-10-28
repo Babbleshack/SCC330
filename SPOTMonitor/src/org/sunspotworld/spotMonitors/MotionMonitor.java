@@ -28,12 +28,10 @@ public class MotionMonitor extends Observable implements IMotionMonitor
 {
 	private long lastMotion = 0;
     private EDemoBoard demo = EDemoBoard.getInstance(); //returns an instance of EDemoBoard through which the I/O pins can be accessed
-    private ITriColorLEDArray leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
-    private IToneGenerator toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
+    private ITriColorLEDArray leds;
+    private IToneGenerator toneGen;
     private IScalarInput irSensor = irSensor = demo.getScalarInputs()[EDemoBoard.A0];
     private ITriColorLED led = leds.getLED(0);
-   // private IToneGenerator toneGen;
-    //private IScalarInput irSensor;
     private IConditionListener motionCheck;
     private Condition conditionMet;
     private SunspotPort port;
@@ -49,7 +47,8 @@ public class MotionMonitor extends Observable implements IMotionMonitor
 
     public MotionMonitor()  
     {
-        System.out.println("ENTERED MOTION MONITOR CONSTRUCTOR");
+        leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
+        toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
         led.setRGB(250, 0, 0);
 		led.setOn();
 		demo = EDemoBoard.getInstance();
@@ -59,13 +58,7 @@ public class MotionMonitor extends Observable implements IMotionMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
-        System.out.println("ABout to start preparing motion conditions");
         this.prepareConditions();
-        try {
-            System.out.println("Motion Monitor" + irSensor.getValue());
-        } catch (Exception e) {
-            System.err.println("IO EXCEPTION WHILE READING MOTION SENSORE " + e);
-        }
     }
 
     
@@ -87,9 +80,9 @@ public class MotionMonitor extends Observable implements IMotionMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            System.out.println("CHECK MOTION");
-            if(MotionMonitor.this.getSensorValue() == HIGH)
+            if(MotionMonitor.this.getSensorValue() == HIGH) {
                 return true;
+            }
             return false;
           }  
         };

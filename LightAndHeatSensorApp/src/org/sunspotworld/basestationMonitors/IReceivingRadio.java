@@ -33,9 +33,14 @@ public interface IReceivingRadio
 
 	/**
 	 * Receives a datagram sent by the SendingRadio containing accel data
-	 * @return heat data
+	 * @return accel data
 	 */
 	public double receiveAccel() throws IOException;
+	/**
+	 * Receives a datagram sent by the SendingRadio containing Motion data
+	 * @return motion time data
+	 */
+	public long receiveMotion() throws IOException;
 
 	/**
 	 * Gets the latest discoverMe requests and returns the 

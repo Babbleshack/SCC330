@@ -22,13 +22,6 @@ public class MonitorFactory
     }
     public static IMotionMonitor createMotionMonitor()
     {
-        System.out.println("CALLING MOTION MONITOR");
-        IMotionMonitor motion = new MotionMonitor();
-        if(motion == null)
-            System.out.println("Motion Moniter failed to innit");
-        //return new MotionMonitor();
-        System.out.println("SENSOR VALUE : "+ motion.getSensorValue());
-        System.out.println("EXITING FACTORY");
-        return motion;
+        return new MotionMonitor();
     }
 }

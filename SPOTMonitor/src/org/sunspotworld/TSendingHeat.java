@@ -51,7 +51,7 @@ public class TSendingHeat implements Runnable, Observer
         while (true)
         {
             // Send thermo reading
-            thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
+            // thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
             Utils.sleep(SAMPLE_RATE);
         }
     }

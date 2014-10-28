@@ -27,7 +27,6 @@ public class TSendingMotion implements Runnable, Observer
      */
     public TSendingMotion()
     {
-        System.out.println("TSENDINGMMOTION CONTROLLER");
         motionMonitor = MonitorFactory.createMotionMonitor();
 
         try
@@ -64,12 +63,10 @@ public class TSendingMotion implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
-        System.out.println("MOTION DETECTED!");
         motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getMotionTime());
     }
     public void update(Observable o)
     {
-        System.out.println("MOTION DETECTED!");
         motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getMotionTime());
     }
 }

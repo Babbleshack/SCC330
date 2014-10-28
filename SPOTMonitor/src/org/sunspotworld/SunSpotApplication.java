@@ -51,9 +51,10 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread accelThread = null;
     private Thread switchThread = null;
     private Thread motionThread = null;
+    private Thread discoverMeThread = null;
 
-    private static final int MOCK_HEAT_THRESHOLD = 20;
-    private static final int MOCK_LIGHT_THRESHOLD = 0;
+    private static final int MOCK_HEAT_THRESHOLD = 30;
+    private static final int MOCK_LIGHT_THRESHOLD = 20;
 
 
     private ISendingRadio discoverMeRadio;
@@ -63,20 +64,31 @@ public class SunSpotApplication extends MIDlet implements Runnable {
 
     }
 
-    // public startSensor(int port) 
-    // {
-    //     switch(port) {
-    //         case LightMonitor.getStaticPort():
-    //             lightThread = new Thread(new TSendingLight(),"lightService");
-    //             break;
-    //         case HeatMonitor.getStaticPort():
-    //             heatThread = new Thread(new TSendingHeat(),"heatService");
-    //             break;
-    //         case AccelMonitor.getStaticPort():
-    //             accelThread = new Thread(new TSendingAccel(),"accelService"); 
-    //             break;
-    //     }
-    // }
+    public void startSensor(int port, int threshold) 
+    {
+        switch(port) {
+            case 110:
+                heatThread = new Thread(new TSendingHeat(threshold),"heatService");
+                System.out.println("Thread started for sensing heat (thresh " + threshold + ")");
+                heatThread.start();
+                break;
+            case 120:
+                lightThread = new Thread(new TSendingLight(threshold),"lightService");
+                System.out.println("Thread started for sensing light (thresh " + threshold + ")");
+                lightThread.start();
+                break;
+            case 130:
+                accelThread = new Thread(new TSendingAccel(),"accelService");
+                System.out.println("Thread started for sensing accelleration (thresh " + threshold + ")"); 
+                accelThread.start();
+                break;
+            case 140:
+                motionThread = new Thread(new TSendingMotion(), "motionService");
+                System.out.println("Thread started for sensing motion (thresh " + threshold + ")");
+                motionThread.start();
+                break;
+        }
+    }
 
     /**
      * Initiate threads for communicating with the basestation
@@ -84,7 +96,6 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     public void startPolling() throws SecurityException
     {
         try {
-            discoverMeRadio = RadiosFactory.createSendingRadio(new SunspotPort(90));
             discoverRequestRadio = RadiosFactory.createReceivingRadio(new SunspotPort(90));
         } catch (PortOutOfRangeException p) {
             System.out.println("Discover me radio port out of range: " + p);
@@ -92,7 +103,8 @@ public class SunSpotApplication extends MIDlet implements Runnable {
             System.out.println("Exception while creating discover me radio: " + io);
         }
 
-        discoverMeRadio.discoverMe(); 
+        discoverMeThread = new Thread(new TDiscoverMe(),"discoverMeService");
+        discoverMeThread.start();
 
         int[] portsThresholds = null;
         try {
@@ -101,27 +113,16 @@ public class SunSpotApplication extends MIDlet implements Runnable {
             System.out.println("Exception while receiving discover response: " + io);
         }
 
+        // Dispatch threads
         if(portsThresholds != null) {
-            for (int i = 0;i < portsThresholds.length; i += 2) 
+            for (int i = 0;i < portsThresholds.length; i += 2) {
                 System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
+                this.startSensor(portsThresholds[i], portsThresholds[i+1]);
+            }
+        } else {
+            System.out.println("No ports and thresholds");
         }
 
-        heatThread = new Thread(new TSendingHeat(MOCK_HEAT_THRESHOLD),"heatService");
-        lightThread = new Thread(new TSendingLight(MOCK_LIGHT_THRESHOLD),"lightService");
-        accelThread = new Thread(new TSendingAccel(),"accelService");
-        motionThread = new Thread(new TSendingMotion(), "motionService");
-
-        try {
-            switchThread = new Thread(new TDemandSwitch(20),"switchService");
-        } catch (IOException io) {
-            System.out.println("Error starting switch listener thread: " + io);
-        }
-
-        heatThread.start();
-        lightThread.start();
-        accelThread.start();
-        switchThread.start();
-        motionThread.start();
     }
 
     public void run()

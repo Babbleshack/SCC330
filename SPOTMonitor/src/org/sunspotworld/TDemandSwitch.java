@@ -26,7 +26,7 @@ import com.sun.spot.resources.transducers.SwitchEvent;
 public class TDemandSwitch implements Runnable, ISwitchListener
 {
     private ISwitch sw1;
-    private static final int DEFAULT_THRESHOLD = 9999;
+    private static final int DEFAULT_THRESHOLD = 0;
     // Init sending radio
     IThermoMonitor thermoMonitor;
     ILightMonitor lightMonitor;

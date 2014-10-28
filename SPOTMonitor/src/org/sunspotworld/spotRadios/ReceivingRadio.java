@@ -50,7 +50,7 @@ public class ReceivingRadio implements IReceivingRadio
         int datagramLength = datagram.readInt(); 
         int[] portsThresholds = new int[datagramLength];
         
-        for (int i = 0;i < datagram.readInt(); i += 2) {
+        for (int i = 0;i < datagramLength; i += 2) {
             portsThresholds[i] = datagram.readInt();    
             portsThresholds[i+1] = datagram.readInt();  
         }
