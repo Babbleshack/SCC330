@@ -87,6 +87,22 @@ public class SunSpotApplication extends MIDlet implements Runnable {
                 System.out.println("Thread started for sensing motion (thresh " + threshold + ")");
                 motionThread.start();
                 break;
+
+            /**
+             * Possible limitation: what if there's two spots passing at same time
+             */
+            case 150: // tower
+                // Dispatch two threads: 
+                // - TSendingPings (on port 150): continually sends 
+                // - TTowerReceiver (on port 160): blocks until response from roaming on 160... 
+                //                  - wait until response falls into threshold
+                //                  - wait until RSI falls out of threshold again: then update basestation with zone change
+                break;
+            case 160: // roaming
+                // Dispatch two threads:
+                // - TRoaming (on port 160): block until receives from port 150 (the tower)..
+                //                              - sends response on port 160 to tower 
+                break;
         }
     }
 
