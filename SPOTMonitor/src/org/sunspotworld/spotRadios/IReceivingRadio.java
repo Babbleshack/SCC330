@@ -18,4 +18,14 @@ public interface IReceivingRadio
 	 * @return String address
 	 */
 	public int[] receiveDiscoverResponse() throws IOException;
+
+	 /**
+     * Receive packets from responding SPOTS,
+     * returns the current power level of received packet.
+     */
+    public int pingRssiReader();
+    /**
+     * gets the address of the last received ping packet
+     */
+    public String getLastPingAddress();
 }

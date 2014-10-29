@@ -39,10 +39,6 @@ public class TSendingAccel implements Runnable, Observer
         }
     }
 
-    public void startPolling() throws Exception
-    {
-    }
-
     public void run()
     {
         // main switch reading/polling loop

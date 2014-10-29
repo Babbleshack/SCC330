@@ -15,12 +15,13 @@ import javax.microedition.io.*;
 
 /**
  *
- * @author adamcornforth
+ * @author adamcornforth + Dominic Lindsay
  */
 public class SendingRadio implements ISendingRadio
 {
     private RadiogramConnection radioConn = null;
     private Datagram  datagram = null;
+    //Radiogram rdg;
     
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
 
@@ -28,7 +29,8 @@ public class SendingRadio implements ISendingRadio
     {
         radioConn = (RadiogramConnection) Connector.open("radiogram://broadcast:" + port.getPort());
         System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
-        datagram = radioConn.newDatagram(50); 
+        datagram = radioConn.newDatagram(50);
+       // rdg = (Radiogram)radioConn.newDatagram(rcvConn.getMaximumLength()); 
     }
 
     public void sendLight(int value)
@@ -93,7 +95,7 @@ public class SendingRadio implements ISendingRadio
     /**
      * sends SPOT address to basestation
      */
-    public sendSPOTAddress(String address)
+    public void sendSPOTAddress(String address)
     {
         try
         {

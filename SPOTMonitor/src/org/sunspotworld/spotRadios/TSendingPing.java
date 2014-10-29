@@ -3,6 +3,15 @@
  * A ping is simply an empty packet.
  * Dominic Lindsay
  */
+
+package org.sunspotworld;
+
+import org.sunspotworld.spotRadios.ISendingRadio;
+import org.sunspotworld.spotRadios.RadiosFactory;
+import org.sunspotworld.spotRadios.SunspotPort;
+import com.sun.spot.util.Utils;
+import java.lang.Exception;
+
 public class TSendingPing implements Runnable
 {
 	private ISendingRadio radio;
@@ -10,9 +19,15 @@ public class TSendingPing implements Runnable
 	private static final long SAMPLE_RATE = SECOND/2;
 	public TSendingPing()
 	{
-		radio = RadiosFactory.createSendingRadio();
+		try
+		{
+			radio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.PING_PORT));	
+		} catch (Exception e) {
+			System.err.println("error creating PING radio: " + e);
+		} 
+		
 	}
-	public void Run()
+	public void run()
 	{
 		while(true)
 		{
