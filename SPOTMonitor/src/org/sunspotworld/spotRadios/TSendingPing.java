@@ -10,7 +10,7 @@ public class TSendingPing implements Runnable
 	private static final long SAMPLE_RATE = SECOND/2;
 	public TSendingPing()
 	{
-		radio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.PING_PORT));
+		radio = RadiosFactory.createSendingRadio();
 	}
 	public void Run()
 	{

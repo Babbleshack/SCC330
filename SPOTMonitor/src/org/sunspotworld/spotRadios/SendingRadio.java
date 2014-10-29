@@ -78,7 +78,9 @@ public class SendingRadio implements ISendingRadio
         
         }
     }
-
+    /**
+     * Sends empty packet to be used as a 'pinging' service
+     */
     public void ping()
     {
         try {
@@ -87,6 +89,21 @@ public class SendingRadio implements ISendingRadio
         } catch (IOException e) {
             System.err.println("IOException occured while sending PING" + e);
         }
+    }
+    /**
+     * sends SPOT address to basestation
+     */
+    public sendSPOTAddress(String address)
+    {
+        try
+        {
+            datagram.reset();
+            datagram.writeUTF(address);
+            radioConn.send(datagram);
+        } catch (IOException e) {
+            System.err.println("Error sending SPOT address: " + e);
+        }
+
     }
 
 

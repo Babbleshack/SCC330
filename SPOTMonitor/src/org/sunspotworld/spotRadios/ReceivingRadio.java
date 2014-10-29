@@ -26,6 +26,7 @@ public class ReceivingRadio implements IReceivingRadio
     private Datagram  datagram = null;
     
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
+    private String lastPingAddress = null;
 
     public ReceivingRadio(SunspotPort port) throws IOException
     {
@@ -56,5 +57,30 @@ public class ReceivingRadio implements IReceivingRadio
         }
 
         return portsThresholds;
+    }
+
+    /**
+     * Receive packets from responding SPOTS,
+     * returns the current power level of received packet.
+     */
+    public int pingRssiReader()
+    {
+        int powerLevel;
+        try {
+            datagram.reset();
+            radioConn.receive(datagram);
+            powerLevel = datagram.getRssi();
+            lastPingAddress = datagram.getAddress();
+        } catch (IOException e) {
+            System.err.println("Error reading RSSI: " + e);
+        }
+        return powerLevel;
+    }
+    /**
+     * gets the address of the last received ping packet
+     */
+    public String getLastPingAddress()
+    {
+        return lastPingAddress;
     }
 }
