@@ -81,8 +81,12 @@ public class SendingRadio implements ISendingRadio
 
     public void ping()
     {
-        datagram.reset();
-        radioConn.send(datagram);
+        try {
+            datagram.reset();
+            radioConn.send(datagram);
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending PING" + e);
+        }
     }
 
 
