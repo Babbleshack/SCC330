@@ -79,6 +79,12 @@ public class SendingRadio implements ISendingRadio
         }
     }
 
+    public void ping()
+    {
+        datagram.reset();
+        radioConn.send(datagram);
+    }
+
 
     public void discoverMe() {
         try {
