@@ -20,7 +20,7 @@ public class TTowerReceiver implements Runnable
 	{
 		try
 		{
-			sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.TOWER_RECIEVER_PORT));
+			sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.BASE_TOWER_PORT));
 			rRadio = RadiosFactory.createReceivingRadio(new SunspotPort(SunspotPort.TOWER_RECIEVER_PORT));
 		} catch (Exception e) {
 			System.err.println("error creating TOWER radios " + e);
