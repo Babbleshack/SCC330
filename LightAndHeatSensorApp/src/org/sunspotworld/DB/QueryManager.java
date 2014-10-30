@@ -365,7 +365,7 @@ public class QueryManager implements IQueryManager
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertZoneRecord);
                 insert.setInt(1, zone_id);
-                insert.setString(2, this.getSpotIdFromSpotAddress(spot_address));
+                insert.setInt(2, this.getSpotIdFromSpotAddress(spot_address));
                 insert.setInt(3, job_id);
                 insert.setTimestamp(4, new Timestamp(time));
                 insert.executeUpdate();
