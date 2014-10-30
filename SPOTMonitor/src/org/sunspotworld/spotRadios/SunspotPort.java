@@ -17,7 +17,7 @@ public class SunspotPort
     public static final int MOTION_PORT    = 140;
     public static final int PING_PORT      = 150;
     public static final int TOWER_RECIEVER_PORT = 160;
-    public static final int ROAMING        = 160;  
+
     private final int value;
 
     public SunspotPort(int value) throws PortOutOfRangeException

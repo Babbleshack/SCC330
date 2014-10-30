@@ -16,7 +16,7 @@ public class TSendingPing implements Runnable
 {
 	private ISendingRadio radio;
 	private static final long SECOND = 1000;
-	private static final long SAMPLE_RATE = SECOND/2;
+	private static final long SAMPLE_RATE = SECOND/5;
 	public TSendingPing()
 	{
 		try

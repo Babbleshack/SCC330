@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Encapsulates reception of datagrams.
+ * Dominic Lindsay + Adam Cornfourth
  */
 package org.sunspotworld.spotRadios;
 
@@ -15,10 +14,7 @@ import com.sun.spot.util.IEEEAddress;
 
 import java.io.*;
 import javax.microedition.io.*;
-/**
- *
- * @author adamcornforth
- */
+
 public class ReceivingRadio implements IReceivingRadio
 {
     private static final int HOST_PORT = 96;
@@ -79,9 +75,24 @@ public class ReceivingRadio implements IReceivingRadio
     }
     /**
      * gets the address of the last received ping packet
+     * @return address String
      */
     public String getLastPingAddress()
     {
         return lastPingAddress;
     }
+    /**
+     * receives a packet and does nothing.
+     * used to accomodate roaming spots.
+     */
+    public void receiveAndDoNothing()
+    {
+        try
+        {
+            datagram.reset();
+            radioConn.receive(datagram);
+        } catch (IOException e) {
+            System.err.println("Error while waiting on packet");
+        }
+    }   
 }

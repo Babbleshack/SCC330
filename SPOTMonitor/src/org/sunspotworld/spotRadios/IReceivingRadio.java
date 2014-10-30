@@ -1,15 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Interface defining functionality of Receiving Radio
+ * Dominic Lindsay + Adam Cornforth
  */
 package org.sunspotworld.spotRadios;
 
 import java.io.IOException;
-/**
- *
- * @author adamcornforth
- */
 public interface IReceivingRadio 
 {
 	/**
@@ -22,10 +17,17 @@ public interface IReceivingRadio
 	 /**
      * Receive packets from responding SPOTS,
      * returns the current power level of received packet.
+     * @return  int signal strength
      */
     public int pingRssiReader();
     /**
      * gets the address of the last received ping packet
+     * @return  String address
      */
     public String getLastPingAddress();
+    /**
+     * receives a packet and does nothing.
+     * used to accomodate roaming spots.
+     */
+    public void receiveAndDoNothing();
 }
