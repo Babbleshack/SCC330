@@ -32,6 +32,11 @@ public class ReceivingRadio implements IReceivingRadio
         System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
     }
 
+    public String getReceivedAddress() throws IOException
+    {   
+        return datagram.getAddress();  
+    }
+
     /**
      * Receives the discovey response and returns an array of integers, 
      * containing the port numbers and sensor thresholds
