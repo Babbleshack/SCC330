@@ -189,7 +189,7 @@ public class QueryManager implements IQueryManager
                 /**
                  * Return result
                  */
-                int other_zone_id = result.getInt("zone_object.id");
+                int other_zone_id = result.getInt("zone_object.zone_id");
                 System.out.println("Zone id: " + other_zone_id);
                 return other_zone_id;
             } else {
@@ -222,6 +222,8 @@ public class QueryManager implements IQueryManager
              */
             PreparedStatement record =
                 connection.getConnection().prepareStatement(getJobId);
+
+                System.out.println("Looking for job_id for: " + spot_address + " and column: " + column_name);
 
             record.setString(1, spot_address);
             record.setString(2, column_name);
@@ -355,12 +357,12 @@ public class QueryManager implements IQueryManager
      * @param spot_address int
      * @param time long
      */
-    public void createZoneRecord(int zone_id, String spot_address, long time) {
-        String insertZoneRecord = "INSERT INTO zone_object"
-                + "(zone_id, spot_address, job_id, created_at)"
+    public void createZoneRecord(int zone_id, String spot_address, String tower_address, long time) {
+        String insertZoneRecord = "INSERT INTO zone_spot"
+                + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "zone_id");
+            int job_id = this.getJobIdFromSpotAddressReadingField(tower_address, "zone_id");
             if(job_id > 0) {
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertZoneRecord);
