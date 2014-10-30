@@ -9,6 +9,7 @@ import com.sun.spot.peripheral.radio.RadioFactory;
 import com.sun.spot.peripheral.radio.IRadioPolicyManager;
 import com.sun.spot.io.j2me.radiostream.*;
 import com.sun.spot.io.j2me.radiogram.*;
+import com.sun.spot.io.j2me.radiogram.Radiogram;
 import com.sun.spot.peripheral.ota.OTACommandServer;
 import com.sun.spot.util.IEEEAddress;
 
@@ -26,6 +27,7 @@ public class ReceivingRadio implements IReceivingRadio
     private Datagram  datagram = null;
     
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
+    private String lastPingAddress = null;
 
     public ReceivingRadio(SunspotPort port) throws IOException
     {
@@ -56,5 +58,30 @@ public class ReceivingRadio implements IReceivingRadio
         }
 
         return portsThresholds;
+    }
+
+    /**
+     * Receive packets from responding SPOTS,
+     * returns the current power level of received packet.
+     */
+    public int pingRssiReader()
+    {
+        int powerLevel = -9999;
+        try {
+            datagram.reset();
+            radioConn.receive(datagram);
+            powerLevel = ((Radiogram)datagram).getRssi();
+            lastPingAddress = datagram.getAddress();
+        } catch (IOException e) {
+            System.err.println("Error reading RSSI: " + e);
+        }
+        return powerLevel;
+    }
+    /**
+     * gets the address of the last received ping packet
+     */
+    public String getLastPingAddress()
+    {
+        return lastPingAddress;
     }
 }

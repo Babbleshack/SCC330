@@ -15,12 +15,13 @@ import javax.microedition.io.*;
 
 /**
  *
- * @author adamcornforth
+ * @author adamcornforth + Dominic Lindsay
  */
 public class SendingRadio implements ISendingRadio
 {
     private RadiogramConnection radioConn = null;
     private Datagram  datagram = null;
+    //Radiogram rdg;
     
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
 
@@ -28,7 +29,8 @@ public class SendingRadio implements ISendingRadio
     {
         radioConn = (RadiogramConnection) Connector.open("radiogram://broadcast:" + port.getPort());
         System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
-        datagram = radioConn.newDatagram(50); 
+        datagram = radioConn.newDatagram(50);
+       // rdg = (Radiogram)radioConn.newDatagram(rcvConn.getMaximumLength()); 
     }
 
     public void sendLight(int value)
@@ -77,6 +79,33 @@ public class SendingRadio implements ISendingRadio
             System.err.println("IOException occured while sending Motion Time: " + e);
         
         }
+    }
+    /**
+     * Sends empty packet to be used as a 'pinging' service
+     */
+    public void ping()
+    {
+        try {
+            datagram.reset();
+            radioConn.send(datagram);
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending PING" + e);
+        }
+    }
+    /**
+     * sends SPOT address to basestation
+     */
+    public void sendSPOTAddress(String address)
+    {
+        try
+        {
+            datagram.reset();
+            datagram.writeUTF(address);
+            radioConn.send(datagram);
+        } catch (IOException e) {
+            System.err.println("Error sending SPOT address: " + e);
+        }
+
     }
 
 
