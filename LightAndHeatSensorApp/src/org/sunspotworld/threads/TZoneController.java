@@ -42,7 +42,7 @@ public class TZoneController implements Runnable
 			} catch(IOException io) {
 				System.out.println("Could not receive received address: " + io);
 			}
-			qm.createZoneRecord(newZoneID, spotAddress, System.currentTimeMillis());
+			qm.createZoneRecord(newZoneID, spotAddress, rRadio.getReceivedAddress(), System.currentTimeMillis());
 		}
 
 	}
