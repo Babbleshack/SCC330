@@ -162,8 +162,8 @@ public class QueryManager implements IQueryManager
      * @return int
      */
     public int getOtherTowerZone(String spot_address, int zone_id) {
-        String getZoneId = "SELECT zone_object.zone_id "
-         + "FROM Spot, Object, zone_object"
+        String getZoneIdTowerZone = "SELECT zone_object.zone_id "
+         + "FROM Spot, Object, zone_object "
          + "WHERE Spot.spot_address = ? "
          + "AND Object.spot_id = Spot.id "
          + "AND zone_object.object_id = Object.id "
@@ -176,7 +176,7 @@ public class QueryManager implements IQueryManager
              * Execute select query
              */
             PreparedStatement record =
-                connection.getConnection().prepareStatement(getZoneId);
+                connection.getConnection().prepareStatement(getZoneIdTowerZone);
 
             record.setString(1, spot_address);
             record.setInt(2, zone_id);
@@ -199,7 +199,7 @@ public class QueryManager implements IQueryManager
 
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing "
-                + "getZoneId: " + e);
+                + "getZoneIdTowerZone: " + e);
                 return -1;
         }
     }

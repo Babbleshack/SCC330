@@ -32,8 +32,8 @@ public class TZoneController implements Runnable
 		{
 			System.out.println("About to wait on TOWER!");
 			String spotAddress = rRadio.receiveZonePacket();
-			System.out.println("ADDRESS FROM TOWER");
-			int newZoneID = qm.getOtherTowerZone(spotAddress, qm.getZoneIdFromSpotAddress(spotAddress));  
+			System.out.println("ADDRESS FROM TOWER " + spotAddress);
+			int newZoneID = qm.getOtherTowerZone(rRadio.getReceivedAddress(), qm.getZoneIdFromSpotAddress(spotAddress));  
 			qm.createZoneRecord(newZoneID, spotAddress, System.currentTimeMillis());
 		}
 
