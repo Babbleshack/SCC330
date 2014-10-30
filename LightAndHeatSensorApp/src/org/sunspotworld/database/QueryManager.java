@@ -161,7 +161,7 @@ public class QueryManager implements IQueryManager
      * @parem zone_id current zone_id of SPOT
      * @return int
      */
-    public int getOtherTowerZone(String spot_address, String zone_id) {
+    public int getOtherTowerZone(String spot_address, int zone_id) {
         String getZoneId = "SELECT zone_object.zone_id "
          + "FROM Spot, Object, zone_object"
          + "WHERE Spot.spot_address = ? "
@@ -179,7 +179,7 @@ public class QueryManager implements IQueryManager
                 connection.getConnection().prepareStatement(getZoneId);
 
             record.setString(1, spot_address);
-            record.setString(2, zone_id);
+            record.setInt(2, zone_id);
 
             /**
              * Access ResultSet for zone_id

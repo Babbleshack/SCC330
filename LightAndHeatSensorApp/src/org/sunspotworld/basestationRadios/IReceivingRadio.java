@@ -5,6 +5,7 @@
  */
 package org.sunspotworld.basestationRadios;
 
+import org.sunspotworld.homeCollections.ArrayList;
 import java.io.IOException;
 /**
  *
@@ -48,4 +49,11 @@ public interface IReceivingRadio
 	 * @return String address
 	 */
 	public String receiveDiscoverMe() throws IOException;
+
+	/**
+	 * receives packets from Zone Towers, reads the address 
+	 * of packet
+	 * @return ArrayList tower and spot address
+	 */
+	public String receiveZonePacket();
 }

@@ -17,6 +17,8 @@ public class SunspotPort
     public static final int MOTION_PORT    = 140;
     public static final int PING_PORT      = 150;
     public static final int TOWER_RECIEVER_PORT = 160;
+    public static final int BASE_TOWER_PORT = 170;
+
 
     private final int value;
 

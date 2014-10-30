@@ -6,6 +6,7 @@
 package org.sunspotworld.basestationRadios;
 
 import java.io.IOException;
+import java.lang.Exception;
 
 /**
  *
@@ -13,22 +14,22 @@ import java.io.IOException;
  */
 public class RadiosFactory 
 {
-    public static ISendingRadio createSendingRadio(SunspotPort port) throws IOException
+    public static ISendingRadio createSendingRadio(SunspotPort port)
     {
         try
         {
             return new SendingRadio(port);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("IO exception occured during radion int: " + e );
         }
         return null;
     }
-    public static IReceivingRadio createReceivingRadio(SunspotPort port) throws IOException
+    public static IReceivingRadio createReceivingRadio(SunspotPort port)
     {
         try
         {
             return new ReceivingRadio(port);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("IO exception occured during radion int: " + e );
         }
         return null;
