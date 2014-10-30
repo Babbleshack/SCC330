@@ -39,10 +39,10 @@ public class TZoneController implements Runnable
 			int newZoneID = oldZoneID;
 			try {
 				newZoneID = qm.getOtherTowerZone(rRadio.getReceivedAddress(), oldZoneID);  
+				qm.createZoneRecord(newZoneID, spotAddress, rRadio.getReceivedAddress(), System.currentTimeMillis());
 			} catch(IOException io) {
 				System.out.println("Could not receive received address: " + io);
 			}
-			qm.createZoneRecord(newZoneID, spotAddress, rRadio.getReceivedAddress(), System.currentTimeMillis());
 		}
 
 	}
