@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Interface defining sending SPOT radio
+ * Dominic Lindsay + Adam Cornfourth
  */
 package org.sunspotworld.spotRadios;
 
@@ -46,7 +45,7 @@ public interface ISendingRadio
      */
     public void ping();
     /**
-     * sends SPOT address to basestation
+     * sends SPOT address.
      */
     public void sendSPOTAddress(String address);
 }

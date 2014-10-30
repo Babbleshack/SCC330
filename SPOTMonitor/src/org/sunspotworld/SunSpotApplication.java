@@ -52,6 +52,9 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread switchThread = null;
     private Thread motionThread = null;
     private Thread discoverMeThread = null;
+    private Thread pingThread = null;
+    private Thread towerThread = null;
+    private Thread roamingThread = null;
 
     private static final int MOCK_HEAT_THRESHOLD = 30;
     private static final int MOCK_LIGHT_THRESHOLD = 20;
@@ -92,6 +95,8 @@ public class SunSpotApplication extends MIDlet implements Runnable {
              * Possible limitation: what if there's two spots passing at same time
              */
             case 150: // tower
+                pingThread  = new Thread(new TSendingPing(), "pingService"); 
+                towerThread = new Thread(new TTowerReceiver(), "receptionTowerService");
                 // Dispatch two threads: 
                 // - TSendingPings (on port 150): continually sends 
                 // - TTowerReceiver (on port 160): blocks until response from roaming on 160... 
@@ -99,6 +104,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
                 //                  - wait until RSI falls out of threshold again: then update basestation with zone change
                 break;
             case 160: // roaming
+                roamingThread = new Thread(new TRoaming(), "roamingService");
                 // Dispatch two threads:
                 // - TRoaming (on port 160): block until receives from port 150 (the tower)..
                 //                              - sends response on port 160 to tower 
