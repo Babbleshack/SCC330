@@ -81,14 +81,52 @@ public class QueryManager implements IQueryManager
         }
     }
 
+    public int getSpotIdFromSpotAddress(String spot_address) {
+        String getSpotId = "SELECT Spot.id " 
+                + " FROM Spot"
+                + " WHERE Spot.spot_address = ? ";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getSpotId);
+            record.setString(1, spot_address);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return result.getInt("Spot.id");
+            } else {
+                return -1;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getSpotId: " + e);
+                return -1;
+        }
+    }
+
     /**
-     * Returns a zone id, given a spot address
-     * @param  spot_address [description]
-     * @return              [description]
+     * Returns a spot's most recent zone id, given a spot address
+     * @param  spot_address spot address to get the most recent zone for
+     * @return int zone id
      */
     public int getZoneIdFromSpotAddress(String spot_address) {
-        String getZoneId = "SELECT zone_id FROM zone_spot"
-                + " WHERE spot_address = ?";
+        String getZoneId = "SELECT zone_spot.zone_id " 
+                + " FROM Spot, zone_spot"
+                + " WHERE Spot.spot_address = ? "
+                + " AND zone_spot.spot_id = Spot.id "
+                + " ORDER BY zone_spot.id DESC " 
+                + " LIMIT 1";
+
         try {
             /**
              * Execute select query
@@ -105,9 +143,57 @@ public class QueryManager implements IQueryManager
                 /**
                  * Return result
                  */
-                return result.getInt("zone_id");
-
+                return result.getInt("zone_spot.zone_id");
             } else {
+                return -1;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getZoneId: " + e);
+                return -1;
+        }
+    }
+
+    /**
+     * Returns a tower's adjacent zone_id, given a spot address and a current zone_id
+     * @param spot_address address of tower zone
+     * @parem zone_id current zone_id of SPOT
+     * @return int
+     */
+    public int getOtherTowerZone(String spot_address, String zone_id) {
+        String getZoneId = "SELECT zone_object.zone_id "
+         + "FROM Spot, Object, zone_object"
+         + "WHERE Spot.spot_address = ? "
+         + "AND Object.spot_id = Spot.id "
+         + "AND zone_object.object_id = Object.id "
+         + "AND zone_object.zone_id != ? "
+         + "ORDER BY zone_object.id DESC "
+         + "LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getZoneId);
+
+            record.setString(1, spot_address);
+            record.setString(2, zone_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                int other_zone_id = result.getInt("zone_object.id");
+                System.out.println("Zone id: " + other_zone_id);
+                return other_zone_id;
+            } else {
+                System.out.println("No results for get other tower zone id ");
                 return -1;
             }
 
@@ -164,7 +250,7 @@ public class QueryManager implements IQueryManager
     }
 
     /**
-     * Returns all sensor ports for a given a spot address
+     * Returns all sensor ports and thresholds for a given a spot address
      */
     public ArrayList getSensorPortsJobThresholdsFromSpotAddress(String spot_address) {
         String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold` "
@@ -262,6 +348,36 @@ public class QueryManager implements IQueryManager
                 return new ArrayList();
         }
     }
+
+    /**
+     * Insert Zone record to db
+     * @param zone_id int
+     * @param spot_address int
+     * @param time long
+     */
+    public void createZoneRecord(int zone_id, String spot_address, long time) {
+        String insertZoneRecord = "INSERT INTO zone_object"
+                + "(zone_id, spot_address, job_id, created_at)"
+                + ("VALUES (?,?,?,?)");
+        try {
+            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "zone_id");
+            if(job_id > 0) {
+                PreparedStatement insert =
+                    connection.getConnection().prepareStatement(insertZoneRecord);
+                insert.setInt(1, zone_id);
+                insert.setString(2, this.getSpotIdFromSpotAddress(spot_address));
+                insert.setInt(3, job_id);
+                insert.setTimestamp(4, new Timestamp(time));
+                insert.executeUpdate();
+            } else {
+                System.out.println("No job_id for this zone change reading!");
+            }
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "createZoneRecord: " + e);
+        }
+    }
+
 
     /**
      * Insert motion Data record to db
