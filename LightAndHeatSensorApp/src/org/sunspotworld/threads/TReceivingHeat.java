@@ -7,7 +7,7 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
-import org.sunspotworld.basestationMonitors.IReceivingRadio;
+import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationMonitors.IThermoMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;

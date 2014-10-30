@@ -5,7 +5,6 @@
  */
 package org.sunspotworld.basestationRadios;
 
-import org.sunspotworld.basestationMonitors.IReceivingRadio;
 import com.sun.spot.peripheral.radio.RadioFactory;
 import com.sun.spot.peripheral.radio.IRadioPolicyManager;
 import com.sun.spot.io.j2me.radiostream.*;

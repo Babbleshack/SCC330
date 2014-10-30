@@ -20,20 +20,9 @@ import org.sunspotworld.spotRadios.IReceivingRadio;
 import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 
-import org.sunspotworld.spotMonitors.LightMonitor;
-import org.sunspotworld.spotMonitors.ThermoMonitor;
-import org.sunspotworld.spotMonitors.AccelMonitor;
-import org.sunspotworld.spotMonitors.MotionMonitor;
-
-import org.sunspotworld.spotMonitors.MonitorFactory;
 import com.sun.spot.peripheral.radio.RadioFactory;
-import com.sun.spot.resources.Resources;
-import com.sun.spot.resources.transducers.ISwitch;
-import com.sun.spot.resources.transducers.ITriColorLED;
-import com.sun.spot.resources.transducers.ITriColorLEDArray;
 import com.sun.spot.service.BootloaderListenerService;
 import com.sun.spot.util.IEEEAddress;
-import com.sun.spot.util.Utils;
 
 import java.io.IOException;
 import java.lang.SecurityException;

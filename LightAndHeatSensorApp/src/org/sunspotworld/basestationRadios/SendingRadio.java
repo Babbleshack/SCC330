@@ -5,7 +5,6 @@
  */
 package org.sunspotworld.basestationRadios;
 
-import org.sunspotworld.basestationMonitors.ISendingRadio;
 import com.sun.spot.resources.Resources;
 import java.io.IOException;
 
