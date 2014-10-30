@@ -6,6 +6,14 @@
 
 package org.sunspotworld;
 
+import org.sunspotworld.threads.TTowerReceiver;
+import org.sunspotworld.threads.TSendingLight;
+import org.sunspotworld.threads.TSendingMotion;
+import org.sunspotworld.threads.TRoaming;
+import org.sunspotworld.threads.TSendingPing;
+import org.sunspotworld.threads.TSendingAccel;
+import org.sunspotworld.threads.TSendingHeat;
+import org.sunspotworld.threads.TDiscoverMe;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.IReceivingRadio;

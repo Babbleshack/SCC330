@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package org.sunspotworld.basestationMonitors;
-import org.sunspotworld.Collections.ArrayList;
+import org.sunspotworld.homeCollections.ArrayList;
 import java.io.IOException;
 
 /**

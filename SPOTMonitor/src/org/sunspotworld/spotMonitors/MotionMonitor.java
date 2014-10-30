@@ -19,8 +19,8 @@ import com.sun.spot.resources.transducers.SensorEvent;
 import org.sunspotworld.spotMonitors.IMotionMonitor;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
-import org.sunspotworld.Patterns.Observer;
-import org.sunspotworld.Patterns.Observable;
+import org.sunspotworld.homePatterns.Observer;
+import org.sunspotworld.homePatterns.Observable;
 import com.sun.spot.util.Utils;
 import java.io.IOException;
 
