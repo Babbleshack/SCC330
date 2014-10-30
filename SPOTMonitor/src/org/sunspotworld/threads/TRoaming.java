@@ -31,7 +31,9 @@ public class TRoaming implements Runnable
 	{
 		while(true)
 		{
+			System.out.println("Waiting on PING");
 			rRadio.receiveAndDoNothing();
+			System.out.println("received PING");
 			sRadio.sendSPOTAddress(System.getProperty("IEEE_ADDRESS"));	
 		}
 	}
