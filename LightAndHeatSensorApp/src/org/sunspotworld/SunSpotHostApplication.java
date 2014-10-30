@@ -10,6 +10,7 @@ import org.sunspotworld.threads.TDiscovery;
 import org.sunspotworld.threads.TReceivingHeat;
 import org.sunspotworld.threads.TReceivingAccel;
 import org.sunspotworld.threads.TReceivingLight;
+import org.sunspotworld.threads.TZoneController;
 import com.sun.spot.peripheral.ota.OTACommandServer;
 import org.sunspotworld.homeCollections.ArrayList;
 
@@ -36,6 +37,7 @@ public class SunSpotHostApplication implements Runnable
     private Thread heatThread = null;
     private Thread lightThread = null;
     private Thread accelThread = null;
+    private Thread zoneThread = null;
 
     /**
      * Starts polling threads
@@ -55,18 +57,20 @@ public class SunSpotHostApplication implements Runnable
         heatThread = new Thread(new TReceivingHeat(),"heatService");
         lightThread = new Thread(new TReceivingLight(),"lightService");
         accelThread = new Thread(new TReceivingAccel(),"accelService");
-
+        zoneThread = new Thread(new TZoneController(), "zoneControllerService");
         // generalThread.setDaemon(true);
         discoveryThread.setDaemon(true);
         heatThread.setDaemon(true);
         lightThread.setDaemon(true);
         accelThread.setDaemon(true);
+        zoneThread.setDaemon(true);
 
         // generalThread.start();
         discoveryThread.start();
         heatThread.start();
         lightThread.start();
         accelThread.start();
+        zoneThread.start();
     }
 
     public void run()
