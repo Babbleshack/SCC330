@@ -6,16 +6,20 @@
 
 package org.sunspotworld;
 
+import org.sunspotworld.threads.TDiscovery;
+import org.sunspotworld.threads.TReceivingHeat;
+import org.sunspotworld.threads.TReceivingAccel;
+import org.sunspotworld.threads.TReceivingLight;
 import com.sun.spot.peripheral.ota.OTACommandServer;
-import org.sunspotworld.Collections.ArrayList;
+import org.sunspotworld.homeCollections.ArrayList;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
-import org.sunspotworld.DB.QueryManager;
-import org.sunspotworld.DataTypes.LightData;
-import org.sunspotworld.DataTypes.ThermoData;
+import org.sunspotworld.database.QueryManager;
+import org.sunspotworld.valueObjects.LightData;
+import org.sunspotworld.valueObjects.ThermoData;
 
 /**
  * Host application that polls for temperature and
