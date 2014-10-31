@@ -79,6 +79,7 @@ public class SendingRadio implements ISendingRadio
         
         }
     }
+
     /**
      * Sends empty packet to be used as a 'pinging' service
      */
@@ -91,6 +92,7 @@ public class SendingRadio implements ISendingRadio
             System.err.println("IOException occured while sending PING" + e);
         }
     }
+
     /**
      * sends SPOT address to basestation
      */
@@ -108,6 +110,22 @@ public class SendingRadio implements ISendingRadio
 
     }
 
+    /**
+     * sends Tower address of Tower that pinged the SPOT to tower
+     */
+    public void sendTowerAddress(String address)
+    {
+        try
+        {
+            datagram.reset();
+            datagram.writeUTF(address);
+            radioConn.send(datagram);
+            System.out.println("Tower address sent to tower..."); 
+        } catch (IOException e) {
+            System.err.println("Error sending Tower address: " + e);
+        }
+
+    }
 
     public void discoverMe() {
         try {

@@ -65,12 +65,18 @@ public class ReceivingRadio implements IReceivingRadio
      * Receive packets from responding SPOTS,
      * returns the current power level of received packet.
      */
-    public int pingRssiReader()
+    public int receivePingReply()
     {
         int powerLevel = -9999;
         try {
-            datagram.reset();
-            radioConn.receive(datagram);
+            String tower_address = ""; 
+
+            while(tower_address != spotAddress) {
+                datagram.reset();
+                radioConn.receive(datagram);
+                tower_address = datagram.readUTF();
+            }
+
             powerLevel = ((Radiogram)datagram).getRssi();
             lastPingAddress = datagram.getAddress();
         } catch (IOException e) {
@@ -78,6 +84,7 @@ public class ReceivingRadio implements IReceivingRadio
         }
         return powerLevel;
     }
+
     /**
      * gets the address of the last received ping packet
      * @return address String
@@ -86,18 +93,21 @@ public class ReceivingRadio implements IReceivingRadio
     {
         return lastPingAddress;
     }
+
     /**
-     * receives a packet and does nothing.
-     * used to accomodate roaming spots.
+     * receives a ping packet to roaming spot and 
+     * returns address of tower that sent it 
      */
-    public void receiveAndDoNothing()
+    public String receivePing()
     {
         try
         {
             datagram.reset();
             radioConn.receive(datagram);
+            return this.getReceivedAddress();
         } catch (IOException e) {
             System.err.println("Error while waiting on packet");
         }
+        return null;
     }   
 }

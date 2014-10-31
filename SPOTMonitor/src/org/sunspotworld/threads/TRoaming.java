@@ -44,11 +44,11 @@ public class TRoaming implements Runnable
 		while(true)
 		{
 			waiting.setOn();
-			rRadio.receiveAndDoNothing();
+			String tower_address = rRadio.receivePing();
 			waiting.setOff();
 			ping.setOn();
 			System.out.println("received PING");
-			sRadio.sendSPOTAddress(System.getProperty("IEEE_ADDRESS"));
+			sRadio.sendTowerAddress(tower_address);
 			ping.setOff();	
 		}
 	}

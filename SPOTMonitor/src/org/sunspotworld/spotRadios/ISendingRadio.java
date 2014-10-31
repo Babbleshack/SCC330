@@ -44,8 +44,14 @@ public interface ISendingRadio
      * Sends empty packet to be used as a 'pinging' service
      */
     public void ping();
+
     /**
      * sends SPOT address.
      */
     public void sendSPOTAddress(String address);
+
+    /**
+     * sends Tower address.
+     */
+    public void sendTowerAddress(String address);
 }

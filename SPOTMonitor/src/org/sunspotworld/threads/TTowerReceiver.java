@@ -15,7 +15,7 @@ public class TTowerReceiver implements Runnable
 	private ISendingRadio sRadio;
 	private IReceivingRadio rRadio;
 	private static final int INNER_THRESHOLD = -7;
-	private static final int OUTER_THRESHOLD = -20;
+	private static final int OUTER_THRESHOLD = -30;
 	public TTowerReceiver()
 	{
 		try
@@ -32,7 +32,7 @@ public class TTowerReceiver implements Runnable
 		boolean inRange = false;
 		while(true)
 		{
-			powerLevel = rRadio.pingRssiReader(); 
+			powerLevel = rRadio.receivePingReply(); 
 			System.out.println("Power level: " + powerLevel);
 			if(powerLevel > INNER_THRESHOLD && !inRange) //within proximity of tower
 			{
@@ -41,7 +41,7 @@ public class TTowerReceiver implements Runnable
 			}
 			if(powerLevel < OUTER_THRESHOLD && inRange) //leaving proximity
 			{
-				//REPORT ADDRESS TO BASESTATION
+				// REPORT ADDRESS TO BASESTATION
 				inRange = false;
 				sRadio.sendSPOTAddress(rRadio.getLastPingAddress());
 				System.out.println("Leaving territory with power level: " + powerLevel);
