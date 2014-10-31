@@ -36,7 +36,7 @@ public class TZoneController implements Runnable
 			String spotAddress = rRadio.receiveZonePacket();
 			System.out.println("ADDRESS FROM TOWER " + spotAddress);
 			int oldZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
-			int newZoneID = oldZoneID;
+			int newZoneID = -9999;
 			try {
 				newZoneID = qm.getOtherTowerZone(rRadio.getReceivedAddress(), oldZoneID);  
 				qm.createZoneRecord(newZoneID, spotAddress, rRadio.getReceivedAddress(), System.currentTimeMillis());
