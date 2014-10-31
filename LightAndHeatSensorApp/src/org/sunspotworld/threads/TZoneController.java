@@ -32,14 +32,22 @@ public class TZoneController implements Runnable
 	{
 		while(true)
 		{
-			System.out.println("About to wait on TOWER!");
-			String spotAddress = rRadio.receiveZonePacket();
-			System.out.println("ADDRESS FROM TOWER " + spotAddress);
-			int oldZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
-			int newZoneID = oldZoneID;
+			System.out.println("Base station waiting for Tower forwarding of ping reply from SPOT");
 			try {
-				newZoneID = qm.getOtherTowerZone(rRadio.getReceivedAddress(), oldZoneID);  
-				qm.createZoneRecord(newZoneID, spotAddress, rRadio.getReceivedAddress(), System.currentTimeMillis());
+				String spotAddress = rRadio.receiveZonePacket();
+				String towerAddress = rRadio.getReceivedAddress();
+				System.out.println("SPOT " + spotAddress + " has passed tower " + towerAddress);
+
+				// Get current SPOT zone 
+				int oldZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
+				int newZoneID;
+
+				// Get adjacent zone for this tower
+				newZoneID = qm.getOtherTowerZone(towerAddress, oldZoneID);  
+
+				// Insert zone change to adjacent zone
+				qm.createZoneRecord(newZoneID, spotAddress, towerAddress, System.currentTimeMillis());
+
 			} catch(IOException io) {
 				System.out.println("Could not receive received address: " + io);
 			}

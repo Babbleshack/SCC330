@@ -101,6 +101,7 @@ public class SendingRadio implements ISendingRadio
             datagram.reset();
             datagram.writeUTF(address);
             radioConn.send(datagram);
+            System.out.println("SPOT address sent to basestation..."); 
         } catch (IOException e) {
             System.err.println("Error sending SPOT address: " + e);
         }

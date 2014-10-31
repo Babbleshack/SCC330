@@ -33,17 +33,18 @@ public class TTowerReceiver implements Runnable
 		while(true)
 		{
 			powerLevel = rRadio.pingRssiReader(); 
+			System.out.println("Power level: " + powerLevel);
 			if(powerLevel > INNER_THRESHOLD && !inRange) //within proximity of tower
 			{
 				inRange = true;
-				System.out.println("within territory");
+				System.out.println("Within territory with power level: " + powerLevel);
 			}
 			if(powerLevel < OUTER_THRESHOLD && inRange) //leaving proximity
 			{
 				//REPORT ADDRESS TO BASESTATION
 				inRange = false;
 				sRadio.sendSPOTAddress(rRadio.getLastPingAddress());
-				System.out.println("leaving territory");
+				System.out.println("Leaving territory with power level: " + powerLevel);
 			}
 		}
 	}
