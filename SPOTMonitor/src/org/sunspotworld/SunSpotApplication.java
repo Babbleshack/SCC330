@@ -92,7 +92,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
              * Possible limitation: what if there's two spots passing at same time
              */
             case 150: // tower
-            System.out.println("Starting TOwer Threads");
+            System.out.println("Starting Tower Threads");
                 pingThread  = new Thread(new TSendingPing(), "pingService"); 
                 towerThread = new Thread(new TTowerReceiver(), "receptionTowerService");
                 pingThread.start();
@@ -104,7 +104,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
                 //                  - wait until RSI falls out of threshold again: then update basestation with zone change
                 break;
             case 160: // roaming
-            System.out.println("Starting ROAMING Threads");
+            System.out.println("Starting Roaming Threads");
                 roamingThread = new Thread(new TRoaming(), "roamingService");
                 roamingThread.start();
                 // Dispatch two threads:
