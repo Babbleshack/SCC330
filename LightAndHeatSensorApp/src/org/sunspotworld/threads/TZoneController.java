@@ -33,6 +33,7 @@ public class TZoneController implements Runnable
 		while(true)
 		{
 			System.out.println("Base station waiting for Tower forwarding of ping reply from SPOT");
+
 			try {
 				String spotAddress = rRadio.receiveZonePacket();
 				String towerAddress = rRadio.getReceivedAddress();
