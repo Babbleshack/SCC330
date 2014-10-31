@@ -71,11 +71,13 @@ public class ReceivingRadio implements IReceivingRadio
         try {
             String tower_address = ""; 
 
-            while(tower_address != spotAddress) {
+            while(!tower_address.equals(spotAddress)) {
                 datagram.reset();
                 radioConn.receive(datagram);
                 tower_address = datagram.readUTF();
+                System.out.println("Ping reply recipient: " + tower_address + ", This tower address: " + spotAddress);
             }
+            System.out.println("Tower received ping reply addressed to itself...");
 
             powerLevel = ((Radiogram)datagram).getRssi();
             lastPingAddress = datagram.getAddress();
