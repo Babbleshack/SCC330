@@ -28,7 +28,7 @@ public class QueryManager implements IQueryManager
         connection = DatabaseConnectionFactory.createMySQLConnection();
     }
 
-    public Boolean isSpotExists(String spot_address) {
+    public boolean isSpotExists(String spot_address) {
         String isSpotExists = "SELECT * FROM Spot WHERE spot_address = ?";
 
         try {
@@ -285,8 +285,10 @@ public class QueryManager implements IQueryManager
             ArrayList output_array = new ArrayList();
 
             while (result.next()) {
-                output_array.add(result.getInt("Sensor.port_number"));
-                output_array.add(result.getInt("Job.threshold"));
+                output_array.add((Object)
+                        Integer.valueOf(result.getInt("Sensor.port_number")));
+                output_array.add((Object)
+                        Integer.valueOf(result.getInt("Job.threshold")));
             }
 
             if(output_array.size() == 0) 
@@ -335,7 +337,8 @@ public class QueryManager implements IQueryManager
             ArrayList output_array = new ArrayList();
 
             while (result.next()) {
-                output_array.add(result.getInt("Job.id"));
+                output_array.add((Object)Integer.valueOf(
+                        result.getInt("Job.id")));
                 System.out.println("Job id: " + result.getInt("Job.id"));
             }
 
