@@ -28,7 +28,7 @@ public class QueryManager implements IQueryManager
         connection = DatabaseConnectionFactory.createMySQLConnection();
     }
 
-    public boolean isSpotExists(String spot_address) {
+    public Boolean isSpotExists(String spot_address) {
         String isSpotExists = "SELECT * FROM Spot WHERE spot_address = ?";
 
         try {
