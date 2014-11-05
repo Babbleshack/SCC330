@@ -81,6 +81,11 @@ public class QueryManager implements IQueryManager
         }
     }
 
+    /**
+     * Gets spot_id of a SPOT given a spot_address
+     * @param  spot_address spot_address of SPOT to get ID of 
+     * @return spot_id
+     */
     public int getSpotIdFromSpotAddress(String spot_address) {
         String getSpotId = "SELECT Spot.id " 
                 + " FROM Spot"
@@ -111,6 +116,49 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getSpotId: " + e);
                 return -1;
+        }
+    }
+
+    /**
+     * Gets spot_address of SPOT from a search on what object it is tracking
+     * 
+     * Search is done using LIKE %object_title%, so object_title = "center" would return the 
+     * first spot_address for objects with "center" in their name
+     * 
+     * @param  object_title object_title to search for related SPOT on  
+     * @return spot_address
+     */
+    public String getSpotAddressFromObjectTitle(String object_title) {
+        String getSpotAddress = "SELECT Spot.spot_address " 
+                + " FROM Spot, Object"
+                + " WHERE Spot.id = Object.spot_id "
+                + " AND Object.title LIKE %?%";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getSpotAddress);
+            record.setString(1, object_title);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return result.getString("Spot.spot_address");
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getSpotAddress: " + e);
+                return null;
         }
     }
 
@@ -589,10 +637,11 @@ public class QueryManager implements IQueryManager
                 + "createLightRecord: " + e);
         }
     }
-     /**
-     * returns past 7 days of Light Data
-      */
-     public ArrayList getPastWeekLight() {
+
+    /**
+     * Returns past 7 days of light data
+     */
+    public ArrayList getPastWeekLight() {
         //ArrayList for collection data
         ArrayList lightDatums = new ArrayList();
         //find timestamps
@@ -626,7 +675,10 @@ public class QueryManager implements IQueryManager
             return lightDatums;
     }
 
-     public ArrayList getPastWeekThermo() {
+    /**
+     * Returns past 7 days of thermo data
+     */
+    public ArrayList getPastWeekThermo() {
         //ArrayList for collection data
         ArrayList thermoDatums = new ArrayList();
         //find timestamps
@@ -659,6 +711,10 @@ public class QueryManager implements IQueryManager
         }
         return thermoDatums;
     }
+
+    /**
+     * Returns past 7 days of accelleration and thermo data
+     */
     public ArrayList getPastAccelThermo() {
         //ArrayList for collection data
         ArrayList accelDatums = new ArrayList();
