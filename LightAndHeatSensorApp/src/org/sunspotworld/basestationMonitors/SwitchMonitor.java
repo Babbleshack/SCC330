@@ -10,14 +10,14 @@ import java.io.IOException;
 import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 import org.sunspotworld.basestationRadios.SunspotPort;
 
-public class ThermoMonitor implements IThermoMonitor 
+public class SwitchMonitor implements ISwitchMonitor 
 {
     private SunspotPort port;
 
-    public ThermoMonitor()
+    public SwitchMonitor()
     {
         try {
-            this.port = new SunspotPort(SunspotPort.THERMO_PORT);
+            this.port = new SunspotPort(SunspotPort.SWITCH_PORT);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }

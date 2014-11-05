@@ -42,6 +42,13 @@ public class ReceivingRadio implements IReceivingRadio
         return datagram.getAddress();  
     }
 
+    public String receiveSwitch() throws IOException
+    {
+        datagram.reset();
+        radioConn.receive(datagram); 
+        return datagram.readUTF(); 
+    }
+
     public int receiveLight() throws IOException
     {
         datagram.reset();

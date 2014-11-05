@@ -6,19 +6,25 @@ package org.sunspotworld.spotMonitors;
 
 //resources
 import com.sun.spot.resources.Resources;
+
 //These two packages need to be imported to allow you to create an instance
 //of EDemoBoard and to access the I/O pins on the board
 import com.sun.spot.sensorboard.EDemoBoard;
 import com.sun.spot.sensorboard.io.IScalarInput;
+
 import com.sun.spot.resources.transducers.ITriColorLED;
 import com.sun.spot.resources.transducers.ITriColorLEDArray;
 import com.sun.spot.resources.transducers.IToneGenerator;
+
 import com.sun.spot.resources.transducers.Condition;
 import com.sun.spot.resources.transducers.IConditionListener;
 import com.sun.spot.resources.transducers.SensorEvent;
+
 import org.sunspotworld.spotMonitors.IMotionMonitor;
+
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
+
 import org.sunspotworld.homePatterns.Observer;
 import org.sunspotworld.homePatterns.Observable;
 import com.sun.spot.util.Utils;
@@ -36,8 +42,6 @@ public class MotionMonitor extends Observable implements IMotionMonitor
     private Condition conditionMet;
     private SunspotPort port;
 
-
-    private static final int PORTNUM = 140;
     private static final double FREQ = 50.0;
     private static final int FREQ_DUR = 100;
     private static final int INTENSITY = 100;
@@ -54,14 +58,13 @@ public class MotionMonitor extends Observable implements IMotionMonitor
 		demo = EDemoBoard.getInstance();
 		this.irSensor = irSensor = demo.getScalarInputs()[EDemoBoard.A0];
         try {
-            this.port = new SunspotPort(PORTNUM);
+            this.port = new SunspotPort(SunspotPort.MOTION_PORT);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
         this.prepareConditions();
     }
-
-    
+ 
     /**
      * innitializes conditions and starts them
      */
@@ -89,14 +92,13 @@ public class MotionMonitor extends Observable implements IMotionMonitor
         conditionMet.start();    
     }
 
-
-
-
-    //IMPORTED COMMENT FROM GERALD
-    //returns motion sensor value. When the sensors detects a motion, its
-    //output pin goes high (decimal equivalent of 1023). When there is no motion
-    //the output reverts to zero. When motion is detected, LED (0) lights up
-    //green else red
+    /**
+     * IMPORTED COMMENT FROM GERALD
+     * returns motion sensor value. When the sensors detects a motion, its
+     * output pin goes high (decimal equivalent of 1023). When there is no motion
+     * the output reverts to zero. When motion is detected, LED (0) lights up
+     * green else red
+     */
     public int getSensorValue()
     {
        try
@@ -122,10 +124,12 @@ public class MotionMonitor extends Observable implements IMotionMonitor
             return -1;
        }   
     }
+
     public long getMotionTime()
     {
     	return this.lastMotion; 
     }
+
     public SunspotPort getPort()
     {
         return this.port;

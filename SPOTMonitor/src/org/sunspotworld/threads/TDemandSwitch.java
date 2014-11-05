@@ -8,9 +8,7 @@ package org.sunspotworld.threads;
 
 import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
-import org.sunspotworld.spotMonitors.IThermoMonitor;
-import org.sunspotworld.spotMonitors.ILightMonitor;
-import org.sunspotworld.spotMonitors.IAccelMonitor;
+import org.sunspotworld.spotMonitors.ISwitchMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import com.sun.spot.util.Utils;
@@ -25,31 +23,31 @@ import com.sun.spot.resources.transducers.SwitchEvent;
  */
 public class TDemandSwitch implements Runnable, ISwitchListener
 {
-    private ISwitch sw1;
+    private ISwitch sw1, sw2;
     private static final int DEFAULT_THRESHOLD = 0;
-    // Init sending radio
-    IThermoMonitor thermoMonitor;
-    ILightMonitor lightMonitor;
-    IAccelMonitor accelMonitor;
 
+    ISwitchMonitor switchMonitor;
 
-    ISendingRadio thermoSendingRadio, lightSendingRadio, accelSendingRadio;
+    ISendingRadio switchSendingRadio;
 
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TDemandSwitch(int heat_threshold) throws IOException
+    public TDemandSwitch(int heat_threshold)
     {
         sw1 = (ISwitch) Resources.lookup(ISwitch.class, "SW1");
         sw1.addISwitchListener(this);       // enable automatic notification of switches
+
+        sw2 = (ISwitch) Resources.lookup(ISwitch.class, "SW2");
+        sw2.addISwitchListener(this);       // enable automatic notification of switches
+
         try
         {
-            thermoMonitor = MonitorFactory.createThermoMonitor(DEFAULT_THRESHOLD);
-            lightMonitor = MonitorFactory.createLightMonitor(DEFAULT_THRESHOLD);
-            accelMonitor = MonitorFactory.createAccelMonitor();
+            switchMonitor = MonitorFactory.createSwitchMonitor();
 
-            thermoSendingRadio = RadiosFactory.createSendingRadio(thermoMonitor.getPort());
-            lightSendingRadio = RadiosFactory.createSendingRadio(lightMonitor.getPort());
-            accelSendingRadio = RadiosFactory.createSendingRadio(accelMonitor.getPort());
+            switchMonitor.addSwitch(sw1, "SW1");
+            switchMonitor.addSwitch(sw2, "SW2"); 
+
+            switchSendingRadio = RadiosFactory.createSendingRadio(switchMonitor.getPort());
         }
         catch(Exception e)
         {
@@ -64,12 +62,11 @@ public class TDemandSwitch implements Runnable, ISwitchListener
      * @param sw the switch that was pressed/released.
      */
     public void switchPressed(SwitchEvent evt) {
+        System.out.println("Switch " + switchMonitor.getPressedId(evt) + " pressed!");
     }
     
     public void switchReleased(SwitchEvent evt) {
-        thermoSendingRadio.sendHeat(thermoMonitor.getCelsiusTemp());
-        lightSendingRadio.sendLight(lightMonitor.getLightIntensity());
-        accelSendingRadio.sendAccel(accelMonitor.getAccel());
+        switchSendingRadio.sendSwitch(evt.getSwitch().getTagValue("id")); 
     }
 
     public void startPolling() throws Exception

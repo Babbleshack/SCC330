@@ -7,6 +7,7 @@
 package org.sunspotworld;
 
 import org.sunspotworld.threads.TDiscovery;
+import org.sunspotworld.threads.TReceivingSwitch;
 import org.sunspotworld.threads.TReceivingHeat;
 import org.sunspotworld.threads.TReceivingAccel;
 import org.sunspotworld.threads.TReceivingLight;
@@ -33,11 +34,7 @@ public class SunSpotHostApplication implements Runnable
      * Threads for communicating with SPOT
      */
     // private Thread generalThread = null;
-    private Thread discoveryThread = null;
-    private Thread heatThread = null;
-    private Thread lightThread = null;
-    private Thread accelThread = null;
-    private Thread zoneThread = null;
+    private Thread discoveryThread, switchThread, heatThread, lightThread, accelThread, zoneThread = null;
 
     /**
      * Starts polling threads
@@ -54,12 +51,15 @@ public class SunSpotHostApplication implements Runnable
     {
         // generalThread = new Thread(new TGeneral(),"generalService");
         discoveryThread = new Thread(new TDiscovery(),"discoveryService");
+        switchThread = new Thread(new TReceivingSwitch(),"switchService");
         heatThread = new Thread(new TReceivingHeat(),"heatService");
         lightThread = new Thread(new TReceivingLight(),"lightService");
         accelThread = new Thread(new TReceivingAccel(),"accelService");
         zoneThread = new Thread(new TZoneController(), "zoneControllerService");
+
         // generalThread.setDaemon(true);
         discoveryThread.setDaemon(true);
+        switchThread.setDaemon(true);
         heatThread.setDaemon(true);
         lightThread.setDaemon(true);
         accelThread.setDaemon(true);
@@ -67,6 +67,7 @@ public class SunSpotHostApplication implements Runnable
 
         // generalThread.start();
         discoveryThread.start();
+        switchThread.start();
         heatThread.start();
         lightThread.start();
         accelThread.start();

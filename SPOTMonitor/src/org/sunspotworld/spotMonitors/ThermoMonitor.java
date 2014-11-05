@@ -22,25 +22,28 @@ import com.sun.spot.util.Utils;
 public class ThermoMonitor extends Observable implements IThermoMonitor
 {
     private SunspotPort port;
-    private static final int portNum = 110;
     private ITemperatureInput thermo;
+
     private final int threshold; 
+
     //define condition and callback
     private IConditionListener thermoCheck;
     private Condition conditionMet;
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
+
     public ThermoMonitor(int threshold)
     {
         this.thermo = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
         try {
-            this.port = new SunspotPort(portNum);
+            this.port = new SunspotPort(SunspotPort.THERMO_PORT);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
         this.threshold = threshold;
         this.prepareConditions();
     }
+    
     /**
      * innitializes conditions and starts them
      */
@@ -74,7 +77,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     }
 
     public static int getStaticPort() {
-        return portNum;
+        return SunspotPort.THERMO_PORT;
     }
 
     public double getCelsiusTemp() {

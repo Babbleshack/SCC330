@@ -27,6 +27,12 @@ public interface IReceivingRadio
 	public int receiveLight() throws IOException;
 
 	/**
+	 * Receives a datagram sent by the SendingRadio containing a switch id
+	 * @return String switch id
+	 */
+	public String receiveSwitch() throws IOException;
+
+	/**
 	 * Receives a datagram sent by the SendingRadio containing heat data
 	 * @return heat data
 	 */
@@ -37,6 +43,7 @@ public interface IReceivingRadio
 	 * @return accel data
 	 */
 	public double receiveAccel() throws IOException;
+
 	/**
 	 * Receives a datagram sent by the SendingRadio containing Motion data
 	 * @return motion time data

@@ -352,6 +352,30 @@ public class QueryManager implements IQueryManager
     }
 
     /**
+     * Insert Switch record to db
+     * @param switch_id String
+     * @param spot_address string
+     * @param time long
+     */
+    public void createSwitchRecord(String switch_id, String spot_address, long time) {
+        String insertSwitchRecord = "INSERT INTO Switch"
+                + "(switch_id, spot_address, zone_id, created_at)"
+                + ("VALUES (?,?,?,?)");
+        try {
+            PreparedStatement insert =
+                connection.getConnection().prepareStatement(insertSwitchRecord);
+            insert.setString(1, switch_id);
+            insert.setString(2, spot_address);
+            insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+            insert.setTimestamp(4, new Timestamp(time));
+            insert.executeUpdate();
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "createSwitchRecord: " + e);
+        }
+    }
+
+    /**
      * Insert Zone record to db
      * @param zone_id int
      * @param spot_address int

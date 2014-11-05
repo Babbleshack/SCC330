@@ -14,6 +14,7 @@ import org.sunspotworld.threads.TSendingPing;
 import org.sunspotworld.threads.TSendingAccel;
 import org.sunspotworld.threads.TSendingHeat;
 import org.sunspotworld.threads.TDiscoverMe;
+import org.sunspotworld.threads.TDemandSwitch;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.IReceivingRadio;
@@ -43,19 +44,10 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     /**
      * Threads for communicating with Basestation
      */
-    private Thread heatThread = null;
-    private Thread lightThread = null;
-    private Thread accelThread = null;
-    private Thread switchThread = null;
-    private Thread motionThread = null;
-    private Thread discoverMeThread = null;
-    private Thread pingThread = null;
-    private Thread towerThread = null;
-    private Thread roamingThread = null;
+    private Thread heatThread, lightThread, accelThread, switchThread, motionThread, discoverMeThread, pingThread, towerThread, roamingThread = null;
 
     private static final int MOCK_HEAT_THRESHOLD = 30;
     private static final int MOCK_LIGHT_THRESHOLD = 20;
-
 
     private ISendingRadio discoverMeRadio;
     private IReceivingRadio discoverRequestRadio;
@@ -129,6 +121,9 @@ public class SunSpotApplication extends MIDlet implements Runnable {
 
         discoverMeThread = new Thread(new TDiscoverMe(),"discoverMeService");
         discoverMeThread.start();
+
+        switchThread = new Thread(new TDemandSwitch(MOCK_HEAT_THRESHOLD),"switchService");
+        switchThread.start();
 
         int[] portsThresholds = null;
         try {

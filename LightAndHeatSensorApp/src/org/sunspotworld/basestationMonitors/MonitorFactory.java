@@ -12,16 +12,24 @@ public class MonitorFactory
     {
         return new LightMonitor();
     }
+    
     public static IThermoMonitor createThermoMonitor()
     {
         return new ThermoMonitor();
     }
+    
     public static IAccelMonitor createAccelMonitor()
     {
-    	return new AccelMonitor();
+        return new AccelMonitor();
     }
+    
     public static IMotionMonitor createMotionMonitor()
     {
         return new MotionMonitor();
+    }
+
+    public static ISwitchMonitor createSwitchMonitor()
+    {
+        return new SwitchMonitor();
     }
 }

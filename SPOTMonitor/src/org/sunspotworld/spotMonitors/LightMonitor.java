@@ -19,25 +19,28 @@ import com.sun.spot.util.Utils;
 public class LightMonitor extends Observable implements ILightMonitor
 {
     private SunspotPort port;
-    private static final int portNum = 120;
     private final ILightSensor lightSensor; //Light Sensor
+
     //threshold stuff
     private final int threshold;
+
     private IConditionListener lightCheck;
     private Condition conditionMet;
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
+
     public LightMonitor(int threshold)
     {
         this.lightSensor = (ILightSensor) Resources.lookup(ILightSensor.class);
         try {
-            this.port = new SunspotPort(portNum);
+            this.port = new SunspotPort(SunspotPort.LIGHT_PORT);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
         this.prepareConditions();
         this.threshold = threshold;
     }
+    
     /**
      * innitializes conditions and starts them
      */
@@ -66,13 +69,14 @@ public class LightMonitor extends Observable implements ILightMonitor
         conditionMet.start();    
     }
 
-
     public SunspotPort getPort() {
         return this.port;
     }
+
     public static int getStaticPort() {
-        return portNum;
+        return SunspotPort.LIGHT_PORT;
     }
+
     public int getLightIntensity()
     {
         try

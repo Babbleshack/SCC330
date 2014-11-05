@@ -7,18 +7,19 @@ package org.sunspotworld.spotRadios;
  */
 public class SunspotPort 
 {
-    public static final int MAX_VALUE = 255;
-    public static final int MIN_VALUE = 31;
-    //PORTS FOR SENSORS
-    public static final int DISCOVERY_PORT = 90;
-    public static final int THERMO_PORT    = 110;
-    public static final int LIGHT_PORT     = 120;
-    public static final int ACCEL_PORT     = 130;
-    public static final int MOTION_PORT    = 140;
-    public static final int PING_PORT      = 150;
+    public static final int MAX_VALUE           = 255;
+    public static final int MIN_VALUE           = 31;
+    
+    // PORTS FOR SENSORS
+    public static final int DISCOVERY_PORT      = 90;
+    public static final int SWITCH_PORT         = 100;
+    public static final int THERMO_PORT         = 110;
+    public static final int LIGHT_PORT          = 120;
+    public static final int ACCEL_PORT          = 130;
+    public static final int MOTION_PORT         = 140;
+    public static final int PING_PORT           = 150;
     public static final int TOWER_RECIEVER_PORT = 160;
-    public static final int BASE_TOWER_PORT = 170;
-
+    public static final int BASE_TOWER_PORT     = 170;
 
     private final int value;
 

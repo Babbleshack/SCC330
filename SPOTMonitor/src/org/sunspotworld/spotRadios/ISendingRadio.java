@@ -29,11 +29,18 @@ public interface ISendingRadio
 	 * @param  value the accel value to send to the basestation
 	 */
 	public void sendAccel(double value);
+
 	/**
 	 * Builds a datagram that send last Motion time event to the basestation
 	 * @param time of last motion, long
 	 */
 	public void sendMotionTime(long value);
+
+	/**
+	 * Builds a datagram that sends a switch event to the basestation
+	 * @param id of button press
+	 */
+	public void sendSwitch(String value);
 
 	/**
 	 * Method that sends a "discover me" message to the base station
