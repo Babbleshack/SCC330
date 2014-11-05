@@ -14,16 +14,16 @@ import com.sun.spot.util.Utils;
 // import java.util.Observer;
 
 /**
- * Thread to send Thermo data
+ * Thread to send DiscoverMe requests
  */
 public class TDiscoverMe implements Runnable
 {
     ISendingRadio discoverMeRadio;
-    private static final int SAMPLE_RATE = 15 * 1000; // 15 seconds
+    private static final int SAMPLE_RATE = 30 * 1000; // 30 seconds
 
     /**
-     * Instantiates the monitor and sending radio required
-     * for sending thermo data to the base station
+     * Instantiates the sending radio required
+     * for sending discover me requests
      */
     public TDiscoverMe()
     {
