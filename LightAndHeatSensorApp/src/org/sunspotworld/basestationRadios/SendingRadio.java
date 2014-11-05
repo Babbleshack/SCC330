@@ -44,7 +44,7 @@ public class SendingRadio implements ISendingRadio
 
             // now write ports + thresh
             for (int i = 0; i < portsThresholds.size(); i += 2) {
-                switch((Integer)portsThresholds.get(i)) {
+                switch(((Integer)portsThresholds.get(i)).intValue()) {
                     case 110:
                         System.out.println("SPOT has job of sensing heat");
                         break;
@@ -58,9 +58,10 @@ public class SendingRadio implements ISendingRadio
                         System.out.println("SPOT has job of sensing motion");
                         break;
                 }
-
-                datagram.writeInt((Integer)portsThresholds.get(i));
-                datagram.writeInt((Integer)portsThresholds.get(i+1));
+                datagram.writeInt(
+                        ((Integer)portsThresholds.get(i)).intValue());
+                datagram.writeInt(
+                        ((Integer)portsThresholds.get(i+1)).intValue());
             }
             
             radioConn.send(datagram);
