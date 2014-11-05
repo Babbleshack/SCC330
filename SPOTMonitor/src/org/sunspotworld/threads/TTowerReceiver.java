@@ -9,13 +9,12 @@ import org.sunspotworld.spotRadios.IReceivingRadio;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.SunspotPort;
 import java.lang.Exception;
+import java.util.Vector;
 
 public class TTowerReceiver implements Runnable
 {
 	private ISendingRadio sRadio;
-	private IReceivingRadio rRadio;
-	private static final int INNER_THRESHOLD = -7;
-	private static final int OUTER_THRESHOLD = -30;
+
 	public TTowerReceiver()
 	{
 		try
@@ -25,10 +24,16 @@ public class TTowerReceiver implements Runnable
 		} catch (Exception e) {
 			System.err.println("error creating TOWER radios " + e);
 		}
+                towers = new Vector(NUMBER_OF_ZONES);
 	}
 	public void run()
 	{
-		int powerLevel;
+            long timer = (System.currentTimeMillis() + (5*SECOND));
+            while(System.currentTimeMillis() != timer)
+            {
+                rRadio.re
+            }
+                int powerLevel;
 		boolean inRange = false;
 		while(true)
 		{
