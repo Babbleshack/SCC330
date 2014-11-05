@@ -14,6 +14,7 @@ public interface IQueryManager
 {
 	public int getZoneIdFromSpotAddress(String spot_address);
     public int getJobIdFromSpotAddressReadingField(String spot_address, String column_name);
+    public boolean isSpotExists(String spot_address);
     public String getSpotAddressFromObjectTitle(String object_title);
     public void createSwitchRecord(String switch_id, String spot_address, long time);
     public void createLightRecord(int light, String spot_address, long time);
