@@ -54,8 +54,10 @@ public class ZonePowerData extends Vector
     public String closestTowerAddress()
     {
         TowerSpot tSpot = new TowerSpot("test", FALSE_VALUE);
-        for(int i=0; i<towerSpots.size(); i++)
+        for(int i=0; i<this.size(); i++)
         {
+            System.out.println(((TowerSpot)this.elementAt(i)).getAddress() + 
+                    " : " +((TowerSpot)this.elementAt(i)).getPowerLevel());
            if(((TowerSpot)this.elementAt(i)).getPowerLevel() >
                    tSpot.getPowerLevel());
            {
