@@ -4,6 +4,8 @@
  */
 package org.sunspotworld.threads;
 
+import com.sun.spot.resources.Resources;
+import com.sun.spot.resources.transducers.ITriColorLEDArray;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.IReceivingRadio;
 import org.sunspotworld.spotRadios.RadiosFactory;
@@ -17,6 +19,7 @@ public class TRoamingReceiver extends Thread implements Runnable
 	private ISendingRadio sRadio;
         private IReceivingRadio rRadio;
         private ZonePowerData zpd;
+        private ITriColorLEDArray leds;
         private static final long SECOND = 1000;
         private static final long SAMPLE_RATE = (2*SECOND);
 	public TRoamingReceiver(ZonePowerData zpd)
@@ -29,6 +32,10 @@ public class TRoamingReceiver extends Thread implements Runnable
                 System.err.println("error creating Roaming radios " + e);
             }   
             zpd = zpd;
+                     leds = (ITriColorLEDArray)
+                             Resources.lookup(ITriColorLEDArray.class );
+                     leds.setRGB(0, 255, 0);
+                    leds.setOn();
 	}
         /**
          * receives tower addresses every for SAMPLE_RATE
