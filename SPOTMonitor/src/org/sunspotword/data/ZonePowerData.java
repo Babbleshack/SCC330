@@ -13,6 +13,9 @@ public class ZonePowerData extends Vector
     private Vector towerSpots;
     private static final int STANDARD_CONFIG = 3;
     private static final int FALSE_VALUE = -66;
+    public static final int FALSE = 0;
+    public static final int TRUE = 1;
+    private int hasChanged = 0;
     
     public ZonePowerData()
     {
@@ -25,6 +28,8 @@ public class ZonePowerData extends Vector
      */
     public void AddOrUpdate(TowerSpot tSpot)
     {
+        System.out.println("Adding: " + tSpot.getAddress() + 
+                " Power Level: " + tSpot.getPowerLevel());
         int index = indexOf(tSpot);
         if(index < 0)
         {
@@ -53,18 +58,22 @@ public class ZonePowerData extends Vector
      */
     public String closestTowerAddress()
     {
+        this.hasChanged = FALSE;
         TowerSpot tSpot = new TowerSpot("test", FALSE_VALUE);
+        System.out.println("ZPD size: " + this.size());
         for(int i=0; i<this.size(); i++)
         {
-            System.out.println(((TowerSpot)this.elementAt(i)).getAddress() + 
+            System.out.println("test" + ((TowerSpot)this.elementAt(i)).getAddress() + 
                     " : " +((TowerSpot)this.elementAt(i)).getPowerLevel());
            if(((TowerSpot)this.elementAt(i)).getPowerLevel() >
                    tSpot.getPowerLevel());
            {
+               this.hasChanged = TRUE;
                tSpot = (TowerSpot)this.elementAt(i);
            }
         }
         return tSpot.getAddress();
     }
+    public int hasChanged(){return this.hasChanged;}
 
 }

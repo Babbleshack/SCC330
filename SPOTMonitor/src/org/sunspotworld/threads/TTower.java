@@ -1,6 +1,7 @@
 package org.sunspotworld.threads;
 
 import com.sun.spot.resources.Resources;
+import com.sun.spot.resources.transducers.ITriColorLED;
 import com.sun.spot.resources.transducers.ITriColorLEDArray;
 import com.sun.spot.util.Utils;
 import java.io.IOException;
@@ -17,8 +18,9 @@ public class TTower implements Runnable
 {
     private ISendingRadio radio;
     private ITriColorLEDArray leds;
+    private ITriColorLED led;
     private static final long SECOND = 1000;
-    private static final long SAMPLE_RATE = SECOND/2;
+    private static final long SAMPLE_RATE = SECOND;
     
     public TTower() 
     {
@@ -32,14 +34,20 @@ public class TTower implements Runnable
             System.err.println("error creating PING radio: " + e);
         }
          leds = (ITriColorLEDArray)Resources.lookup(ITriColorLEDArray.class );
-         leds.setRGB(0, 255, 0);
+         leds.setRGB(0, 0, 255);
          leds.setOn();
+         led = leds.getLED(7);
+         led.setRGB(255, 0, 0);
+         System.out.println("STARTING TOWER");
     }
     public void run()
     {
 	while(true)
 	{
+            
+            led.setOn();
             radio.ping();
+            led.setOff();
             Utils.sleep(SAMPLE_RATE); //deschedule thread	
         }
     }

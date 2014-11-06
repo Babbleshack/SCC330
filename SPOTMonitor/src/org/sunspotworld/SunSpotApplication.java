@@ -95,7 +95,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
             System.out.println("Starting Tower Threads");
                 towerThread = new Thread(new TTower(), "towerService");
                 towerThread.start();
-                
+                break;
             case 160: // roaming
             System.out.println("Starting Roaming Threads");
                 ZoneProccessingThread = new Thread(new TZoneProccessor(),
