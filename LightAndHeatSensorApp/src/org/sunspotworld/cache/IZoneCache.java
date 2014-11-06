@@ -20,6 +20,6 @@ public interface IZoneCache {
      * wrapper for get, if the zone address is not in cache,
      * the cache will retreive it from the db.
      */
-    int getZone(String address);
+    int getZoneID(String address);
     
 }

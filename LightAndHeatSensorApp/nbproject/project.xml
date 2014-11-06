@@ -92,5 +92,8 @@
                 <source-level>1.3</source-level>
             </compilation-unit>
         </java-data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>retreive</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>

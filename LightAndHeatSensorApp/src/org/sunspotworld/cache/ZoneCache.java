@@ -1,5 +1,7 @@
 /*
  * Encapsulates caching operations by making good use of HashTable.
+ * I kinda mucked this one up, i wanted it to cache a bit more data,
+ * this will do for now.
  * Dominic Lindsay
  */
 package org.sunspotworld.cache;
@@ -22,7 +24,7 @@ public class ZoneCache implements IZoneCache {
     }
     /**
      * wrapper for hashtable, if key already exists, replaces previous
-     * entry
+     * entry, adds record to database.
      */
     public void add(String address, int zoneId)
     {
@@ -32,7 +34,7 @@ public class ZoneCache implements IZoneCache {
      * wrapper for get, if the zone address is not in cache, 
      * the cache will retreive it from the db.
      */
-    public int getZone(String address)
+    public int getZoneID(String address)
     {
         Integer zone = (Integer)zoneCache.get((Object)address);
         if(zone == null)
@@ -41,5 +43,6 @@ public class ZoneCache implements IZoneCache {
         }
         return 0;   
     }
+    
         
 }

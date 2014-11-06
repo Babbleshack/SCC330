@@ -14,7 +14,7 @@ public interface IQueryManager
 {
 	public int getZoneIdFromSpotAddress(String spot_address);
     public int getJobIdFromSpotAddressReadingField(String spot_address, String column_name);
-    public Boolean isSpotExists(String spot_address);
+    public boolean isSpotExists(String spot_address);
     public String getSpotAddressFromObjectTitle(String object_title);
     public void createSwitchRecord(String switch_id, String spot_address, long time);
     public void createLightRecord(int light, String spot_address, long time);
@@ -25,4 +25,8 @@ public interface IQueryManager
     public void createSpotZoneRecord(String spot_address, int spot_id);
     public ArrayList getPastWeekLight();
     public ArrayList getPastWeekThermo();
+
+    public int getOtherTowerZone(String towerAddress, int oldZoneID);
+
+    public void createZoneRecord(int newZoneID, String spotAddress, String towerAddress, long currentTimeMillis);
 }

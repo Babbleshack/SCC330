@@ -16,7 +16,7 @@ import javax.microedition.io.*;
 
 /**
  *
- * @author adamcornforth
+ * @author adamcornforth + Dominic Lindsay
  */
 public class SendingRadio implements ISendingRadio
 {
