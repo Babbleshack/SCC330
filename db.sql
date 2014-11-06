@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 04, 2014 at 07:52 AM
+-- Generation Time: Nov 06, 2014 at 06:55 PM
 -- Server version: 5.5.38-0ubuntu0.14.04.1
 -- PHP Version: 5.5.15RC1
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `Acceleration`
 --
 
+DROP TABLE IF EXISTS `Acceleration`;
 CREATE TABLE IF NOT EXISTS `Acceleration` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `acceleration` float(8,2) NOT NULL,
@@ -44,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `Acceleration` (
 -- Table structure for table `Heat`
 --
 
+DROP TABLE IF EXISTS `Heat`;
 CREATE TABLE IF NOT EXISTS `Heat` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `heat_temperature` float(8,2) NOT NULL,
@@ -62,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `Heat` (
 -- Table structure for table `Job`
 --
 
+DROP TABLE IF EXISTS `Job`;
 CREATE TABLE IF NOT EXISTS `Job` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -81,12 +84,12 @@ CREATE TABLE IF NOT EXISTS `Job` (
 --
 
 INSERT INTO `Job` (`id`, `title`, `description`, `threshold`, `object_id`, `sensor_id`, `created_at`, `updated_at`) VALUES
-(1, 'Door open', '', NULL, 1, 3, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(2, 'Kettle boiled', '', 40.00, 2, 1, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(3, 'Fridge Light On', '', 10.00, 3, 2, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(4, 'User Passed Pillar', '', NULL, 4, 5, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(5, 'User Passed Pillar', '', NULL, 5, 5, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(6, 'Roaming User', '', NULL, 6, 6, '2014-10-31 19:28:12', '2014-10-31 19:28:12');
+(1, 'Kettle boiled', '', 40.00, 1, 1, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(2, 'User Approached Center Table', '', -1.00, 4, 5, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(3, 'User Passed North Pillar', '', 1.00, 2, 5, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(4, 'User Passed South Pillar', '', 1.00, 3, 5, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(5, 'Roaming User 1', '', NULL, 5, 6, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(6, 'Roaming User 2', '', NULL, 6, 6, '2014-11-06 18:22:55', '2014-11-06 18:22:55');
 
 -- --------------------------------------------------------
 
@@ -94,6 +97,7 @@ INSERT INTO `Job` (`id`, `title`, `description`, `threshold`, `object_id`, `sens
 -- Table structure for table `Light`
 --
 
+DROP TABLE IF EXISTS `Light`;
 CREATE TABLE IF NOT EXISTS `Light` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `light_intensity` int(11) NOT NULL,
@@ -112,6 +116,7 @@ CREATE TABLE IF NOT EXISTS `Light` (
 -- Table structure for table `Motion`
 --
 
+DROP TABLE IF EXISTS `Motion`;
 CREATE TABLE IF NOT EXISTS `Motion` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `motion` int(11) NOT NULL,
@@ -130,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `Motion` (
 -- Table structure for table `Object`
 --
 
+DROP TABLE IF EXISTS `Object`;
 CREATE TABLE IF NOT EXISTS `Object` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -146,12 +152,12 @@ CREATE TABLE IF NOT EXISTS `Object` (
 --
 
 INSERT INTO `Object` (`id`, `title`, `description`, `spot_id`, `created_at`, `updated_at`) VALUES
-(1, 'Fridge Door', '', 5, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(2, 'Kettle', '', 6, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(3, 'Fridge Light', '', 4, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(4, 'North Pillar', '', 2, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(5, 'South Pillar', '', 1, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(6, 'Roaming User', '', 3, '2014-10-31 19:28:12', '2014-10-31 19:28:12');
+(1, 'Kettle', '', 6, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(2, 'North Pillar', '', 2, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(3, 'South Pillar', '', 1, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(4, 'Center Table', '', 4, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(5, 'Roaming User 1', '', 3, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(6, 'Roaming User 2', '', 5, '2014-11-06 18:22:55', '2014-11-06 18:22:55');
 
 -- --------------------------------------------------------
 
@@ -159,6 +165,7 @@ INSERT INTO `Object` (`id`, `title`, `description`, `spot_id`, `created_at`, `up
 -- Table structure for table `Sensor`
 --
 
+DROP TABLE IF EXISTS `Sensor`;
 CREATE TABLE IF NOT EXISTS `Sensor` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -176,12 +183,12 @@ CREATE TABLE IF NOT EXISTS `Sensor` (
 --
 
 INSERT INTO `Sensor` (`id`, `title`, `table`, `field`, `description`, `port_number`, `created_at`, `updated_at`) VALUES
-(1, 'Thermometer', 'Heat', 'heat_temperature', '', 110, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(2, 'Photosensor', 'Light', 'light_intensity', '', 120, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(3, 'Accelerometer', 'Acceleration', 'acceleration', '', 130, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(4, 'Motion Sensor', 'Motion', 'motion', '', 140, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(5, 'Cell Tower', 'ZoneSpot', 'zone_id', '', 150, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(6, 'Roaming Spot', NULL, NULL, '', 160, '2014-10-31 19:28:12', '2014-10-31 19:28:12');
+(1, 'Thermometer', 'Heat', 'heat_temperature', '', 110, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(2, 'Photosensor', 'Light', 'light_intensity', '', 120, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(3, 'Accelerometer', 'Acceleration', 'acceleration', '', 130, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(4, 'Motion Sensor', 'Motion', 'motion', '', 140, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(5, 'Cell Tower', 'ZoneSpot', 'zone_id', '', 150, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(6, 'Roaming Spot', NULL, NULL, '', 160, '2014-11-06 18:22:55', '2014-11-06 18:22:55');
 
 -- --------------------------------------------------------
 
@@ -189,6 +196,7 @@ INSERT INTO `Sensor` (`id`, `title`, `table`, `field`, `description`, `port_numb
 -- Table structure for table `Spot`
 --
 
+DROP TABLE IF EXISTS `Spot`;
 CREATE TABLE IF NOT EXISTS `Spot` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `spot_address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -205,12 +213,51 @@ CREATE TABLE IF NOT EXISTS `Spot` (
 --
 
 INSERT INTO `Spot` (`id`, `spot_address`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, '0014.4F01.0000.7827', 1, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(2, '0014.4F01.0000.76FF', 1, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(3, '0014.4F01.0000.77A7', 2, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(4, '0014.4F01.0000.77C0', 2, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(5, '0014.4F01.0000.7A12', 3, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(6, '0014.4F01.0000.7AD7', 3, '2014-10-31 19:28:12', '2014-10-31 19:28:12');
+(1, '0014.4F01.0000.7827', 1, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(2, '0014.4F01.0000.76FF', 1, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(3, '0014.4F01.0000.77A7', 2, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(4, '0014.4F01.0000.77C0', 2, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(5, '0014.4F01.0000.7A12', 3, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(6, '0014.4F01.0000.7AD7', 3, '2014-11-06 18:22:55', '2014-11-06 18:22:55');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Switch`
+--
+
+DROP TABLE IF EXISTS `Switch`;
+CREATE TABLE IF NOT EXISTS `Switch` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `switch_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `spot_address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `job_id` int(10) unsigned DEFAULT NULL,
+  `zone_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `switch_job_id_foreign` (`job_id`),
+  KEY `switch_zone_id_foreign` (`zone_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
+
+--
+-- Dumping data for table `Switch`
+--
+
+INSERT INTO `Switch` (`id`, `switch_id`, `spot_address`, `job_id`, `zone_id`, `created_at`) VALUES
+(1, 'SW2', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:22'),
+(2, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:24'),
+(3, 'SW2', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:25'),
+(4, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:25'),
+(5, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:37'),
+(6, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:37'),
+(7, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:37'),
+(8, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:37'),
+(9, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:41'),
+(10, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:41'),
+(11, 'SW1', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:42'),
+(12, 'SW2', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:47'),
+(13, 'SW2', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:47'),
+(14, 'SW2', '0014.4F01.0000.7827', NULL, 1, '2014-11-06 18:30:47');
 
 -- --------------------------------------------------------
 
@@ -218,6 +265,7 @@ INSERT INTO `Spot` (`id`, `spot_address`, `user_id`, `created_at`, `updated_at`)
 -- Table structure for table `Users`
 --
 
+DROP TABLE IF EXISTS `Users`;
 CREATE TABLE IF NOT EXISTS `Users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `first_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -235,9 +283,9 @@ CREATE TABLE IF NOT EXISTS `Users` (
 --
 
 INSERT INTO `Users` (`id`, `first_name`, `last_name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Adam', 'Cornforth', 'adam@sunspot.app', '$2y$10$f9Y6NxAvyqWWbQSCw/yazedLh9bX6x8vkiKKE6xZzOEgkIc.okkY6', NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(2, 'Dominic', 'Lindsay', 'dominic@sunspot.app', '$2y$10$PGe2QeJUP1jihYBDNVq0y.b2Bl..FFea2BLf4NhZGOPzJTgTZwQaC', NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(3, 'Vitali', 'Bokov', 'vitali@sunspot.app', '$2y$10$/CBRJK.3/cMPR.diryjT6.RL1TPQx9BKJNQvv76xks8N2gtxHOJNi', NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12');
+(1, 'Adam', 'Cornforth', 'adam@sunspot.app', '$2y$10$iis8DG6uJOJKwU/bOheZ8.CILQdFdZldyzt/yUIpDp93C4NGOYvdO', NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(2, 'Dominic', 'Lindsay', 'dominic@sunspot.app', '$2y$10$VBlBYtYCc74DFgh9rvRg1uXRlGEG2lwFy0L49FqckICqrRspTtwjS', NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(3, 'Vitali', 'Bokov', 'vitali@sunspot.app', '$2y$10$uKoiYYRfhq.gk9KrYxM13OziE19/hUXuP2dJz6RuQDvPPVkq5Q9eC', NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55');
 
 -- --------------------------------------------------------
 
@@ -245,6 +293,7 @@ INSERT INTO `Users` (`id`, `first_name`, `last_name`, `email`, `password`, `reme
 -- Table structure for table `Zone`
 --
 
+DROP TABLE IF EXISTS `Zone`;
 CREATE TABLE IF NOT EXISTS `Zone` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -258,10 +307,10 @@ CREATE TABLE IF NOT EXISTS `Zone` (
 --
 
 INSERT INTO `Zone` (`id`, `title`, `created_at`, `updated_at`) VALUES
-(1, 'North End of Lab', '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(2, 'Presentation and Touch Table Area', '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(3, 'South End of Lab', '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(4, 'Lab', '2014-10-31 19:28:12', '2014-10-31 19:28:12');
+(1, 'North End of Lab', '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(2, 'Presentation and Touch Table Area', '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(3, 'South End of Lab', '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(4, 'Lab', '2014-11-06 18:22:55', '2014-11-06 18:22:55');
 
 -- --------------------------------------------------------
 
@@ -269,6 +318,7 @@ INSERT INTO `Zone` (`id`, `title`, `created_at`, `updated_at`) VALUES
 -- Table structure for table `zone_object`
 --
 
+DROP TABLE IF EXISTS `zone_object`;
 CREATE TABLE IF NOT EXISTS `zone_object` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `zone_id` int(10) unsigned NOT NULL,
@@ -287,10 +337,10 @@ CREATE TABLE IF NOT EXISTS `zone_object` (
 --
 
 INSERT INTO `zone_object` (`id`, `zone_id`, `object_id`, `job_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 4, 4, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(2, 2, 4, 4, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(3, 2, 5, 5, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(4, 3, 5, 5, '2014-10-31 19:28:12', '2014-10-31 19:28:12');
+(1, 1, 2, 3, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(2, 2, 2, 3, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(3, 2, 3, 4, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(4, 3, 3, 4, '2014-11-06 18:22:55', '2014-11-06 18:22:55');
 
 -- --------------------------------------------------------
 
@@ -298,6 +348,7 @@ INSERT INTO `zone_object` (`id`, `zone_id`, `object_id`, `job_id`, `created_at`,
 -- Table structure for table `zone_spot`
 --
 
+DROP TABLE IF EXISTS `zone_spot`;
 CREATE TABLE IF NOT EXISTS `zone_spot` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `zone_id` int(10) unsigned NOT NULL,
@@ -309,51 +360,19 @@ CREATE TABLE IF NOT EXISTS `zone_spot` (
   KEY `zone_spot_spot_id_foreign` (`spot_id`),
   KEY `zone_spot_zone_id_foreign` (`zone_id`),
   KEY `zone_spot_job_id_foreign` (`job_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `zone_spot`
 --
 
 INSERT INTO `zone_spot` (`id`, `zone_id`, `spot_id`, `job_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(2, 2, 2, NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(3, 3, 3, NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(4, 4, 4, NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(5, 4, 5, NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(6, 4, 6, NULL, '2014-10-31 19:28:12', '2014-10-31 19:28:12'),
-(7, 2, 3, 4, '2014-10-31 19:28:48', '0000-00-00 00:00:00'),
-(8, 3, 3, 5, '2014-10-31 19:28:55', '0000-00-00 00:00:00'),
-(9, 2, 3, 5, '2014-10-31 19:29:10', '0000-00-00 00:00:00'),
-(10, 1, 3, 4, '2014-10-31 19:29:16', '0000-00-00 00:00:00'),
-(11, 2, 3, 4, '2014-11-03 15:46:40', '0000-00-00 00:00:00'),
-(12, 1, 3, 4, '2014-11-03 15:51:54', '0000-00-00 00:00:00'),
-(13, 2, 3, 4, '2014-11-03 15:52:08', '0000-00-00 00:00:00'),
-(14, 1, 3, 4, '2014-11-03 15:52:40', '0000-00-00 00:00:00'),
-(15, 2, 3, 4, '2014-11-03 15:53:15', '0000-00-00 00:00:00'),
-(16, 3, 3, 5, '2014-11-03 15:53:55', '0000-00-00 00:00:00'),
-(17, 2, 3, 4, '2014-11-03 15:54:10', '0000-00-00 00:00:00'),
-(18, 1, 3, 4, '2014-11-03 15:55:05', '0000-00-00 00:00:00'),
-(19, 2, 3, 4, '2014-11-03 15:59:02', '0000-00-00 00:00:00'),
-(20, 1, 3, 4, '2014-11-03 16:01:50', '0000-00-00 00:00:00'),
-(21, 2, 3, 4, '2014-11-03 16:02:27', '0000-00-00 00:00:00'),
-(22, 1, 3, 4, '2014-11-03 16:02:42', '0000-00-00 00:00:00'),
-(23, 2, 3, 4, '2014-11-03 16:04:18', '0000-00-00 00:00:00'),
-(24, 3, 3, 5, '2014-11-03 16:05:51', '0000-00-00 00:00:00'),
-(25, 2, 3, 4, '2014-11-03 16:06:09', '0000-00-00 00:00:00'),
-(26, 1, 3, 4, '2014-11-03 16:07:28', '0000-00-00 00:00:00'),
-(27, 2, 3, 4, '2014-11-03 16:10:34', '0000-00-00 00:00:00'),
-(28, 1, 3, 4, '2014-11-03 16:11:28', '0000-00-00 00:00:00'),
-(29, 2, 3, 4, '2014-11-03 16:11:36', '0000-00-00 00:00:00'),
-(30, 1, 3, 4, '2014-11-03 16:13:07', '0000-00-00 00:00:00'),
-(31, 2, 3, 4, '2014-11-03 16:13:34', '0000-00-00 00:00:00'),
-(32, 1, 3, 4, '2014-11-03 16:20:06', '0000-00-00 00:00:00'),
-(33, 2, 3, 4, '2014-11-03 16:21:34', '0000-00-00 00:00:00'),
-(34, 1, 3, 4, '2014-11-03 16:22:36', '0000-00-00 00:00:00'),
-(35, 2, 3, 4, '2014-11-03 16:22:57', '0000-00-00 00:00:00'),
-(36, 1, 3, 4, '2014-11-03 16:23:13', '0000-00-00 00:00:00'),
-(37, 2, 3, 4, '2014-11-03 16:23:32', '0000-00-00 00:00:00'),
-(38, 1, 3, 4, '2014-11-03 16:23:41', '0000-00-00 00:00:00');
+(1, 1, 1, NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(2, 2, 2, NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(3, 3, 3, NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(4, 1, 4, NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(5, 1, 5, NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55'),
+(6, 1, 6, NULL, '2014-11-06 18:22:55', '2014-11-06 18:22:55');
 
 --
 -- Constraints for dumped tables
@@ -405,6 +424,13 @@ ALTER TABLE `Object`
 --
 ALTER TABLE `Spot`
   ADD CONSTRAINT `spot_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
+
+--
+-- Constraints for table `Switch`
+--
+ALTER TABLE `Switch`
+  ADD CONSTRAINT `switch_zone_id_foreign` FOREIGN KEY (`zone_id`) REFERENCES `Zone` (`id`),
+  ADD CONSTRAINT `switch_job_id_foreign` FOREIGN KEY (`job_id`) REFERENCES `Job` (`id`);
 
 --
 -- Constraints for table `zone_object`
