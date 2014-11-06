@@ -18,7 +18,7 @@ import org.sunspotworld.spotRadios.SunspotPort;
  */
 public class TZoneProccessor implements Runnable
 {
-    private TRoamingReceiver tReceiver;
+    private Thread tReceiver;
     private ISendingRadio sRadio;
     private ZonePowerData zpd;
     public TZoneProccessor()
@@ -32,7 +32,7 @@ public class TZoneProccessor implements Runnable
             ex.printStackTrace();
         }
         zpd = new ZonePowerData();
-        tReceiver = new TRoamingReceiver(zpd);
+        tReceiver = new Thread(new TRoamingReceiver(zpd), "roamingService");
     }
 
     /**
@@ -43,7 +43,8 @@ public class TZoneProccessor implements Runnable
         while(true)
         {
             try {
-                tReceiver.start();
+                tReceiver.run();
+                //tReceiver.start();
                 tReceiver.join();
                 sRadio.sendTowerAddress(zpd.closestTowerAddress());
             } catch (InterruptedException ex) {
