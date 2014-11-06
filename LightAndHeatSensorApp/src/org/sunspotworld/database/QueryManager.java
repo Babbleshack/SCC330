@@ -33,7 +33,7 @@ public class QueryManager implements IQueryManager
      * @param spot_address
      * @return
      */
-    public boolean isSpotExists(String spot_address) {
+    public int isSpotExists(String spot_address) {
         String isSpotExists = "SELECT * FROM Spot WHERE spot_address = ?";
 
         try {
@@ -53,14 +53,14 @@ public class QueryManager implements IQueryManager
              * Return result
              */
             if(result.next())
-                return true;
+                return 1;
             else
-                return false;
+                return 0;
 
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing "
                 + "isSpotExists: " + e);
-                return false;
+                return 0;
         }
     }
 
