@@ -12,7 +12,15 @@ public class TowerSpot implements ITowerSpot
         this.address = address;
         this.powerLevel = powerLevel;
     }
-
+    /**
+     * overides equals method.
+     * @param o TowerSpot
+     * @return boolean
+     */
+    public boolean equals(Object o)
+    {
+        return address.equals(((TowerSpot)o).getAddress());
+    }
     /**
      * @return the address
      */

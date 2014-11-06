@@ -4,16 +4,12 @@
  */
 package org.sunspotworld.spotRadios;
 
-import com.sun.spot.peripheral.radio.RadioFactory;
-import com.sun.spot.peripheral.radio.IRadioPolicyManager;
-import com.sun.spot.io.j2me.radiostream.*;
 import com.sun.spot.io.j2me.radiogram.*;
 import com.sun.spot.io.j2me.radiogram.Radiogram;
-import com.sun.spot.peripheral.ota.OTACommandServer;
-import com.sun.spot.util.IEEEAddress;
 
 import java.io.*;
 import javax.microedition.io.*;
+import org.sunspotword.data.TowerSpot;
 
 public class ReceivingRadio implements IReceivingRadio
 {
@@ -38,7 +34,7 @@ public class ReceivingRadio implements IReceivingRadio
     }
 
     /**
-     * Receives the discovey response and returns an array of integers, 
+     * Receives thes discovey response and returns an array of integers, 
      * containing the port numbers and sensor thresholds
      */
     public int[] receiveDiscoverResponse() throws IOException
@@ -60,33 +56,6 @@ public class ReceivingRadio implements IReceivingRadio
 
         return portsThresholds;
     }
-
-    /**
-     * Receive packets from responding SPOTS,
-     * returns the current power level of received packet.
-     */
-    public int receivePingReply()
-    {
-        int powerLevel = -9999;
-        try {
-            String tower_address = ""; 
-
-            while(!tower_address.equals(spotAddress)) {
-                datagram.reset();
-                radioConn.receive(datagram);
-                tower_address = datagram.readUTF();
-                System.out.println("Ping reply recipient: " + tower_address + ", This tower address: " + spotAddress);
-            }
-            System.out.println("Tower received ping reply addressed to itself...");
-
-            powerLevel = ((Radiogram)datagram).getRssi();
-            lastPingAddress = datagram.getAddress();
-        } catch (IOException e) {
-            System.err.println("Error reading RSSI: " + e);
-        }
-        return powerLevel;
-    }
-
     /**
      * gets the address of the last received ping packet
      * @return address String
@@ -97,16 +66,18 @@ public class ReceivingRadio implements IReceivingRadio
     }
 
     /**
-     * receives a ping packet to roaming spot and 
-     * returns address of tower that sent it 
+     * receives a ping packet from roaming spot and 
+     * returns TowerSpot Object
+     * @return 
      */
-    public String receivePing()
+    public TowerSpot receivePing()
     {
         try
         {
             datagram.reset();
             radioConn.receive(datagram);
-            return this.getReceivedAddress();
+            return new TowerSpot(datagram.getAddress(),
+                    ((Radiogram)datagram).getRssi());
         } catch (IOException e) {
             System.err.println("Error while waiting on packet");
         }

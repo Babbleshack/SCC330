@@ -6,6 +6,7 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import org.sunspotword.data.ZonePowerData;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.RadiosFactory;
@@ -15,11 +16,12 @@ import org.sunspotworld.spotRadios.SunspotPort;
  *
  * @author Babblebase
  */
-public class TZoneController implements Runnable
+public class TZoneProccessor implements Runnable
 {
-    private TTowerReceiver tReceiver;
+    private TRoamingReceiver tReceiver;
     private ISendingRadio sRadio;
-    public TZoneController()
+    private ZonePowerData zpd;
+    public TZoneProccessor()
     {
         try {
             sRadio = RadiosFactory.createSendingRadio
@@ -29,16 +31,24 @@ public class TZoneController implements Runnable
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        tReceiver = new TTowerReceiver();
+        zpd = new ZonePowerData();
+        tReceiver = new TRoamingReceiver(zpd);
     }
 
+    /**
+     * starts receiver thread, and waits for it to return,
+     * where then calls ZonePowerData for the closest tower.
+     */
     public void run() {
         while(true)
         {
-            tReceiver.start();
-            tReceiver.join();
-            //synced storage return closest
-            //send address to BS
+            try {
+                tReceiver.start();
+                tReceiver.join();
+                sRadio.sendTowerAddress(zpd.closestTowerAddress());
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
