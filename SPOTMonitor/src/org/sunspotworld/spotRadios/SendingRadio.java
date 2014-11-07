@@ -137,10 +137,10 @@ public class SendingRadio implements ISendingRadio
         {
             datagram.reset();
             datagram.writeUTF(address);
-            int hops = radioConn.getMaxBroadcastHops();
-            radioConn.setMaxBroadcastHops(1);
+            // int hops = radioConn.getMaxBroadcastHops();
+            // radioConn.setMaxBroadcastHops(1);
             radioConn.send(datagram);
-            radioConn.setMaxBroadcastHops(hops);
+            // radioConn.setMaxBroadcastHops(hops);
             System.out.println("Tower address sent to tower..."); 
         } catch (IOException e) {
             System.err.println("Error sending Tower address: " + e);
