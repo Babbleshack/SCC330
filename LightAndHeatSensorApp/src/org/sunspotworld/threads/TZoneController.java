@@ -37,33 +37,30 @@ public class TZoneController implements Runnable
 	{
 		while(true)
 		{
-			System.out.println("Base station waiting for Tower forwarding of ping reply from SPOT");
-
 			try {
-                                //receive address.
-                                //get location from db
-                                //go nuts
-                                //still basically the same only with 
-                                //Chocolate Brownies
+	            /**
+	             * receive address.
+	             * get location from db
+	             * go nuts
+	             * still basically the same only with 
+	             * Chocolate Brownies
+	             */              
 				String towerAddress = rRadio.receiveZonePacket();
 				String spotAddress = rRadio.getReceivedAddress();
-				System.out.println("SPOT " + spotAddress + " is closest to " + towerAddress);
-				// Get current SPOT zon
                                 
-                                int receivedSpotZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
-                                int receivedTowerZoneID = qm.getZoneIdFromSpotAddress(towerAddress);
-                                System.out.println("RECEIVED SPOT ZONE: " + receivedSpotZoneID
-                                + "RECEIVED TOWER ZONE ID: " + receivedTowerZoneID );
-                                if(receivedSpotZoneID == receivedTowerZoneID)
-                                { //no zone change
-                                    continue;
-                                }
-                                //add to cache and database
-                                qm.createZoneRecord(receivedTowerZoneID, spotAddress, 
-                                        towerAddress, System.currentTimeMillis());
-                                System.out.println("[" + spotAddress + "]" + "was added to " + "[" +
-                                receivedTowerZoneID  + "]" + "[" + towerAddress + "]");
-                                //zCache.add(spotAddress, receivedTowerZoneID);
+                int receivedSpotZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
+                int receivedTowerZoneID = qm.getZoneIdFromSpotAddress(towerAddress);
+
+                System.out.println("Roaming SPOT " + spotAddress + " moved from zone " + receivedSpotZoneID
+                + " to zone " + receivedTowerZoneID + " because it is closest to Tower SPOT " + towerAddress);
+
+                // no zone change
+                if(receivedSpotZoneID == receivedTowerZoneID) continue;
+                
+                // add to cache and database
+                qm.createZoneRecord(receivedTowerZoneID, spotAddress, 
+                        towerAddress, System.currentTimeMillis());
+                //zCache.add(spotAddress, receivedTowerZoneID);
 			} catch(IOException io) {
 				System.out.println("Could not receive received address: " + io);
 			}

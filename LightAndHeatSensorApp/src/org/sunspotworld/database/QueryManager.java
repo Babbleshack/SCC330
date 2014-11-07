@@ -276,7 +276,7 @@ public class QueryManager implements IQueryManager
             PreparedStatement record =
                 connection.getConnection().prepareStatement(getJobId);
 
-                System.out.println("Looking for job_id for: " + spot_address + " and column: " + column_name);
+               //  System.out.println("Looking for job_id for: " + spot_address + " and column: " + column_name);
 
             record.setString(1, spot_address);
             record.setString(2, column_name);
@@ -290,7 +290,7 @@ public class QueryManager implements IQueryManager
                  * Return result
                  */
                 int job_id = result.getInt("Job.id");
-                System.out.println("Job id: " + job_id);
+                // System.out.println("Job id: " + job_id);
                 return job_id;
             } else {
                 System.out.println("No results to get job_id ");
