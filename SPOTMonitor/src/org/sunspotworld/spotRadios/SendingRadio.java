@@ -99,10 +99,10 @@ public class SendingRadio implements ISendingRadio
     {
         try {
             datagram.reset();
-            int hops = radioConn.getMaxBroadcastHops();
-            radioConn.setMaxBroadcastHops(1);
+            // int hops = radioConn.getMaxBroadcastHops();
+            // radioConn.setMaxBroadcastHops(1);
             radioConn.send(datagram);
-            radioConn.setMaxBroadcastHops(hops);
+            // radioConn.setMaxBroadcastHops(hops);
         } catch (IOException e) {
             System.err.println("IOException occured while sending PING" + e);
         }
@@ -117,10 +117,10 @@ public class SendingRadio implements ISendingRadio
         {
             datagram.reset();
             datagram.writeUTF(address);
-            int hops = radioConn.getMaxBroadcastHops();
-            radioConn.setMaxBroadcastHops(1);
+            // int hops = radioConn.getMaxBroadcastHops();
+            // radioConn.setMaxBroadcastHops(1);
             radioConn.send(datagram);
-            radioConn.setMaxBroadcastHops(hops);
+            // radioConn.setMaxBroadcastHops(hops);
             System.out.println("SPOT address sent to basestation..."); 
         } catch (IOException e) {
             System.err.println("Error sending SPOT address: " + e);
