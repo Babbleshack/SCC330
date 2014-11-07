@@ -33,7 +33,6 @@ public class SunSpotHostApplication implements Runnable
     /**
      * Threads for communicating with SPOT
      */
-    // private Thread generalThread = null;
     private Thread discoveryThread, switchThread, heatThread, lightThread, accelThread, zoneThread = null;
 
     /**

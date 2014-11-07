@@ -28,6 +28,11 @@ public class QueryManager implements IQueryManager
         connection = DatabaseConnectionFactory.createMySQLConnection();
     }
 
+    /**
+     *
+     * @param spot_address
+     * @return
+     */
     public int isSpotExists(String spot_address) {
         String isSpotExists = "SELECT * FROM Spot WHERE spot_address = ?";
 

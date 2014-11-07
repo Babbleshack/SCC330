@@ -6,20 +6,19 @@
 
 package org.sunspotworld;
 
-import org.sunspotworld.threads.TTowerReceiver;
 import org.sunspotworld.threads.TSendingLight;
 import org.sunspotworld.threads.TSendingMotion;
-import org.sunspotworld.threads.TRoaming;
-import org.sunspotworld.threads.TSendingPing;
 import org.sunspotworld.threads.TSendingAccel;
 import org.sunspotworld.threads.TSendingHeat;
 import org.sunspotworld.threads.TDiscoverMe;
+import org.sunspotworld.threads.TTower;
 import org.sunspotworld.threads.TDemandSwitch;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.IReceivingRadio;
 import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
+
 
 import com.sun.spot.peripheral.radio.RadioFactory;
 import com.sun.spot.service.BootloaderListenerService;
@@ -31,6 +30,8 @@ import java.lang.SecurityException;
 import java.lang.Thread;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
+import org.sunspotworld.threads.TZoneProccessor;
+
 
 /**
  * The startApp method of this class is called by the VM to start the
@@ -44,8 +45,15 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     /**
      * Threads for communicating with Basestation
      */
-    private Thread heatThread, lightThread, accelThread, switchThread, motionThread, discoverMeThread, pingThread, towerThread, roamingThread = null;
-
+    private Thread heatThread;
+    private Thread lightThread;
+    private Thread accelThread;
+    private Thread switchThread;
+    private Thread motionThread;
+    private Thread discoverMeThread;
+    private Thread ZoneProccessingThread;
+    private Thread towerThread;
+    
     private static final int MOCK_HEAT_THRESHOLD = 30;
     private static final int MOCK_LIGHT_THRESHOLD = 20;
 
@@ -85,23 +93,14 @@ public class SunSpotApplication extends MIDlet implements Runnable {
              */
             case 150: // tower
             System.out.println("Starting Tower Threads");
-                pingThread  = new Thread(new TSendingPing(), "pingService"); 
-                towerThread = new Thread(new TTowerReceiver(), "receptionTowerService");
-                pingThread.start();
+                towerThread = new Thread(new TTower(), "towerService");
                 towerThread.start();
-                // Dispatch two threads: 
-                // - TSendingPings (on port 150): continually sends 
-                // - TTowerReceiver (on port 160): blocks until response from roaming on 160... 
-                //                  - wait until response falls into threshold
-                //                  - wait until RSI falls out of threshold again: then update basestation with zone change
                 break;
             case 160: // roaming
             System.out.println("Starting Roaming Threads");
-                roamingThread = new Thread(new TRoaming(), "roamingService");
-                roamingThread.start();
-                // Dispatch two threads:
-                // - TRoaming (on port 160): block until receives from port 150 (the tower)..
-                //                              - sends response on port 160 to tower 
+                ZoneProccessingThread = new Thread(new TZoneProccessor(),
+                        "roamingService");
+                ZoneProccessingThread.start();
                 break;
         }
     }

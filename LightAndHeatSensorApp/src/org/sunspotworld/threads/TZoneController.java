@@ -10,6 +10,9 @@ import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 
 import java.io.IOException;
+import org.sunspotworld.cache.CacheFactory;
+import org.sunspotworld.cache.IZoneCache;
+import org.sunspotworld.database.DatabaseConnectionFactory;
 
 import org.sunspotworld.database.IQueryManager;
 import org.sunspotworld.database.QueryManager;
@@ -17,7 +20,8 @@ import org.sunspotworld.database.QueryManager;
 public class TZoneController implements Runnable
 {
 	private IReceivingRadio rRadio;
-	private QueryManager qm;
+        private IZoneCache zCache;
+        private IQueryManager qm;
 	public TZoneController()
 	{
 		try 
@@ -26,7 +30,8 @@ public class TZoneController implements Runnable
 		} catch (PortOutOfRangeException e) {
 			System.err.println("Port out of range");
 		}
-		qm = new QueryManager();
+                qm = new QueryManager();
+		zCache = CacheFactory.createZoneCache(qm);
 	}
 	public void run()
 	{
@@ -35,20 +40,30 @@ public class TZoneController implements Runnable
 			System.out.println("Base station waiting for Tower forwarding of ping reply from SPOT");
 
 			try {
-				String spotAddress = rRadio.receiveZonePacket();
-				String towerAddress = rRadio.getReceivedAddress();
-				System.out.println("SPOT " + spotAddress + " has passed tower " + towerAddress);
-
-				// Get current SPOT zone 
-				int oldZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
-				int newZoneID;
-
-				// Get adjacent zone for this tower
-				newZoneID = qm.getOtherTowerZone(towerAddress, oldZoneID);  
-
-				// Insert zone change to adjacent zone
-				qm.createZoneRecord(newZoneID, spotAddress, towerAddress, System.currentTimeMillis());
-
+                                //receive address.
+                                //get location from db
+                                //go nuts
+                                //still basically the same only with 
+                                //Chocolate Brownies
+				String towerAddress = rRadio.receiveZonePacket();
+				String spotAddress = rRadio.getReceivedAddress();
+				System.out.println("SPOT " + spotAddress + " is closest to " + towerAddress);
+				// Get current SPOT zon
+                                
+                                int receivedSpotZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
+                                int receivedTowerZoneID = qm.getZoneIdFromSpotAddress(towerAddress);
+                                System.out.println("RECEIVED SPOT ZONE: " + receivedSpotZoneID
+                                + "RECEIVED TOWER ZONE ID: " + receivedTowerZoneID );
+                                if(receivedSpotZoneID == receivedTowerZoneID)
+                                { //no zone change
+                                    continue;
+                                }
+                                //add to cache and database
+                                qm.createZoneRecord(receivedTowerZoneID, spotAddress, 
+                                        towerAddress, System.currentTimeMillis());
+                                System.out.println("[" + spotAddress + "]" + "was added to " + "[" +
+                                receivedTowerZoneID  + "]" + "[" + towerAddress + "]");
+                                //zCache.add(spotAddress, receivedTowerZoneID);
 			} catch(IOException io) {
 				System.out.println("Could not receive received address: " + io);
 			}

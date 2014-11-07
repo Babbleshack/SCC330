@@ -25,4 +25,8 @@ public interface IQueryManager
     public void createSpotZoneRecord(String spot_address, int spot_id);
     public ArrayList getPastWeekLight();
     public ArrayList getPastWeekThermo();
+
+    public int getOtherTowerZone(String towerAddress, int oldZoneID);
+
+    public void createZoneRecord(int newZoneID, String spotAddress, String towerAddress, long currentTimeMillis);
 }
