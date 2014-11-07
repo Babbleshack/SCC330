@@ -35,7 +35,7 @@ public class TZoneProccessor implements Runnable
     private static final long SECOND = 1000;
     private static final long SAMPLE_RATE = (2*SECOND);
     private static final int FALSE_READING = -66;
-    private static final int THRESHOLD = 10;
+    private static final int THRESHOLD = 5;
     public TZoneProccessor()
     {
         try {
@@ -86,17 +86,11 @@ public class TZoneProccessor implements Runnable
                 count = 0;
                 continue;
             } else {
-                count++; 
-            }
-
-            // Discard if power level difference is below threshold
-            if((tSpot.getPowerLevel() - closestTower.getPowerLevel()) > THRESHOLD) {
-                System.out.println("Power level difference from closest: " + closestTower.getAddress() + " (" + closestTower.getPowerLevel() + ") to this: " + tSpot.getAddress() + "(" + tSpot.getPowerLevel() + ") below threshold ("+(tSpot.getPowerLevel() - closestTower.getPowerLevel())+")");
-                continue; 
+                count++;
             }
 
             // Only switch tower if we are reasonably sure we're in the new zone (not just anomaly)
-            if(count > 5) {       
+            if(count > 3) {       
                 count = 0;     
                 toneGen.startTone(250.0, 40);
                 
