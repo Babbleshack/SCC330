@@ -4,10 +4,8 @@
  */
 package org.sunspotworld.spotRadios;
 
-import com.sun.spot.resources.Resources;
 import java.io.IOException;
 
-import com.sun.spot.util.Utils;
 import com.sun.spot.io.j2me.radiogram.*;
 
 import javax.microedition.io.*;
@@ -101,7 +99,10 @@ public class SendingRadio implements ISendingRadio
     {
         try {
             datagram.reset();
+            int hops = radioConn.getMaxBroadcastHops();
+            radioConn.setMaxBroadcastHops(1);
             radioConn.send(datagram);
+            radioConn.setMaxBroadcastHops(hops);
         } catch (IOException e) {
             System.err.println("IOException occured while sending PING" + e);
         }
@@ -116,7 +117,10 @@ public class SendingRadio implements ISendingRadio
         {
             datagram.reset();
             datagram.writeUTF(address);
+            int hops = radioConn.getMaxBroadcastHops();
+            radioConn.setMaxBroadcastHops(1);
             radioConn.send(datagram);
+            radioConn.setMaxBroadcastHops(hops);
             System.out.println("SPOT address sent to basestation..."); 
         } catch (IOException e) {
             System.err.println("Error sending SPOT address: " + e);
@@ -133,7 +137,10 @@ public class SendingRadio implements ISendingRadio
         {
             datagram.reset();
             datagram.writeUTF(address);
+            int hops = radioConn.getMaxBroadcastHops();
+            radioConn.setMaxBroadcastHops(1);
             radioConn.send(datagram);
+            radioConn.setMaxBroadcastHops(hops);
             System.out.println("Tower address sent to tower..."); 
         } catch (IOException e) {
             System.err.println("Error sending Tower address: " + e);
