@@ -49,16 +49,21 @@ public class TZoneController implements Runnable
 				String spotAddress = rRadio.getReceivedAddress();
 				System.out.println("SPOT " + spotAddress + " is closest to " + towerAddress);
 				// Get current SPOT zon
-                                int receivedSpotZoneID = zCache.getZoneID(spotAddress);
-                                int receivedTowerZoneID = zCache.getZoneID(towerAddress);
+                                
+                                int receivedSpotZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
+                                int receivedTowerZoneID = qm.getZoneIdFromSpotAddress(towerAddress);
+                                System.out.println("RECEIVED SPOT ZONE: " + receivedSpotZoneID
+                                + "RECEIVED TOWER ZONE ID: " + receivedTowerZoneID );
                                 if(receivedSpotZoneID == receivedTowerZoneID)
-                                {
+                                { //no zone change
                                     continue;
                                 }
                                 //add to cache and database
                                 qm.createZoneRecord(receivedTowerZoneID, spotAddress, 
                                         towerAddress, System.currentTimeMillis());
-                                zCache.add(spotAddress, receivedTowerZoneID);
+                                System.out.println("[" + spotAddress + "]" + "was added to " + "[" +
+                                receivedTowerZoneID  + "]" + "[" + towerAddress + "]");
+                                //zCache.add(spotAddress, receivedTowerZoneID);
 			} catch(IOException io) {
 				System.out.println("Could not receive received address: " + io);
 			}

@@ -16,7 +16,7 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
 {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://127.0.0.1:33060/testing";
-    private static final String USERNAME = "babbleshack";
+    private static final String USERNAME = "root";
     private static final String PASSWORD = "testing";
     private Connection connection = null;
 
@@ -26,7 +26,7 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
         {
             Class.forName(JDBC_DRIVER);
         } catch (Exception e) {
-            System.err.println("MySQL driver not found" + e);
+            System.err.println("MySQL driver not found HERE" + e);
         }
         this.connect();
     }

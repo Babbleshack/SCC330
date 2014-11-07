@@ -39,9 +39,11 @@ public class ZoneCache implements IZoneCache {
         Integer zone = (Integer)zoneCache.get((Object)address);
         if(zone == null)
         {
-            this.add(address, qm.getZoneIdFromSpotAddress(address));
+            System.out.println("DID NOT FIND ZONE IN CACHE");
+            zone = Integer.valueOf(qm.getZoneIdFromSpotAddress(address));
+            this.add(address, zone.intValue());
         }
-        return 0;   
+        return zone.intValue();
     }
     
         

@@ -9,7 +9,7 @@ import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.IToneGenerator;
 import com.sun.spot.resources.transducers.ITriColorLEDArray;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.Random;
 import org.sunspotword.data.TowerSpot;
 import org.sunspotword.data.ZonePowerData;
 import org.sunspotworld.spotRadios.IReceivingRadio;
@@ -31,9 +31,11 @@ public class TZoneProccessor implements Runnable
     private ITriColorLEDArray leds;
     private IToneGenerator toneGen;
     private TowerSpot closestTower;
+    private Random rGen;
     private static final long SECOND = 1000;
     private static final long SAMPLE_RATE = (2*SECOND);
     private static final int FALSE_READING = -66;
+    private static final int THRESHOLD = -15;
     public TZoneProccessor()
     {
         try {
@@ -52,6 +54,7 @@ public class TZoneProccessor implements Runnable
         leds.setRGB(0, 255, 0);
         leds.setOn();
         closestTower = new TowerSpot("Temp", FALSE_READING);
+        rGen = new Random();
   //      tReceiver = new Thread(new TRoamingReceiver(zpd), "roamingService");
     }
 
@@ -61,25 +64,40 @@ public class TZoneProccessor implements Runnable
      * send address and make tone.
      */
     public void run() {
+        innit(); //find a tower
         while(true)
         {
             System.out.println("current closest: " + closestTower.getAddress());
             TowerSpot tSpot = rRadio.receivePing();
             System.out.println("just received: [" +
-                    closestTower.getAddress() +"]");
+                    tSpot.getAddress() +"]"
+            + "power: ["  + tSpot.getPowerLevel() + "]" );
             if(tSpot == null)
             { //ERROR DID NOT RECEIVE
                 continue;
             }
-            if(tSpot.getPowerLevel() < closestTower.getPowerLevel())
-            {   //LESS THAN CLOSEST TOWER
+            if(tSpot.getAddress().equals(closestTower.getAddress()) ||
+                    tSpot.getPowerLevel() < THRESHOLD)
+            {   //SAME TOWER OR LESS POWER THAN CLOSEST TOWER 
+                System.out.println("Discarding Packet");
                 continue;
             }
-            toneGen.startTone(250.0, 500);
+            //OVER 9000!!!!!!!
+            toneGen.startTone(250.0, 200);
             closestTower = tSpot; //NEW CLOSEST TOWER
             System.out.println("Closet tower: " + closestTower.getAddress()
             +" " + "Power Level: " + closestTower.getPowerLevel());
             sRadio.sendTowerAddress(closestTower.getAddress());
+            long wait = (SECOND / (rGen.nextInt(5) + 1));
         }
-    }   
+    }
+    /*
+    * Innit to any tower that pings.
+    */
+    private void innit()
+    {
+        this.closestTower = rRadio.receivePing();
+        System.out.println("INIT TOWER: [" + 
+                closestTower.getAddress() + "]");
+    }
 }
