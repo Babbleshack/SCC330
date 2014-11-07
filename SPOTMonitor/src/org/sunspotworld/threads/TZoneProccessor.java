@@ -35,7 +35,7 @@ public class TZoneProccessor implements Runnable
     private static final long SECOND = 1000;
     private static final long SAMPLE_RATE = (2*SECOND);
     private static final int FALSE_READING = -66;
-    private static final int THRESHOLD = 5;
+    private static final int THRESHOLD = 3;
     public TZoneProccessor()
     {
         try {
@@ -67,6 +67,7 @@ public class TZoneProccessor implements Runnable
         init(); //find a tower
 
         int count = 0; 
+        String countTower = null;
         while(true)
         {
             TowerSpot tSpot = rRadio.receivePing();
@@ -82,15 +83,22 @@ public class TZoneProccessor implements Runnable
             }
 
             // Discard if less power than closest tower
-            if(tSpot.getPowerLevel() < closestTower.getPowerLevel()) {   
-                count = 0;
+            if(tSpot.getPowerLevel() - THRESHOLD <= closestTower.getPowerLevel() + THRESHOLD) {   
                 continue;
             } else {
-                count++;
+                if(count == 0) countTower = tSpot.getAddress(); 
+                if(!countTower.equals(tSpot.getAddress())) {
+                    countTower = tSpot.getAddress();
+                    count = 0; 
+                    System.out.println("New Count " + count + ": from tower " + tSpot.getAddress());
+                } else {
+                    System.out.println("Count " + count + ": from tower " + tSpot.getAddress());
+                    count++;
+                }
             }
 
             // Only switch tower if we are reasonably sure we're in the new zone (not just anomaly)
-            if(count > 3) {       
+            if(count > 5) {       
                 count = 0;     
                 toneGen.startTone(250.0, 40);
                 
