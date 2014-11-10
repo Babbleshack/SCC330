@@ -2,6 +2,9 @@
  * Encapsulates caching operations by making good use of HashTable.
  * I kinda mucked this one up, i wanted it to cache a bit more data,
  * this will do for now.
+ * data should be added after insertion to db, 
+ * when data is requested if it is not present in cache db will be queried
+ * I just found out this saves about 400ms!
  * Dominic Lindsay
  */
 package org.sunspotworld.cache;
@@ -36,14 +39,16 @@ public class ZoneCache implements IZoneCache {
      */
     public int getZoneID(String address)
     {
-        Integer zone = (Integer)zoneCache.get((Object)address);
-        if(zone == null)
+        int zone = NO_ZONE;
+        zone = ((Integer)(zoneCache.get(address))).intValue();
+        if(zone == NO_ZONE) //then get it and add it to cache
         {
             System.out.println("DID NOT FIND ZONE IN CACHE");
-            zone = Integer.valueOf(qm.getZoneIdFromSpotAddress(address));
-            this.add(address, zone.intValue());
+            zone = ((Integer)(zoneCache.get(address))).intValue();
+           
+            this.add(address, zone);
         }
-        return zone.intValue();
+        return zone;
     }
     
         
