@@ -13,15 +13,6 @@ import org.sunspotworld.threads.TReceivingAccel;
 import org.sunspotworld.threads.TReceivingLight;
 import org.sunspotworld.threads.TZoneController;
 import com.sun.spot.peripheral.ota.OTACommandServer;
-import org.sunspotworld.homeCollections.ArrayList;
-
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-import org.sunspotworld.database.QueryManager;
-import org.sunspotworld.valueObjects.LightData;
-import org.sunspotworld.valueObjects.ThermoData;
 
 /**
  * Host application that polls for temperature and
