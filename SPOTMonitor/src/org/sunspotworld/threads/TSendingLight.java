@@ -1,6 +1,5 @@
 package org.sunspotworld.threads;
 
-import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotMonitors.ILightMonitor;
 import org.sunspotworld.spotMonitors.LightMonitor;
@@ -9,6 +8,7 @@ import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.homePatterns.Observer;
 import org.sunspotworld.homePatterns.Observable;
 import com.sun.spot.util.Utils;
+import org.sunspotworld.spotMonitors.IMonitor;
 
 /**
  * Thread to send Light data
@@ -16,10 +16,11 @@ import com.sun.spot.util.Utils;
 public class TSendingLight implements Runnable, Observer
 {
     private ILightMonitor lightMonitor;
-    private static final int SAMPLE_RATE = 30 * 1000; //60 seconds
-
+    private int SAMPLE_RATE = 30 * 1000; //60 seconds
+    private int monitorThreshold;
+    private boolean thresholdMet;
     // Init sending radio
-    ISendingRadio lightSendingRadio;
+    private ISendingRadio lightSendingRadio;
 
     /**
      * Instantiates the monitor and sending radio required
@@ -27,6 +28,8 @@ public class TSendingLight implements Runnable, Observer
      */
     public TSendingLight(int threshold)
     {
+        this.monitorThreshold = threshold;
+        this.thresholdMet = false;
         try
         {
             lightMonitor = MonitorFactory.createLightMonitor(threshold);
@@ -56,6 +59,8 @@ public class TSendingLight implements Runnable, Observer
      /**
      * Message received from monitor
      * pass to radio
+     * @param o
+     * @param arg
      */
     public void update(Observable o, Object arg)
     {

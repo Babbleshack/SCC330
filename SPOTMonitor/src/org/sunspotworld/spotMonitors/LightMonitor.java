@@ -24,8 +24,10 @@ public class LightMonitor extends Observable implements ILightMonitor
     //threshold stuff
     private final int threshold;
 
-    private IConditionListener lightCheck;
-    private Condition conditionMet;
+    private IConditionListener thesholdCondition;
+    private IConditionListener resetConditionListener;
+    private Condition conditionHasBeenMet;
+    private Condition waitForReset;
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
 
@@ -46,27 +48,67 @@ public class LightMonitor extends Observable implements ILightMonitor
      */
     private void prepareConditions()
     {
-        lightCheck = new IConditionListener()
+        /**
+         * Called when reading goes above threshold
+         * Calls observers notify method.
+         * Stop thresholdCondition and starts waitForResetCondition
+         */
+        thesholdCondition = new IConditionListener()
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
                 LightMonitor.this.hasChanged();
-                LightMonitor.this.notifyObservers((Object)new Double(LightMonitor.this.getLightIntensity()));
+                LightMonitor.this.notifyObservers();
+                LightMonitor.this.conditionHasBeenMet.stop();
+                LightMonitor.this.waitForReset.start();
+                
             }
         };
-        //innitialise the checking condition
-        conditionMet = new Condition(lightSensor, lightCheck, SAMPLE_RATE)
+        /**
+         * resets Threshold Condition Listener
+         */
+        resetConditionListener = new IConditionListener()
+        {
+            public void conditionMet(SensorEvent evt, Condition condition)
+            {
+              LightMonitor.this.waitForReset.stop();
+              LightMonitor.this.conditionHasBeenMet.start();
+            }
+        };
+        /**
+         * Sampling Condition used to monitor instrument data
+         */
+        conditionHasBeenMet = new Condition(lightSensor, thesholdCondition, SAMPLE_RATE)
         {
           public boolean isMet(SensorEvent evt)
           {
             if(LightMonitor.this.getLightIntensity() >= threshold) {
-                // Utils.sleep(SECOND*5);
                 return true;
             }
             return false;
           }  
         };
-        conditionMet.start();    
+        /**
+         * reset callback condition, used to restart sampling.
+         */
+        waitForReset = new Condition(lightSensor, resetConditionListener, SAMPLE_RATE)
+        {
+          public boolean isMet(SensorEvent evt)
+          {
+            if(LightMonitor.this.getLightIntensity() <= threshold) {
+                return true;
+            }
+            return false;
+          }  
+        };
+        conditionHasBeenMet.start();    
+    }
+    public void waitForThreshold(){
+        this.conditionHasBeenMet.start();
+    }
+    
+    public void waitForReset() {
+        this.conditionHasBeenMet.stop();
     }
 
     public SunspotPort getPort() {

@@ -20,26 +20,25 @@ import com.sun.spot.resources.transducers.Condition;
 import com.sun.spot.resources.transducers.IConditionListener;
 import com.sun.spot.resources.transducers.SensorEvent;
 
-import org.sunspotworld.spotMonitors.IMotionMonitor;
 
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
 
-import org.sunspotworld.homePatterns.Observer;
 import org.sunspotworld.homePatterns.Observable;
-import com.sun.spot.util.Utils;
 import java.io.IOException;
 
 public class MotionMonitor extends Observable implements IMotionMonitor
 {
-	private long lastMotion = 0;
+    private long lastMotion = 0;
     private EDemoBoard demo = EDemoBoard.getInstance(); //returns an instance of EDemoBoard through which the I/O pins can be accessed
     private ITriColorLEDArray leds;
     private IToneGenerator toneGen;
     private IScalarInput irSensor = irSensor = demo.getScalarInputs()[EDemoBoard.A0];
     private ITriColorLED led = leds.getLED(0);
-    private IConditionListener motionCheck;
-    private Condition conditionMet;
+    private IConditionListener thesholdCondition;
+    private IConditionListener resetConditionListener;
+    private Condition conditionHasBeenMet;
+    private Condition waitForReset;
     private SunspotPort port;
 
     private static final double FREQ = 50.0;
@@ -71,26 +70,53 @@ public class MotionMonitor extends Observable implements IMotionMonitor
      */
     private void prepareConditions()
     {
-        motionCheck = new IConditionListener()
+        /**
+         * Called when reading goes above threshold
+         * Calls observers notify method.
+         * Stop thresholdCondition and starts waitForResetCondition
+         */
+        thesholdCondition = new IConditionListener()
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
                 MotionMonitor.this.hasChanged();
-                MotionMonitor.this.notifyObservers((Object)new Long(System.currentTimeMillis()));
+                MotionMonitor.this.notifyObservers();
+                MotionMonitor.this.conditionHasBeenMet.stop();
+                MotionMonitor.this.waitForReset.start();
+                
             }
         };
-        //innitialise the checking condition
-        conditionMet = new Condition(irSensor, motionCheck, SAMPLE_RATE)
+         /**
+         * resets Threshold Condition Listener
+         */
+        resetConditionListener = new IConditionListener()
+        {
+            public void conditionMet(SensorEvent evt, Condition condition)
+            {
+              MotionMonitor.this.waitForReset.stop();
+              MotionMonitor.this.conditionHasBeenMet.start();
+            }
+        };
+        /**
+         * Sampling Condition used to monitor instrument data
+         */
+        conditionHasBeenMet = new Condition(irSensor, thesholdCondition, SAMPLE_RATE)
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(MotionMonitor.this.getSensorValue() == HIGH) {
-                return true;
-            }
-            return false;
+              return MotionMonitor.this.getDataAsInt() == HIGH;
           }  
         };
-        conditionMet.start();    
+        /**
+         * reset callback, used to restart sampling.
+         */
+        waitForReset = new Condition(irSensor, resetConditionListener, SAMPLE_RATE)
+        {
+          public boolean isMet(SensorEvent evt)
+          {
+              return MotionMonitor.this.getDataAsInt() != HIGH;
+          }
+        };    
     }
 
     /**

@@ -14,7 +14,6 @@ import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.homePatterns.Observable;
 import java.io.IOException;
 import com.sun.spot.resources.transducers.SensorEvent;
-import com.sun.spot.util.Utils;
 
 
 
@@ -22,19 +21,21 @@ import com.sun.spot.util.Utils;
 public class ThermoMonitor extends Observable implements IThermoMonitor
 {
     private SunspotPort port;
-    private ITemperatureInput thermo;
+    private ITemperatureInput thermoSensor;
 
     private final int THRESHOLD; 
 
     //define condition and callback
-    private IConditionListener callback;
-    private Condition hasGoneAboveThreshold;
+    private IConditionListener thesholdCondition;
+    private IConditionListener restartCondition;
+    private Condition conditionHasBeenMet;
+    private Condition waitForReset;
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
 
     public ThermoMonitor(int threshold)
     {
-        this.thermo = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
+        this.thermoSensor = (ITemperatureInput) Resources.lookup(ITemperatureInput.class);
         try {
             this.port = new SunspotPort(SunspotPort.THERMO_PORT);
         } catch (PortOutOfRangeException pe) {
@@ -51,27 +52,61 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
      */
     private void prepareConditions()
     {
-        callback = new IConditionListener()
+        
+        /**
+         * Called when reading goes above threshold
+         * Calls observers notify method.
+         * Stop thresholdCondition and starts waitForResetCondition
+         */
+        thesholdCondition = new IConditionListener()
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
                 ThermoMonitor.this.hasChanged();
-                ThermoMonitor.this.notifyObservers((Object)new Double(ThermoMonitor.this.getCelsiusTemp()));
+                ThermoMonitor.this.notifyObservers();
+                ThermoMonitor.this.conditionHasBeenMet.stop();
+                ThermoMonitor.this.waitForReset.start();
+                
             }
         };
-        //innitialise the checking condition
-        hasGoneAboveThreshold = new Condition(thermo, callback, SAMPLE_RATE)
+        /**
+         * restarts monitor condition
+         */
+        restartCondition = new IConditionListener()
+        {
+            public void conditionMet(SensorEvent evt, Condition condition)
+            {
+                ThermoMonitor.this.waitForReset.stop();    
+                ThermoMonitor.this.conditionHasBeenMet.start();
+            }
+        };
+        /**
+         * Sampling Condition used to monitor instrument data
+         */
+        conditionHasBeenMet = new Condition(thermoSensor, thesholdCondition, SAMPLE_RATE)
         {
           public boolean isMet(SensorEvent evt)
           {
             if(ThermoMonitor.this.getCelsiusTemp() >= THRESHOLD) {
-                // Utils.sleep(SECOND*5);
                 return true;
             }
             return false;
           }  
         };
-        hasGoneAboveThreshold.start();    
+        /**
+         * reset callback, used to restart sampling.
+         */
+        waitForReset = new Condition(thermoSensor, thesholdCondition, SAMPLE_RATE)
+        {
+          public boolean isMet(SensorEvent evt)
+          {
+            if(ThermoMonitor.this.getCelsiusTemp() <= THRESHOLD) {
+                return true;
+            }
+            return false;
+          }  
+        };
+        conditionHasBeenMet.start();       
     }
 
     public SunspotPort getPort() {
@@ -85,7 +120,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     public double getCelsiusTemp() {
         try
         {
-            return thermo.getCelsius();
+            return thermoSensor.getCelsius();
         } catch (IOException ex) {
             System.err.println("Error getting Celcius " + ex);
         }
@@ -96,7 +131,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     {
         try
         {
-            return thermo.getFahrenheit();
+            return thermoSensor.getFahrenheit();
         } catch (IOException ex) {
             System.err.println("Error getting Fahrenheit " + ex);
         }
@@ -106,7 +141,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     public String getDataAsString() {
         String data = "";
         try {
-            data = String.valueOf(thermo.getCelsius());
+            data = String.valueOf(thermoSensor.getCelsius());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -116,7 +151,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     public double getDataAsDouble() {
         double data = 0;        
         try {
-            data = thermo.getCelsius();
+            data = thermoSensor.getCelsius();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -126,7 +161,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     public int getDataAsInt() {
         int data = 0;
         try {
-            data = (int) thermo.getCelsius();
+            data = (int) thermoSensor.getCelsius();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -136,7 +171,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     public long getDataAsLong() {
         long data = 0;
          try {
-            data = (long) thermo.getCelsius();
+            data = (long) thermoSensor.getCelsius();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
