@@ -11,9 +11,10 @@ import org.sunspotworld.spotRadios.SunspotPort;
  *
  * @author babbleshack
  */
-public interface ILightMonitor
+public interface ILightMonitor extends IMonitor
 {
-	/** 
+    public static final int PORT = SunspotPort.LIGHT_PORT;
+    /** 
      * Returns port number for this sensor type
      */
     SunspotPort getPort(); 

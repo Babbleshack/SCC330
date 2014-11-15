@@ -24,11 +24,11 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     private SunspotPort port;
     private ITemperatureInput thermo;
 
-    private final int threshold; 
+    private final int THRESHOLD; 
 
     //define condition and callback
-    private IConditionListener thermoCheck;
-    private Condition conditionMet;
+    private IConditionListener callback;
+    private Condition hasGoneAboveThreshold;
     private static final int SECOND = 1000; 
     private static final int SAMPLE_RATE = SECOND;
 
@@ -40,16 +40,18 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
-        this.threshold = threshold;
+        this.THRESHOLD = threshold;
         this.prepareConditions();
     }
     
     /**
      * innitializes conditions and starts them
+     * ThermoCheck Condition Listener Fired by the "isMet"
+     * Condition.
      */
     private void prepareConditions()
     {
-        thermoCheck = new IConditionListener()
+        callback = new IConditionListener()
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
@@ -58,18 +60,18 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
             }
         };
         //innitialise the checking condition
-        conditionMet = new Condition(thermo, thermoCheck, SAMPLE_RATE)
+        hasGoneAboveThreshold = new Condition(thermo, callback, SAMPLE_RATE)
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(ThermoMonitor.this.getCelsiusTemp() >= threshold) {
+            if(ThermoMonitor.this.getCelsiusTemp() >= THRESHOLD) {
                 // Utils.sleep(SECOND*5);
                 return true;
             }
             return false;
           }  
         };
-        conditionMet.start();    
+        hasGoneAboveThreshold.start();    
     }
 
     public SunspotPort getPort() {
@@ -99,6 +101,46 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
             System.err.println("Error getting Fahrenheit " + ex);
         }
         return -9999;
+    }
+
+    public String getDataAsString() {
+        String data = "";
+        try {
+            data = String.valueOf(thermo.getCelsius());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return data;
+    }
+
+    public double getDataAsDouble() {
+        double data = 0;        
+        try {
+            data = thermo.getCelsius();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return data;
+    }
+
+    public int getDataAsInt() {
+        int data = 0;
+        try {
+            data = (int) thermo.getCelsius();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return data;
+    }
+
+    public long getDataAsLong() {
+        long data = 0;
+         try {
+            data = (long) thermo.getCelsius();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+         return data;
     }
 
 }

@@ -87,4 +87,50 @@ public class LightMonitor extends Observable implements ILightMonitor
         }
         return -9999;
     }
+    
+        public String getDataAsString() {
+        String reading = "";
+        try {
+            reading = String.valueOf(lightSensor.getAverageValue());
+        } catch (IOException ex) {
+            System.err.println("Error reading Accel Data");
+            ex.printStackTrace();
+        }
+        return reading;
+    }
+
+    public double getDataAsDouble() {
+        double reading =0;
+        try {
+            reading = lightSensor.getAverageValue();
+        } catch (IOException ex) {
+            System.err.println("Error reading Accel Data");
+            ex.printStackTrace();
+        }
+        return reading;
+    }
+
+    public int getDataAsInt() {
+        int reading = 0;
+        try {
+            reading = lightSensor.getAverageValue();
+        } catch (IOException ex) {
+            System.err.println("Error reading Accel Data");
+            ex.printStackTrace();
+        }
+        return reading;
+    }
+
+    public long getDataAsLong() {
+         long reading = 0;
+        try {
+            reading = lightSensor.getAverageValue();
+            
+        } catch (IOException ex) {
+            System.err.println("Error reading Accel Data");
+            ex.printStackTrace();
+        }
+        return reading;
+    }
+
 }

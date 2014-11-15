@@ -11,5 +11,8 @@ package org.sunspotworld.spotMonitors;
  */
 public interface IMonitor 
 {
-  
+    public String getDataAsString();
+    public double getDataAsDouble();
+    public int getDataAsInt();
+    public long getDataAsLong();
 }

@@ -62,6 +62,7 @@ public class MotionMonitor extends Observable implements IMotionMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
+        lastMotion = 0;
         this.prepareConditions();
     }
  
@@ -133,6 +134,22 @@ public class MotionMonitor extends Observable implements IMotionMonitor
     public SunspotPort getPort()
     {
         return this.port;
+    }
+
+    public String getDataAsString() {
+        return String.valueOf(lastMotion);
+    }
+
+    public double getDataAsDouble() {
+        return (double) lastMotion;
+    }
+
+    public int getDataAsInt() {
+        return (int) lastMotion ;
+    }
+
+    public long getDataAsLong() {
+        return lastMotion;
     }
 
 }

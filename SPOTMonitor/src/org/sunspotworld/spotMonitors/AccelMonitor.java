@@ -81,4 +81,49 @@ public class AccelMonitor extends Observable implements IAccelMonitor
         return -9999;
     }
 
+    public String getDataAsString() {
+        String reading = "";
+        try {
+            reading = String.valueOf(accelSensor.getAccel());
+        } catch (IOException ex) {
+            System.err.println("Error reading Accel Data");
+            ex.printStackTrace();
+        }
+        return reading;
+    }
+
+    public double getDataAsDouble() {
+        double reading =0;
+        try {
+            reading = accelSensor.getAccel();
+        } catch (IOException ex) {
+            System.err.println("Error reading Accel Data");
+            ex.printStackTrace();
+        }
+        return reading;
+    }
+
+    public int getDataAsInt() {
+        Double reading = new Double(0.0);
+        try {
+            reading = Double.valueOf(accelSensor.getAccel());
+            
+        } catch (IOException ex) {
+            System.err.println("Error reading Accel Data");
+            ex.printStackTrace();
+        }
+        return reading.intValue();
+    }
+
+    public long getDataAsLong() {
+         Double reading = new Double(0);
+        try {
+            reading = Double.valueOf(accelSensor.getAccel());
+        } catch (IOException ex) {
+            System.err.println("Error reading Accel Data");
+            ex.printStackTrace();
+        }
+        return reading.longValue();
+    }
+
 }
