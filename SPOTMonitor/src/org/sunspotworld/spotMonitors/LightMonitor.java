@@ -22,14 +22,18 @@ public class LightMonitor extends Observable implements ILightMonitor
     private final ILightSensor lightSensor; //Light Sensor
 
     //threshold stuff
-    private final int threshold;
+    private int threshold;
 
     private IConditionListener thesholdCondition;
     private IConditionListener resetConditionListener;
     private Condition conditionHasBeenMet;
     private Condition waitForReset;
+    
+    private final int THRESHOLD; 
+    private final int SAMPLE_RATE;
+    private final int NO_THRESHOLD = 0;
     private static final int SECOND = 1000; 
-    private static final int SAMPLE_RATE = SECOND;
+    private static final int FIVE_MINUTES = 5 * (60 * SECOND);
 
     public LightMonitor(int threshold)
     {
@@ -39,8 +43,22 @@ public class LightMonitor extends Observable implements ILightMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
+        /**
+         * If no threshold has been set then
+         * set threshold to 0, and sample every 5 
+         * minutes,
+         * otherwise sample every second and report when threshold has been
+         * met.
+         */
+        if(threshold <= NO_THRESHOLD)
+        {
+            this.THRESHOLD = NO_THRESHOLD;
+            this.SAMPLE_RATE = FIVE_MINUTES;
+        } else {
+            this.THRESHOLD = threshold;
+            this.SAMPLE_RATE = SECOND;
+        } 
         this.prepareConditions();
-        this.threshold = threshold;
     }
     
     /**
@@ -57,11 +75,15 @@ public class LightMonitor extends Observable implements ILightMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
-                LightMonitor.this.hasChanged();
-                LightMonitor.this.notifyObservers();
-                LightMonitor.this.conditionHasBeenMet.stop();
-                LightMonitor.this.waitForReset.start();
-                
+                LightMonitor monitor = LightMonitor.this;
+                monitor.hasChanged();
+                monitor.notifyObservers();
+                if(monitor.THRESHOLD == monitor.NO_THRESHOLD)
+                {
+                    return;
+                }
+                monitor.conditionHasBeenMet.stop();
+                monitor.waitForReset.start();
             }
         };
         /**
@@ -71,6 +93,7 @@ public class LightMonitor extends Observable implements ILightMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
+              System.out.println("DROP OCCURED STARTING THRESHOLD");
               LightMonitor.this.waitForReset.stop();
               LightMonitor.this.conditionHasBeenMet.start();
             }

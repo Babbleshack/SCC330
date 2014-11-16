@@ -15,23 +15,25 @@ import org.sunspotworld.homePatterns.Observable;
 import java.io.IOException;
 import com.sun.spot.resources.transducers.SensorEvent;
 
-
-
-
+/**
+ *
+ * @author babbleshack
+ */
 public class ThermoMonitor extends Observable implements IThermoMonitor
 {
     private SunspotPort port;
     private ITemperatureInput thermoSensor;
 
     private final int THRESHOLD; 
+    private final int SAMPLE_RATE;
+    private final int NO_THRESHOLD = 0;
+    private static final int SECOND = 1000; 
+    private static final int FIVE_MINUTES = 5 * (60 * SECOND);
 
     //define condition and callback
     private IConditionListener thesholdCondition;
-    private IConditionListener restartCondition;
     private Condition conditionHasBeenMet;
     private Condition waitForReset;
-    private static final int SECOND = 1000; 
-    private static final int SAMPLE_RATE = SECOND;
 
     public ThermoMonitor(int threshold)
     {
@@ -41,7 +43,21 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
-        this.THRESHOLD = threshold;
+        /**
+         * If no threshold has been set then
+         * set threshold to 0, and sample every 5 
+         * minutes,
+         * otherwise sample every second and report when threshold has been
+         * met.
+         */
+        if(threshold <= NO_THRESHOLD)
+        {
+            this.THRESHOLD = NO_THRESHOLD;
+            this.SAMPLE_RATE = FIVE_MINUTES;
+        } else{
+            this.THRESHOLD = threshold;
+            this.SAMPLE_RATE = SECOND;
+        } 
         this.prepareConditions();
     }
     
@@ -62,22 +78,16 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         {
             public void conditionMet(SensorEvent evt, Condition condition)
             {
-                ThermoMonitor.this.hasChanged();
-                ThermoMonitor.this.notifyObservers();
-                ThermoMonitor.this.conditionHasBeenMet.stop();
-                ThermoMonitor.this.waitForReset.start();
-                
-            }
-        };
-        /**
-         * restarts monitor condition
-         */
-        restartCondition = new IConditionListener()
-        {
-            public void conditionMet(SensorEvent evt, Condition condition)
-            {
-                ThermoMonitor.this.waitForReset.stop();    
-                ThermoMonitor.this.conditionHasBeenMet.start();
+                ThermoMonitor monitor = ThermoMonitor.this;
+                monitor.hasChanged();
+                monitor.notifyObservers();
+                if(monitor.THRESHOLD == monitor.NO_THRESHOLD)
+                {
+                    return;
+                }
+                monitor.conditionHasBeenMet.stop();
+                monitor.waitForReset.start();
+
             }
         };
         /**
@@ -87,6 +97,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
+              System.out.println("Thermo Reading: " + ThermoMonitor.this.getDataAsDouble());
             if(ThermoMonitor.this.getDataAsDouble() >= THRESHOLD) {
                 return true;
             }
