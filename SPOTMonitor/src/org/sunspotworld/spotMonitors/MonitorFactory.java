@@ -32,4 +32,9 @@ public class MonitorFactory
     {
         return new SwitchMonitor();
     }
+    
+    public static IBatteryMonitor createBatteryMonitor()
+    {
+        return new BatteryMonitor();
+    }
 }

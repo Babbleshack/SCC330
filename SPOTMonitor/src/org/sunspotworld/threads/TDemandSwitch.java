@@ -6,7 +6,6 @@
 
 package org.sunspotworld.threads;
 
-import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotMonitors.ISwitchMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
@@ -17,6 +16,7 @@ import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.ISwitch;
 import com.sun.spot.resources.transducers.ISwitchListener;
 import com.sun.spot.resources.transducers.SwitchEvent;
+import org.sunspotworld.spotMonitors.IBatteryMonitor;
 
 /**
  * Sample Sun SPOT host application
@@ -27,6 +27,7 @@ public class TDemandSwitch implements Runnable, ISwitchListener
     private static final int DEFAULT_THRESHOLD = 0;
 
     ISwitchMonitor switchMonitor;
+    IBatteryMonitor batteryMonitor;
 
     ISendingRadio switchSendingRadio;
 
@@ -34,6 +35,9 @@ public class TDemandSwitch implements Runnable, ISwitchListener
     // instance variables
     public TDemandSwitch(int heat_threshold)
     {
+        
+        //start battery monitor
+        batteryMonitor = MonitorFactory.createBatteryMonitor();
         sw1 = (ISwitch) Resources.lookup(ISwitch.class, "SW1");
         sw1.addISwitchListener(this);       // enable automatic notification of switches
 
@@ -62,17 +66,20 @@ public class TDemandSwitch implements Runnable, ISwitchListener
      * @param sw the switch that was pressed/released.
      */
     public void switchPressed(SwitchEvent evt) {
+        //call battery monitor
         System.out.println("Switch " + switchMonitor.getPressedId(evt) + " pressed!");
+        
     }
     
     public void switchReleased(SwitchEvent evt) {
+        batteryMonitor.setPowerIndicator(batteryMonitor.getDataAsDouble());
+        System.out.println("SWITCH PRESSED BATTERY LEVEL: " + batteryMonitor.getDataAsDouble());
         switchSendingRadio.sendSwitch(evt.getSwitch().getTagValue("id")); 
     }
 
     public void startPolling() throws Exception
     {
     }
-
     public void run()
     {
         Utils.sleep(30000); // sleep for 30 seconds
