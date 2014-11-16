@@ -12,7 +12,7 @@ import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 import java.io.IOException;
 import org.sunspotworld.cache.CacheFactory;
 import org.sunspotworld.cache.IZoneCache;
-import org.sunspotworld.database.DatabaseConnectionFactory;
+import org.sunspotworld.database.IQueryManager;
 
 import org.sunspotworld.database.QueryManager;
 

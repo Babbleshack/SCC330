@@ -12,8 +12,6 @@ import org.sunspotworld.basestationMonitors.IThermoMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 
-import org.sunspotworld.database.DatabaseConnectionFactory;
-import org.sunspotworld.database.MySQLConnectionManager;
 import org.sunspotworld.database.QueryManager;
 
 /**

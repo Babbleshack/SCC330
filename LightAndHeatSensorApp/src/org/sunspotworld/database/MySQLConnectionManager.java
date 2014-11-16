@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class MySQLConnectionManager implements IDatabaseConnectionManager 
 {
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1:33060/testing";
+    private static final String DB_URL = "jdbc:mysql://10.42.72.24:3306/testing";
     private static final String USERNAME = "babbleshack";
     private static final String PASSWORD = "testing";
     private Connection connection = null;
