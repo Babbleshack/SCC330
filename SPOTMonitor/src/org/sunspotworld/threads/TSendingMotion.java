@@ -63,10 +63,10 @@ public class TSendingMotion implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
-        motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getMotionTime());
+        motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getDataAsLong());
     }
     public void update(Observable o)
     {
-        motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getMotionTime());
+        motionSendingRadio.sendMotionTime(((IMotionMonitor)o).getDataAsLong());
     }
 }

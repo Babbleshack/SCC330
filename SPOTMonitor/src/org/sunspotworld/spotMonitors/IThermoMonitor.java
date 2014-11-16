@@ -17,10 +17,4 @@ public interface IThermoMonitor extends IMonitor
      * Returns port number for this sensor type
      */
     SunspotPort getPort(); 
-
-    /**
-     * return temperature in Degrees Celsius
-     * @return double temp
-     */
-    double getCelsiusTemp();
 }

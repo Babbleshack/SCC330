@@ -61,10 +61,10 @@ public class TSendingHeat implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
-        thermoSendingRadio.sendHeat(((IThermoMonitor)o).getCelsiusTemp());
+        thermoSendingRadio.sendHeat(((IThermoMonitor)o).getDataAsDouble());
     }
     public void update(Observable o)
     {
-        thermoSendingRadio.sendHeat(((IThermoMonitor)o).getCelsiusTemp());
+        thermoSendingRadio.sendHeat(((IThermoMonitor)o).getDataAsDouble());
     }
 }

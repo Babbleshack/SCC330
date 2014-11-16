@@ -17,8 +17,8 @@ public class AccelMonitor extends Observable implements IAccelMonitor
     private static final int portNum = 130;
     private IAccelerometer3D accelSensor; //Accelerometer Sensor
     //threshold stuff
-    private static final double MIN_G = 0.8;
-    private static final double MAX_G = 1.2;
+    private static final double LOWER_THRESHOLD = 0.8;
+    private static final double HIGHER_THRESHOLD = 1.2;
     private IConditionListener accelCheck;
     private Condition conditionMet;
     private static final int SECOND = 1000; 
@@ -43,7 +43,7 @@ public class AccelMonitor extends Observable implements IAccelMonitor
             public void conditionMet(SensorEvent evt, Condition condition)
             {
                 AccelMonitor.this.hasChanged();
-                AccelMonitor.this.notifyObservers((Object)new Double(AccelMonitor.this.getAccel()));
+                AccelMonitor.this.notifyObservers();
             }
         };
         //innitialise the checking condition
@@ -51,12 +51,8 @@ public class AccelMonitor extends Observable implements IAccelMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(AccelMonitor.this.getAccel() < MIN_G || AccelMonitor.this.getAccel() > MAX_G) {
-                System.out.println("Accelerometer reading: " + AccelMonitor.this.getAccel());
-                // Utils.sleep(SECOND*5);
-                return true;
-            }
-            return false;
+              double reading  = AccelMonitor.this.getDataAsDouble();
+            return reading < LOWER_THRESHOLD || reading > HIGHER_THRESHOLD;
           }  
         };
         conditionMet.start();    
@@ -69,18 +65,6 @@ public class AccelMonitor extends Observable implements IAccelMonitor
     public static int getStaticPort() {
         return portNum;
     }
-
-    public double getAccel()
-    {
-        try
-        {
-           return accelSensor.getAccel();
-        } catch (IOException ex) {
-           System.err.println("Failed to get accel sensor: " + ex);
-        }
-        return -9999;
-    }
-
     public String getDataAsString() {
         String reading = "";
         try {

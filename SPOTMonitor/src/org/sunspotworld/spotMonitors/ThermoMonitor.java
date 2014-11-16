@@ -87,7 +87,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(ThermoMonitor.this.getCelsiusTemp() >= THRESHOLD) {
+            if(ThermoMonitor.this.getDataAsDouble() >= THRESHOLD) {
                 return true;
             }
             return false;
@@ -100,7 +100,7 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(ThermoMonitor.this.getCelsiusTemp() <= THRESHOLD) {
+            if(ThermoMonitor.this.getDataAsDouble() <= THRESHOLD) {
                 return true;
             }
             return false;
@@ -116,28 +116,6 @@ public class ThermoMonitor extends Observable implements IThermoMonitor
     public static int getStaticPort() {
         return SunspotPort.THERMO_PORT;
     }
-
-    public double getCelsiusTemp() {
-        try
-        {
-            return thermoSensor.getCelsius();
-        } catch (IOException ex) {
-            System.err.println("Error getting Celcius " + ex);
-        }
-        return -9999;
-    }
-
-    public double getFahrenheitTemp()
-    {
-        try
-        {
-            return thermoSensor.getFahrenheit();
-        } catch (IOException ex) {
-            System.err.println("Error getting Fahrenheit " + ex);
-        }
-        return -9999;
-    }
-
     public String getDataAsString() {
         String data = "";
         try {

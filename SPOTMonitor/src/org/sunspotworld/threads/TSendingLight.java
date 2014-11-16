@@ -52,7 +52,7 @@ public class TSendingLight implements Runnable, Observer
         while (true)
         {
             // Send light reading
-            lightSendingRadio.sendLight(lightMonitor.getLightIntensity());
+            lightSendingRadio.sendLight(lightMonitor.getDataAsInt());
             Utils.sleep(SAMPLE_RATE);
         }
     }
@@ -64,11 +64,10 @@ public class TSendingLight implements Runnable, Observer
      */
     public void update(Observable o, Object arg)
     {
-        System.out.println(((ILightMonitor)o).getLightIntensity());
-        lightSendingRadio.sendLight(((ILightMonitor)o).getLightIntensity());
+        lightSendingRadio.sendLight(((ILightMonitor)o).getDataAsInt());
     }
     public void update(Observable o)
     {
-        lightSendingRadio.sendLight(((ILightMonitor)o).getLightIntensity());
+        lightSendingRadio.sendLight(((ILightMonitor)o).getDataAsInt());
     }
 }

@@ -82,7 +82,7 @@ public class LightMonitor extends Observable implements ILightMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(LightMonitor.this.getLightIntensity() >= threshold) {
+            if(LightMonitor.this.getDataAsDouble()>= threshold) {
                 return true;
             }
             return false;
@@ -95,7 +95,7 @@ public class LightMonitor extends Observable implements ILightMonitor
         {
           public boolean isMet(SensorEvent evt)
           {
-            if(LightMonitor.this.getLightIntensity() <= threshold) {
+            if(LightMonitor.this.getDataAsDouble()<= threshold) {
                 return true;
             }
             return false;
@@ -118,19 +118,8 @@ public class LightMonitor extends Observable implements ILightMonitor
     public static int getStaticPort() {
         return SunspotPort.LIGHT_PORT;
     }
-
-    public int getLightIntensity()
-    {
-        try
-        {
-           return lightSensor.getAverageValue();
-        } catch (IOException ex) {
-           System.err.println("Failed to get light sensor: " + ex);
-        }
-        return -9999;
-    }
     
-        public String getDataAsString() {
+    public String getDataAsString() {
         String reading = "";
         try {
             reading = String.valueOf(lightSensor.getAverageValue());
