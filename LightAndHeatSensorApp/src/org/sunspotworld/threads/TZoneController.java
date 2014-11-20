@@ -47,10 +47,10 @@ public class TZoneController implements Runnable
 				String towerAddress = rRadio.receiveZonePacket();
 				String spotAddress = rRadio.getReceivedAddress();
                                 
-               // int receivedSpotZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
-              //  int receivedTowerZoneID = qm.getZoneIdFromSpotAddress(towerAddress);
-                int receivedSpotZoneID = zCache.getZoneID(spotAddress);
-                int receivedTowerZoneID = zCache.getZoneID(towerAddress);
+               int receivedSpotZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
+               int receivedTowerZoneID = qm.getZoneIdFromSpotAddress(towerAddress);
+                // int receivedSpotZoneID = zCache.getZoneID(spotAddress);
+                // int receivedTowerZoneID = zCache.getZoneID(towerAddress);
 
                 System.out.println("Roaming SPOT " + spotAddress + " moved from zone " + receivedSpotZoneID
                 + " to zone " + receivedTowerZoneID + " because it is closest to Tower SPOT " + towerAddress);

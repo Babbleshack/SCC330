@@ -66,6 +66,18 @@ public class SendingRadio implements ISendingRadio
         }
     }
 
+    public void sendWater(int value)
+    {
+        try {
+            datagram.reset();
+            datagram.writeInt(value);
+            radioConn.send(datagram);
+            System.out.println("Water percentage " + value + " sent...");
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending accel: " + e);
+        }
+    }
+
     public void sendMotionTime(long value)
     {
         try {

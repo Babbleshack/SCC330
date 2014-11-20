@@ -9,6 +9,7 @@ package org.sunspotworld;
 import org.sunspotworld.threads.TSendingLight;
 import org.sunspotworld.threads.TSendingMotion;
 import org.sunspotworld.threads.TSendingAccel;
+import org.sunspotworld.threads.TSendingWater;
 import org.sunspotworld.threads.TSendingHeat;
 import org.sunspotworld.threads.TDiscoverMe;
 import org.sunspotworld.threads.TTower;
@@ -50,6 +51,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread accelThread;
     private Thread switchThread;
     private Thread motionThread;
+    private Thread waterThread;
     private Thread discoverMeThread;
     private Thread ZoneProccessingThread;
     private Thread towerThread;
@@ -87,20 +89,21 @@ public class SunSpotApplication extends MIDlet implements Runnable {
                 System.out.println("Thread started for sensing motion (thresh " + threshold + ")");
                 motionThread.start();
                 break;
-
-            /**
-             * Possible limitation: what if there's two spots passing at same time
-             */
             case 150: // tower
-            System.out.println("Starting Tower Threads");
+                System.out.println("Starting Tower Threads");
                 towerThread = new Thread(new TTower(), "towerService");
                 towerThread.start();
                 break;
             case 160: // roaming
-            System.out.println("Starting Roaming Threads");
+                System.out.println("Starting Roaming Threads");
                 ZoneProccessingThread = new Thread(new TZoneProccessor(),
                         "roamingService");
                 ZoneProccessingThread.start();
+                break;
+            case 180:
+                waterThread = new Thread(new TSendingWater(), "waterService");
+                System.out.println("Thread started for sensing water (thresh " + threshold + ")");
+                waterThread.start();
                 break;
         }
     }
