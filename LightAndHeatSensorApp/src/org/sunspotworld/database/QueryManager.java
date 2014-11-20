@@ -582,6 +582,36 @@ public class QueryManager implements IQueryManager
     }
 
     /**
+     * Insert water Data record to db
+     * @param water_percent percent that the cup has been drank to 
+     * @param zone_id int
+     * @param time long
+     */
+    public void createWaterRecord(int water_percent, String spot_address, long time) {
+        String insertWaterRecord = "INSERT INTO Water"
+                + "(water_percent, spot_address, zone_id, job_id, created_at)"
+                + ("VALUES (?,?,?,?,?)");
+        try {
+            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "water_percent");
+            if(job_id > 0) {
+                PreparedStatement insert =
+                    connection.getConnection().prepareStatement(insertWaterRecord);
+                insert.setInt(1, water_percent);
+                insert.setString(2, spot_address);
+                insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+                insert.setInt(4, job_id);
+                insert.setTimestamp(5, new Timestamp(time));
+                insert.executeUpdate();
+            } else {
+                System.out.println("No job_id for this water reading!");
+            }
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "createWaterRecord: " + e);
+        }
+    }
+
+    /**
      * insert Spot Record into DB
      * @param spot_address String
      */
