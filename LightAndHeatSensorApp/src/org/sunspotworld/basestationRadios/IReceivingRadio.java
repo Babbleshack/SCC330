@@ -43,6 +43,13 @@ public interface IReceivingRadio
 	 * @return accel data
 	 */
 	public double receiveAccel() throws IOException;
+        
+        /**
+         * Receives Water Data percentages as ints, from smartcup monitor.
+         * @return int
+         * @throws IOException 
+         */
+        public int receiveWater() throws IOException;
 
 	/**
 	 * Receives a datagram sent by the SendingRadio containing Motion data

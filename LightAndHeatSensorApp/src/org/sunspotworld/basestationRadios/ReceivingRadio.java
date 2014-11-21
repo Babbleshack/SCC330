@@ -63,6 +63,14 @@ public class ReceivingRadio implements IReceivingRadio
         radioConn.receive(datagram); 
         return datagram.readDouble(); 
     }
+    
+    public int receiveWater() throws IOException
+    {
+        datagram.reset();
+        radioConn.receive(datagram);
+        return datagram.readInt();
+              
+    }
 
     public long receiveMotion() throws IOException
     {

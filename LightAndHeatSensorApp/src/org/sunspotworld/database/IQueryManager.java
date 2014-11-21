@@ -20,6 +20,7 @@ public interface IQueryManager
     public void createLightRecord(int light, String spot_address, long time);
     public void createAccelRecord(double accelData, String spot_address, long time);
     public void createThermoRecord(double celciusData, String spot_address, long time);
+    public void createWaterRecord(int water_percent, String spot_address, long time);
     public void createSpotRecord(String spot_id);
     public void createZoneRecord(String title);
     public void createSpotZoneRecord(String spot_address, int spot_id);
