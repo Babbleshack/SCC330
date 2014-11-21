@@ -5,7 +5,7 @@
  */
 package org.sunspotworld.states;
 
-import org.sunspotworld.spotMonitors.SmartCupMonitor;
+import org.sunspotworld.spotMonitors.WaterMonitor;
 
 
 public class HalfFullState implements SmartCupState 
@@ -14,7 +14,7 @@ public class HalfFullState implements SmartCupState
     private static final double AVERAGE_FLOW_RATE = 8;
     private static final double MAX_FLOW_RATE = 12;
 
-    public double pour(SmartCupMonitor context, 
+    public double pour(WaterMonitor context, 
             double cupAngle, double fillLevelPercentage) 
     {
         System.out.println("HALF FULL STATE");
@@ -49,7 +49,7 @@ public class HalfFullState implements SmartCupState
         
         
     }
-    public void changeState(SmartCupMonitor context, double currentFillLevel) 
+    public void changeState(WaterMonitor context, double currentFillLevel) 
     {
         context.setState(new NearEmptyState());
     }

@@ -3,9 +3,6 @@
  * Dominic Lindsay
  */
 package org.sunspotworld.spotMonitors;
-
-//import com.sun.spot.resources.Resources;
-
 public class MonitorFactory 
 {
     public static ILightMonitor createLightMonitor(int threshold)
@@ -36,5 +33,10 @@ public class MonitorFactory
     public static IBatteryMonitor createBatteryMonitor()
     {
         return new BatteryMonitor();
+    }
+    
+    public static WaterMonitor createWaterMonitor()
+    {
+        return new WaterMonitor();
     }
 }

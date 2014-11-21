@@ -1,51 +1,46 @@
 package org.sunspotworld.threads;
 
-import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
-// import org.sunspotworld.spotMonitors.IWaterMonitor;
-// import org.sunspotworld.spotMonitors.WaterMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
-import org.sunspotworld.spotRadios.RadiosFactory;
-import org.sunspotworld.homePatterns.Observer;
-import org.sunspotworld.homePatterns.Observable;
 import com.sun.spot.util.Utils;
+import org.sunspotworld.homePatterns.TaskObservable;
+import org.sunspotworld.homePatterns.TaskObserver;
+import org.sunspotworld.spotMonitors.WaterMonitor;
+import org.sunspotworld.spotRadios.RadiosFactory;
+import org.sunspotworld.spotRadios.SunspotPort;
 
 /**
- * Thread to send Motion data
+ * Thread to send Water data
+ * sens water when observable watermonitor calls update.
  */
-public class TSendingWater implements Runnable, Observer
+public class TSendingWater implements Runnable, TaskObserver
 {
     // private IWaterMonitor waterMonitor;
-    private static final int SAMPLE_RATE = 60 * 1000; //60 seconds
+    private static final int SAMPLE_RATE = 250; //60 seconds
 
     // Init sending radio
     private ISendingRadio waterSendingRadio;
-
+    private WaterMonitor waterMonitor;
     /**
      * Instantiates the monitor and sending radio required
      * for sending motion data to the base station
      */
     public TSendingWater()
     {
-        // waterMonitor = MonitorFactory.createWaterMonitor();
-
+        waterMonitor = MonitorFactory.createWaterMonitor();
         try
         {
-            // waterSendingRadio = RadiosFactory.createSendingRadio(((WaterMonitor)waterMonitor).getPort());
-            
+            waterSendingRadio = RadiosFactory.createSendingRadio(
+                    new SunspotPort(SunspotPort.WATER_PORT)
+            );
         }
         catch(Exception e)
         {
            System.out.println("Unable initiate WATER sending radio" 
              + e);
         }
-        // ((WaterMonitor)waterMonitor).addObserver((Object)this);
+        waterMonitor.addObserver((Object)this);
     }
-
-    public void startPolling() throws Exception
-    {
-    }
-
     public void run()
     {
         // main switch reading/polling loop
@@ -58,12 +53,12 @@ public class TSendingWater implements Runnable, Observer
      * Message received from monitor
      * pass to radio
      */
-    public void update(Observable o, Object arg)
+    public void update(TaskObservable o, Object arg)
     {
-        // waterSendingRadio.sendWater(((IWaterMonitor)o).getDataAsInt());
+        waterSendingRadio.sendWater(((WaterMonitor)o).getDataAsInt());
     }
-    public void update(Observable o)
+    public void update(TaskObservable o)
     {
-        // waterSendingRadio.sendWater(((IWaterMonitor)o).getDataAsInt());
+        waterSendingRadio.sendWater(((WaterMonitor)o).getDataAsInt());
     }
 }

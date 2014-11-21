@@ -5,11 +5,11 @@
  */
 package org.sunspotworld.spotMonitors;
 
-import com.sun.spot.service.Task;
+import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.states.FullState;
 import org.sunspotworld.states.SmartCupState;
 import sensors.AxisSensor;
-public class SmartCupMonitor extends Task  
+public class WaterMonitor extends TaskObservable implements IMonitor 
 {
     private double fillLevelPercentage;
     private SmartCupState cupState;
@@ -17,7 +17,7 @@ public class SmartCupMonitor extends Task
     private static final long SAMPLE_RATE = 500;
     private static final long SAMPLE_FREQ = 10;
     private static final double MAX_FILL_PERCENTAGE = 100;
-    public SmartCupMonitor()
+    public WaterMonitor()
     {
         super(SAMPLE_RATE);
         axisSensor = new AxisSensor();
@@ -39,11 +39,19 @@ public class SmartCupMonitor extends Task
                             axisSensor.getAxisData().getY()
                     )));
         }
+        //if water level changes then notify Observers 
+        double currentWaterLevel = this.fillLevelPercentage;
         System.out.println("==================================================");
         averageReading = averageReading/SAMPLE_FREQ;
         System.out.println("ANGLE [" + averageReading + "]");
         System.out.println("BEFORE POURING [" + this.fillLevelPercentage + "]");
         this.pour(averageReading);
+        if(currentWaterLevel != this.fillLevelPercentage)
+        { 
+            //TELL OBSERVERS WATER LEVELS HAVE CHANGED
+            this.hasChanged();
+            this.notifyObservers();
+        }
         System.out.println("After POURING [" + this.fillLevelPercentage + "]");
     }
     /**
@@ -71,5 +79,17 @@ public class SmartCupMonitor extends Task
     public void setState(SmartCupState state)
     {
         this.cupState = state;
+    }
+    public String getDataAsString() {
+        return String.valueOf(this.fillLevelPercentage);
+    }
+    public double getDataAsDouble() {
+        return this.fillLevelPercentage;
+    }
+    public int getDataAsInt() {
+        return (int) this.fillLevelPercentage;
+    }
+    public long getDataAsLong() {
+        return (long) this.fillLevelPercentage;
     }
 }

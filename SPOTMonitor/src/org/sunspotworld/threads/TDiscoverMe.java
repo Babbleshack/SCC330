@@ -1,15 +1,11 @@
 package org.sunspotworld.threads;
 
+import com.sun.spot.util.Utils;
 import java.io.IOException;
 import org.sunspotworld.spotRadios.ISendingRadio;
-import org.sunspotworld.spotMonitors.IThermoMonitor;
-import org.sunspotworld.spotMonitors.ThermoMonitor;
-import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.spotRadios.RadiosFactory;
-import org.sunspotworld.homePatterns.Observer;
-import org.sunspotworld.homePatterns.Observable;
-import com.sun.spot.util.Utils;
+import org.sunspotworld.spotRadios.PortOutOfRangeException;
 
 // import java.util.Observer;
 
@@ -31,9 +27,11 @@ public class TDiscoverMe implements Runnable
         {
             discoverMeRadio = RadiosFactory.createSendingRadio(new SunspotPort(90));
         }
-        catch(Exception e)
+        catch(PortOutOfRangeException e)
         {
            System.out.println("Unable initiate discover me sending radio");
+        } catch (IOException e) {
+            System.out.println("Unable initiate discover me sending radio");
         }
     }
 
@@ -43,13 +41,40 @@ public class TDiscoverMe implements Runnable
 
     public void run()
     {
-        // main switch reading/polling loop
+        
         while (true)
         {
-            // Send thermo reading
+            while (true)
+            {
+                // Send thermo reading
+                discoverMeRadio.discoverMe(); 
+                Utils.sleep(SAMPLE_RATE);
+            }
+            /*Vector jobs;
+            try {
+                jobs = discoverMeRadio.discoverMe(30 * 1000);
+            } catch (TimeoutException ex) {
+                ex.printStackTrace();
+                continue;
+            }
+            */
+            
+            ///define what is going into jobs.
+        }
+        /*Send Discover me
+         * wait 30 seconds for reply
+         * When received go through list of services,
+         * Starting ones that correspond.
+         * if no reply send a second discover me. 
+        */
+        
+        
+        // main switch reading/polling loop
+/**        while (true)
+        {
             discoverMeRadio.discoverMe(); 
             Utils.sleep(SAMPLE_RATE);
-        }
+        }*/
     }
 
 }

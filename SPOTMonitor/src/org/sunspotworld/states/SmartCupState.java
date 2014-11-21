@@ -6,7 +6,7 @@
  */
 package org.sunspotworld.states;
 
-import org.sunspotworld.spotMonitors.SmartCupMonitor;
+import org.sunspotworld.spotMonitors.WaterMonitor;
 
 public interface SmartCupState 
 {
@@ -16,6 +16,6 @@ public interface SmartCupState
     public static final double MAX_FILL = 100;
     public static final double HALF_FILL = 50;
     public static final double NEAR_EMPTY_FILL = 15;
-    public double pour(SmartCupMonitor context,
+    public double pour(WaterMonitor context,
             double cupAngle, double fillLevelPercentage);
 }

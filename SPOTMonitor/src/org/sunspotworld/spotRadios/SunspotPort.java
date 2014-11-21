@@ -2,8 +2,8 @@ package org.sunspotworld.spotRadios;
 
 /**
  * Integer wrapper class for storing a port number for the SunSpots. 
- * Forces a value between 31 and 255 as the values 0-31 are reserved for system servicea
- * and 255 is the maximum port value for the SunSpots. 
+ * Forces a value between 31 and 255 as the values 0-31 are reserved for system 
+ * servicea and 255 is the maximum port value for the SunSpots. 
  */
 public class SunspotPort 
 {
@@ -20,6 +20,8 @@ public class SunspotPort
     public static final int PING_PORT           = 150;
     public static final int TOWER_RECIEVER_PORT = 160;
     public static final int BASE_TOWER_PORT     = 170;
+    public static final int WATER_PORT          = 180;
+    
 
     private final int value;
 

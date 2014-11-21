@@ -4,7 +4,7 @@
  */
 package org.sunspotworld.states;
 
-import org.sunspotworld.spotMonitors.SmartCupMonitor;
+import org.sunspotworld.spotMonitors.WaterMonitor;
 
 public class NearEmptyState implements SmartCupState 
 {
@@ -13,7 +13,7 @@ public class NearEmptyState implements SmartCupState
     private static final double AVERAGE_FLOW_RATE = 10;
     private static final double MAX_FLOW_RATE = 15;
 
-    public double pour(SmartCupMonitor context, 
+    public double pour(WaterMonitor context, 
             double cupAngle, double fillLevelPercentage) 
     {
         System.out.println("NEAR EMPTY STATE");
@@ -43,7 +43,7 @@ public class NearEmptyState implements SmartCupState
         }
         return fillLevelPercentage; 
     }
-    public void changeState(SmartCupMonitor context, double currentFillLevel) 
+    public void changeState(WaterMonitor context, double currentFillLevel) 
     {
         context.setState(new RefillState());
     }

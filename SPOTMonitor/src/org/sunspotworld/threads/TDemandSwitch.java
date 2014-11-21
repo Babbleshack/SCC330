@@ -37,7 +37,7 @@ public class TDemandSwitch implements Runnable, ISwitchListener
     {
         
         //start battery monitor
-        batteryMonitor = MonitorFactory.createBatteryMonitor();
+       // batteryMonitor = MonitorFactory.createBatteryMonitor();
         sw1 = (ISwitch) Resources.lookup(ISwitch.class, "SW1");
         sw1.addISwitchListener(this);       // enable automatic notification of switches
 

@@ -15,22 +15,10 @@ public class RadiosFactory
 {
     public static ISendingRadio createSendingRadio(SunspotPort port) throws IOException
     {
-        try
-        {
-            return new SendingRadio(port);
-        } catch (IOException e) {
-            System.err.println("IO exception occured during radion int: " + e );
-        }
-        return null;
+        return new SendingRadio(port);
     }
     public static IReceivingRadio createReceivingRadio(SunspotPort port) throws IOException
     {
-        try
-        {
-            return new ReceivingRadio(port);
-        } catch (IOException e) {
-            System.err.println("IO exception occured during radion int: " + e );
-        }
-        return null; 
+        return new ReceivingRadio(port);   
     }
 }

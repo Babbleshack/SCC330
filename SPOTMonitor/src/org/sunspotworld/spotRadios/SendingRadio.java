@@ -7,6 +7,8 @@ package org.sunspotworld.spotRadios;
 import java.io.IOException;
 
 import com.sun.spot.io.j2me.radiogram.*;
+import com.sun.spot.peripheral.TimeoutException;
+import java.util.Vector;
 
 import javax.microedition.io.*;
 
@@ -22,11 +24,15 @@ public class SendingRadio implements ISendingRadio
     
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
 
-    public SendingRadio(SunspotPort port) throws IOException
+    public SendingRadio(SunspotPort port) 
     {
-        radioConn = (RadiogramConnection) Connector.open("radiogram://broadcast:" + port.getPort());
-        System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
-        datagram = radioConn.newDatagram(50);
+        try {
+            radioConn = (RadiogramConnection) Connector.open("radiogram://broadcast:" + port.getPort());
+            System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
+            datagram = radioConn.newDatagram(50);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
        // rdg = (Radiogram)radioConn.newDatagram(rcvConn.getMaximumLength()); 
     }
 
@@ -169,5 +175,17 @@ public class SendingRadio implements ISendingRadio
         } catch (IOException e) {
             System.err.println("IOException occured while sending discovery request: " + e);
         } 
+    }
+    public Vector discoverMe(long timeout) throws TimeoutException {
+        try {
+            datagram.reset();
+            datagram.writeUTF(spotAddress);
+            radioConn.send(datagram);
+            radioConn.setTimeout(timeout);
+            System.out.println("DiscoverME request sent..."); 
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending discovery request: " + e);
+        } 
+        return null;
     }
 }

@@ -100,7 +100,7 @@ public class SunSpotApplication extends MIDlet implements Runnable {
                         "roamingService");
                 ZoneProccessingThread.start();
                 break;
-            case 180:
+            case SunspotPort.WATER_PORT:
                 waterThread = new Thread(new TSendingWater(), "waterService");
                 System.out.println("Thread started for sensing water (thresh " + threshold + ")");
                 waterThread.start();

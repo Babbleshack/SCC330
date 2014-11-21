@@ -5,11 +5,8 @@
 
 package org.sunspotworld.spotMonitors;
 
-import com.sun.spot.resources.Resources;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.SunspotPort;
-import java.io.IOException;
-import com.sun.spot.util.Utils;
 
 import com.sun.spot.resources.transducers.ISwitch;
 import com.sun.spot.resources.transducers.SwitchEvent;

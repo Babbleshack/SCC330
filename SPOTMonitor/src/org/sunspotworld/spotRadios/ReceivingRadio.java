@@ -21,14 +21,18 @@ public class ReceivingRadio implements IReceivingRadio
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
     private String lastPingAddress = null;
 
-    public ReceivingRadio(SunspotPort port) throws IOException
+    public ReceivingRadio(SunspotPort port)
     {
-        radioConn = (RadiogramConnection) Connector.open("radiogram://:" + port.getPort());
-        datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
-        System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
+        try {
+            radioConn = (RadiogramConnection) Connector.open("radiogram://:" + port.getPort());
+            datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
+            System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public String getReceivedAddress() throws IOException
+    public String getReceivedAddress()
     {   
         return datagram.getAddress();  
     }
@@ -37,24 +41,30 @@ public class ReceivingRadio implements IReceivingRadio
      * Receives thes discovey response and returns an array of integers, 
      * containing the port numbers and sensor thresholds
      */
-    public int[] receiveDiscoverResponse() throws IOException
+    public int[] receiveDiscoverResponse()
     {
-        String spot_address = "";
-        while(!spot_address.equals(spotAddress)) {
-            radioConn.receive(datagram); 
-            spot_address = datagram.readUTF();
-            System.out.println("Sun SPOT address " + spotAddress + " has received a discover response with the recipient of " + spot_address);
+        try {
+            String spot_address = "";
+            while(!spot_address.equals(spotAddress)) {
+                radioConn.receive(datagram);
+                spot_address = datagram.readUTF();
+                System.out.println("Sun SPOT address " + spotAddress + " has received a discover response with the recipient of " + spot_address);
+            }
+            
+            
+                int datagramLength = datagram.readInt();
+                int[] portsThresholds = new int[datagramLength];
+            
+                for (int i = 0;i < datagramLength; i += 2) {
+                    portsThresholds[i] = datagram.readInt();
+                    portsThresholds[i+1] = datagram.readInt();
+                }
+            
+            return portsThresholds;
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-
-        int datagramLength = datagram.readInt(); 
-        int[] portsThresholds = new int[datagramLength];
-        
-        for (int i = 0;i < datagramLength; i += 2) {
-            portsThresholds[i] = datagram.readInt();    
-            portsThresholds[i+1] = datagram.readInt();  
-        }
-
-        return portsThresholds;
+        return null;
     }
     /**
      * gets the address of the last received ping packet
