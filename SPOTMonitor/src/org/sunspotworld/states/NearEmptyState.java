@@ -8,9 +8,6 @@ import org.sunspotworld.spotMonitors.WaterMonitor;
 
 public class NearEmptyState implements SmartCupState 
 {
-
-    private static final double MINIMUM_FLOW_RATE = 5;
-    private static final double AVERAGE_FLOW_RATE = 10;
     private static final double MAX_FLOW_RATE = 15;
 
     public double pour(WaterMonitor context, 
