@@ -1,7 +1,7 @@
 /*
  * Wrapper class for Accelerometer instantiation
  */
-package sensors;
+package org.sunspotworld.sensors;
 
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.IAccelerometer3D;

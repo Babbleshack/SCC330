@@ -12,7 +12,7 @@ import com.sun.spot.resources.transducers.SwitchEvent;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.states.FullState;
 import org.sunspotworld.states.SmartCupState;
-import sensors.AxisSensor;
+import org.sunspotworld.sensors.AxisSensor;
 public class WaterMonitor extends TaskObservable implements IMonitor,
         ISwitchListener
 {
