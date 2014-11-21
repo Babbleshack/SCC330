@@ -20,22 +20,9 @@ public class NearEmptyState implements SmartCupState
         /**
          * SUBTRACT FROM FILL LEVEL
          */
-        if(cupAngle >= 45 && cupAngle <= 65)
+        if(cupAngle < 25)
         {
-            System.out.println("=====================================");
-            System.out.println("NOT POURING");
-            System.out.println("=====================================");
-        } else if(cupAngle >= 25 && cupAngle <= 45)
-        {
-            System.out.println("=====================================");
-            System.out.println("Not Pouring");
-            System.out.println("=====================================");
-        } else if(cupAngle < 25)
-        {
-            System.out.println("=====================================");
             fillLevelPercentage -= (MAX_FLOW_RATE * (fillLevelPercentage/100));
-            System.out.println("POURING worth %" + MAX_FLOW_RATE);
-            System.out.println("=====================================");
         }
         if(fillLevelPercentage <= 10)
         {
@@ -47,5 +34,4 @@ public class NearEmptyState implements SmartCupState
     {
         context.setState(new RefillState());
     }
-
 }

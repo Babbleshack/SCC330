@@ -4,10 +4,7 @@
  * @author Dominic Lindsay
  */
 package org.sunspotworld.states;
-
 import org.sunspotworld.spotMonitors.WaterMonitor;
-
-
 public class HalfFullState implements SmartCupState 
 {
     private static final double MINIMUM_FLOW_RATE = 5;
@@ -23,31 +20,21 @@ public class HalfFullState implements SmartCupState
          */
         if(cupAngle >= 35 && cupAngle <= 55)
         {
-            System.out.println("=====================================");
-            fillLevelPercentage = fillLevelPercentage - (MINIMUM_FLOW_RATE * (fillLevelPercentage/100));
-            System.out.println("Slight Tilt worth %" + MINIMUM_FLOW_RATE);
-            System.out.println("=====================================");
+            fillLevelPercentage -= 
+                    (MINIMUM_FLOW_RATE * (fillLevelPercentage/100));
         } else if(cupAngle >= 15 && cupAngle <= 35)
         {
-            System.out.println("=====================================");
-            fillLevelPercentage -= (AVERAGE_FLOW_RATE * (fillLevelPercentage/100));
-            System.out.println("Heavy Tilt worth %" + AVERAGE_FLOW_RATE);
-            System.out.println("=====================================");
+            fillLevelPercentage -= 
+                    (AVERAGE_FLOW_RATE * (fillLevelPercentage/100));
         } else if(cupAngle < 10)
         {
-            System.out.println("=====================================");
             fillLevelPercentage -= (MAX_FLOW_RATE * (fillLevelPercentage/100));
-            System.out.println("POURING worth %" + MAX_FLOW_RATE);
-            System.out.println("=====================================");
         }
         if(fillLevelPercentage <= SmartCupState.NEAR_EMPTY_FILL)
         {
             this.changeState(context, cupAngle);
         }
-        
         return fillLevelPercentage;
-        
-        
     }
     public void changeState(WaterMonitor context, double currentFillLevel) 
     {

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/threads/TDemandSwitch.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotRadios/SendingRadio.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotMonitors/SwitchMonitor.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotMonitors/LightMonitor.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/SunSpotApplication.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotMonitors/MonitorFactory.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/threads/TDiscoverMe.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotMonitors/MotionMonitor.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotRadios/ISendingRadio.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/threads/TSendingWater.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotRadios/ReceivingRadio.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/homePatterns/TaskObserver.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/homePatterns/TaskObservable.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotRadios/SunspotPort.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotRadios/RadiosFactory.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/SPOTMonitor/src/org/sunspotworld/spotMonitors/WaterMonitor.java</file>
+        </group>
+    </open-files>
+</project-private>

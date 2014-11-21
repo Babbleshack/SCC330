@@ -16,7 +16,7 @@ import org.sunspotworld.spotRadios.SunspotPort;
 public class TSendingWater implements Runnable, TaskObserver
 {
     // private IWaterMonitor waterMonitor;
-    private static final int SAMPLE_RATE = 250; //60 seconds
+    private static final int SAMPLE_RATE = 1000; //60 seconds
 
     // Init sending radio
     private ISendingRadio waterSendingRadio;
@@ -25,9 +25,10 @@ public class TSendingWater implements Runnable, TaskObserver
      * Instantiates the monitor and sending radio required
      * for sending motion data to the base station
      */
-    public TSendingWater()
+    public TSendingWater(/*CURRENT FILL LEVEL*/)
     {
         waterMonitor = MonitorFactory.createWaterMonitor();
+        System.out.println("Water Monitor Created with Water Level: "  + waterMonitor.getDataAsString());
         try
         {
             waterSendingRadio = RadiosFactory.createSendingRadio(
@@ -40,6 +41,7 @@ public class TSendingWater implements Runnable, TaskObserver
              + e);
         }
         waterMonitor.addObserver((Object)this);
+        waterMonitor.start();
     }
     public void run()
     {
@@ -55,10 +57,14 @@ public class TSendingWater implements Runnable, TaskObserver
      */
     public void update(TaskObservable o, Object arg)
     {
+        System.out.println("Sending water REading of: [" + 
+                ((WaterMonitor)o).getDataAsInt() + "]");
         waterSendingRadio.sendWater(((WaterMonitor)o).getDataAsInt());
     }
     public void update(TaskObservable o)
     {
+        System.out.println("Sending water REading of: [" + 
+                ((WaterMonitor)o).getDataAsInt() + "]");
         waterSendingRadio.sendWater(((WaterMonitor)o).getDataAsInt());
     }
 }

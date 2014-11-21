@@ -72,8 +72,6 @@ public class TDemandSwitch implements Runnable, ISwitchListener
     }
     
     public void switchReleased(SwitchEvent evt) {
-        batteryMonitor.setPowerIndicator(batteryMonitor.getDataAsDouble());
-        System.out.println("SWITCH PRESSED BATTERY LEVEL: " + batteryMonitor.getDataAsDouble());
         switchSendingRadio.sendSwitch(evt.getSwitch().getTagValue("id")); 
     }
 

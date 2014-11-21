@@ -30,6 +30,7 @@ public class WaterMonitor extends TaskObservable implements IMonitor,
         cupState = new FullState(); //set state of cup to full
         fillLevelPercentage = MAX_FILL_PERCENTAGE;
         this.sw1.addISwitchListener(this);
+        System.out.println("Started Water Monitor");
     }
     /**
      * Repeatedly executed every sample rate.
@@ -86,6 +87,21 @@ public class WaterMonitor extends TaskObservable implements IMonitor,
     {
         this.cupState = state;
     }
+
+    public void switchPressed(SwitchEvent evt) {
+        if(evt.getSwitch() == sw1)
+        {
+            System.out.println("REFILL SWWITCH PRESSED");
+            this.fillLevelPercentage = this.MAX_FILL_PERCENTAGE;
+            this.setState(new FullState());
+            this.hasChanged();
+            this.notifyObservers();
+        }
+    }
+
+    public void switchReleased(SwitchEvent evt) {
+        System.out.println("Switch released");
+    }
     public String getDataAsString() {
         return String.valueOf(this.fillLevelPercentage);
     }
@@ -97,24 +113,6 @@ public class WaterMonitor extends TaskObservable implements IMonitor,
     }
     public long getDataAsLong() {
         return (long) this.fillLevelPercentage;
-    }
-
-   /* public SunspotPort getPort() {
-        throw new java.lang.UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-*/
-    public void switchPressed(SwitchEvent evt) {
-        if(evt.getSwitch() == sw1)
-        {
-            System.out.println("REFILL SWWITCH PRESSED");
-            this.fillLevelPercentage = 100;
-            this.hasChanged();
-            this.notifyObservers();
-        }
-    }
-
-    public void switchReleased(SwitchEvent evt) {
-        System.out.println("Switch released");
     }
 
 }

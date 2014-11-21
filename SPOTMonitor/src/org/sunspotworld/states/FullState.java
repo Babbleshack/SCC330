@@ -22,22 +22,15 @@ public class FullState implements SmartCupState
          */
         if(cupAngle >= 45 && cupAngle <= 65)
         {
-            System.out.println("=====================================");
-            fillLevelPercentage = fillLevelPercentage - (MINIMUM_FLOW_RATE * (fillLevelPercentage/100));
-            System.out.println("Slight Tilt worth %" + MINIMUM_FLOW_RATE);
-            System.out.println("=====================================");
+            fillLevelPercentage -= 
+                    (MINIMUM_FLOW_RATE * (fillLevelPercentage/100));
         } else if(cupAngle >= 25 && cupAngle <= 45)
         {
-            System.out.println("=====================================");
-            fillLevelPercentage -= (AVERAGE_FLOW_RATE * (fillLevelPercentage/100));
-            System.out.println("Heavy Tilt worth %" + AVERAGE_FLOW_RATE);
-            System.out.println("=====================================");
+            fillLevelPercentage -= 
+                    (AVERAGE_FLOW_RATE * (fillLevelPercentage/100));
         } else if(cupAngle < 25)
         {
-            System.out.println("=====================================");
             fillLevelPercentage -= (MAX_FLOW_RATE * (fillLevelPercentage/100));
-            System.out.println("POURING worth %" + MAX_FLOW_RATE);
-            System.out.println("=====================================");
         }
         if(fillLevelPercentage <= SmartCupState.HALF_FILL)
         {
