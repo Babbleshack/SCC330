@@ -11,6 +11,7 @@ import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
 import org.sunspotworld.database.IQueryManager;
+import org.sunspotworld.database.QueryManager;
 
 
 public class TReceivingWater implements Runnable
@@ -27,18 +28,22 @@ public class TReceivingWater implements Runnable
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         }
+        qManage = new QueryManager();
     }
 
     public void run() {
-        try {
-            /**
-             * Receive data and put into db.
-             */
-            int waterLevel = rRadio.receiveWater();
-            qManage.createWaterRecord(waterLevel, rRadio.getReceivedAddress(),
-                    System.currentTimeMillis());
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        while(true)
+        {
+            try {
+                /**
+                 * Receive data and put into db.
+                 */
+                int waterLevel = rRadio.receiveWater();
+                qManage.createWaterRecord(waterLevel, rRadio.getReceivedAddress(),
+                        System.currentTimeMillis());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

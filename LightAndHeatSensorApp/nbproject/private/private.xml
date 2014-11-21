@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/basestationRadios/ReceivingRadio.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/database/QueryManager.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/basestationRadios/IReceivingRadio.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingWater.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/basestationRadios/SunspotPort.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingLight.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TDiscovery.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingHeat.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingMotion.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/database/IQueryManager.java</file>
+        </group>
+    </open-files>
+</project-private>

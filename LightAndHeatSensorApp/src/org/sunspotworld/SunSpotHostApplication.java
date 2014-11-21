@@ -13,6 +13,7 @@ import org.sunspotworld.threads.TReceivingAccel;
 import org.sunspotworld.threads.TReceivingLight;
 import org.sunspotworld.threads.TZoneController;
 import com.sun.spot.peripheral.ota.OTACommandServer;
+import org.sunspotworld.threads.TReceivingWater;
 
 /**
  * Host application that polls for temperature and
@@ -24,7 +25,7 @@ public class SunSpotHostApplication implements Runnable
     /**
      * Threads for communicating with SPOT
      */
-    private Thread discoveryThread, switchThread, heatThread, lightThread, accelThread, zoneThread = null;
+    private Thread discoveryThread, switchThread, heatThread, lightThread, accelThread, zoneThread, waterThread = null;
 
     /**
      * Starts polling threads
@@ -46,6 +47,7 @@ public class SunSpotHostApplication implements Runnable
         lightThread = new Thread(new TReceivingLight(),"lightService");
         accelThread = new Thread(new TReceivingAccel(),"accelService");
         zoneThread = new Thread(new TZoneController(), "zoneControllerService");
+        waterThread = new Thread(new TReceivingWater(), "waterLevelService");
 
         // generalThread.setDaemon(true);
         discoveryThread.setDaemon(true);
@@ -54,7 +56,8 @@ public class SunSpotHostApplication implements Runnable
         lightThread.setDaemon(true);
         accelThread.setDaemon(true);
         zoneThread.setDaemon(true);
-
+        waterThread.setDaemon(true);
+        
         // generalThread.start();
         discoveryThread.start();
         switchThread.start();
@@ -62,6 +65,7 @@ public class SunSpotHostApplication implements Runnable
         lightThread.start();
         accelThread.start();
         zoneThread.start();
+        waterThread.start();
     }
 
     public void run()
