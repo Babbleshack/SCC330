@@ -5,15 +5,21 @@
  */
 package org.sunspotworld.spotMonitors;
 
+import com.sun.spot.resources.Resources;
+import com.sun.spot.resources.transducers.ISwitch;
+import com.sun.spot.resources.transducers.ISwitchListener;
+import com.sun.spot.resources.transducers.SwitchEvent;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.states.FullState;
 import org.sunspotworld.states.SmartCupState;
 import sensors.AxisSensor;
-public class WaterMonitor extends TaskObservable implements IMonitor 
+public class WaterMonitor extends TaskObservable implements IMonitor,
+        ISwitchListener
 {
     private double fillLevelPercentage;
     private SmartCupState cupState;
     private final AxisSensor axisSensor;
+    private ISwitch sw1 = (ISwitch) Resources.lookup(ISwitch.class,"SW1");
     private static final long SAMPLE_RATE = 500;
     private static final long SAMPLE_FREQ = 10;
     private static final double MAX_FILL_PERCENTAGE = 100;
@@ -23,6 +29,7 @@ public class WaterMonitor extends TaskObservable implements IMonitor
         axisSensor = new AxisSensor();
         cupState = new FullState(); //set state of cup to full
         fillLevelPercentage = MAX_FILL_PERCENTAGE;
+        this.sw1.addISwitchListener(this);
     }
     /**
      * Repeatedly executed every sample rate.
@@ -48,7 +55,6 @@ public class WaterMonitor extends TaskObservable implements IMonitor
         this.pour(averageReading);
         if(currentWaterLevel != this.fillLevelPercentage)
         { 
-            //TELL OBSERVERS WATER LEVELS HAVE CHANGED
             this.hasChanged();
             this.notifyObservers();
         }
@@ -92,4 +98,23 @@ public class WaterMonitor extends TaskObservable implements IMonitor
     public long getDataAsLong() {
         return (long) this.fillLevelPercentage;
     }
+
+   /* public SunspotPort getPort() {
+        throw new java.lang.UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+*/
+    public void switchPressed(SwitchEvent evt) {
+        if(evt.getSwitch() == sw1)
+        {
+            System.out.println("REFILL SWWITCH PRESSED");
+            this.fillLevelPercentage = 100;
+            this.hasChanged();
+            this.notifyObservers();
+        }
+    }
+
+    public void switchReleased(SwitchEvent evt) {
+        System.out.println("Switch released");
+    }
+
 }
