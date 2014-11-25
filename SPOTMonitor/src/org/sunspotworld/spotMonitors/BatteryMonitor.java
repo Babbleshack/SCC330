@@ -23,10 +23,12 @@ public class BatteryMonitor extends Task implements IBatteryMonitor
     ISendingRadio sRadio;
     private static final int MAX_VOLTAGE = 5;
     private static final int MAX_PERCENTAGE = 5;
+    private static final long SECOND = 1000;
+    private static final long SAMPLE_RATE = (60 * SECOND)
     
     public BatteryMonitor()
     {
-        super(1000);
+        super(SAMPLE_RATE);
         leds = (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
         pwerControl = Spot.getInstance().getPowerController();
        
