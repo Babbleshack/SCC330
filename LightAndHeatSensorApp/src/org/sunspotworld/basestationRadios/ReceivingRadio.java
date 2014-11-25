@@ -97,5 +97,16 @@ public class ReceivingRadio implements IReceivingRadio
         }
             return null;
     }
+
+    public int receiveBatteryLevel() {
+        try {
+            datagram.reset();
+            radioConn.receive(datagram);
+            return datagram.readInt();
+        } catch(Exception e) {
+            System.err.println("Error receiving zone packets" + e);
+        }
+            return 0;
+    }
     
 }

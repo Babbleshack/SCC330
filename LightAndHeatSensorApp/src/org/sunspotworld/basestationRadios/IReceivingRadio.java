@@ -70,4 +70,10 @@ public interface IReceivingRadio
 	 * @return ArrayList tower and spot address
 	 */
 	public String receiveZonePacket();
+
+        /**
+         * Receives UDP packet containing spot address and 
+         * current battery level percentage of spot.
+         */
+        public int receiveBatteryLevel();
 }

@@ -23,6 +23,8 @@ public class SunspotPort
     public static final int TOWER_RECIEVER_PORT = 160;
     public static final int BASE_TOWER_PORT     = 170;
     public static final int WATER_PORT          = 180;
+    public static final int BATTERY_PORT        = 190;
+
 
     private final int value;
 
