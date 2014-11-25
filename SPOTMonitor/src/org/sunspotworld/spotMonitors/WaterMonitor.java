@@ -92,11 +92,19 @@ public class WaterMonitor extends TaskObservable implements IMonitor,
         if(evt.getSwitch() == sw1)
         {
             System.out.println("REFILL SWWITCH PRESSED");
+            if(getTiltAngle() < 75)
+                return; // do nothing if reading if tilt is below 75
             this.fillLevelPercentage = this.MAX_FILL_PERCENTAGE;
             this.setState(new FullState());
             this.hasChanged();
             this.notifyObservers();
         }
+    }
+    private int getTiltAngle()
+    {
+        return (int)Math.abs(Math.floor(Math.toDegrees(
+                            axisSensor.getAxisData().getY()
+                    )));
     }
 
     public void switchReleased(SwitchEvent evt) {
