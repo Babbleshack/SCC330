@@ -165,7 +165,6 @@ public class SendingRadio implements ISendingRadio
         }
 
     }
-
     public void discoverMe() {
         try {
             datagram.reset();
@@ -176,16 +175,15 @@ public class SendingRadio implements ISendingRadio
             System.err.println("IOException occured while sending discovery request: " + e);
         } 
     }
-    public Vector discoverMe(long timeout) throws TimeoutException {
+    public void sendBatteryPower(int powerLevel)
+    {
         try {
             datagram.reset();
-            datagram.writeUTF(spotAddress);
+            datagram.writeInt(powerLevel);
             radioConn.send(datagram);
-            radioConn.setTimeout(timeout);
-            System.out.println("DiscoverME request sent..."); 
+            System.out.println("Sending Battery Information"); 
         } catch (IOException e) {
-            System.err.println("IOException occured while sending discovery request: " + e);
-        } 
-        return null;
+            System.err.println("IOException occured while sending Battery Data: " + e);
+        }  
     }
 }

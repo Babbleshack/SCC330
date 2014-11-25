@@ -15,7 +15,6 @@ import org.sunspotworld.threads.TDiscoverMe;
 import org.sunspotworld.threads.TTower;
 import org.sunspotworld.threads.TDemandSwitch;
 import org.sunspotworld.spotRadios.RadiosFactory;
-import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.IReceivingRadio;
 import org.sunspotworld.spotRadios.SunspotPort;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
@@ -31,6 +30,7 @@ import java.lang.SecurityException;
 import java.lang.Thread;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
+import org.sunspotworld.spotMonitors.BatteryMonitor;
 import org.sunspotworld.threads.TZoneProccessor;
 
 
@@ -57,13 +57,12 @@ public class SunSpotApplication extends MIDlet implements Runnable {
     private Thread towerThread;
     
     private static final int MOCK_HEAT_THRESHOLD = 30;
-    private static final int MOCK_LIGHT_THRESHOLD = 20;
 
-    private ISendingRadio discoverMeRadio;
     private IReceivingRadio discoverRequestRadio;
 
     public SunSpotApplication() {
-
+        BatteryMonitor bm = new BatteryMonitor();
+        bm.start();
     }
 
     public void startSensor(int port, int threshold) 

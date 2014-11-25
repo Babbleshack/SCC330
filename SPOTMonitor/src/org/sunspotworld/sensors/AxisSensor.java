@@ -8,7 +8,7 @@ import com.sun.spot.resources.transducers.IAccelerometer3D;
 import java.io.IOException;
 import org.sunspotword.data.AxisData;
 
-public class AxisSensor 
+public class AxisSensor
 {
     private final IAccelerometer3D accel;
     public AxisSensor()

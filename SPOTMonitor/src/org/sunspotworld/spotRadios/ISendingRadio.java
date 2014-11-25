@@ -3,14 +3,6 @@
  * Dominic Lindsay + Adam Cornfourth
  */
 package org.sunspotworld.spotRadios;
-
-import com.sun.spot.peripheral.TimeoutException;
-import java.util.Vector;
-
-/**
- *
- * @author adamcornforth
- */
 public interface ISendingRadio 
 {
     /**
@@ -55,12 +47,6 @@ public interface ISendingRadio
    public void discoverMe();
 
    /**
-    * Sends discover me with a timeout interval
-    * @throws com.sun.spot.peripheral.TimeoutException
-    */
-   public Vector discoverMe(long timeout) throws TimeoutException;
-
-   /**
     * Sends empty packet to be used as a 'pinging' service
     */
     public void ping();
@@ -74,4 +60,9 @@ public interface ISendingRadio
      * sends Tower address.
      */
     public void sendTowerAddress(String address);
+    
+    /**
+     * Sends battery information
+     */
+    public void sendBatteryPower(int powerLevel);
 }
