@@ -784,6 +784,21 @@ public class QueryManager implements IQueryManager
         return accelDatums;
     }
 
+    public void updateBatteryPower(String spotAddress, int powerLevelPercentage)
+    {
+        String updatePower = "UPDATE spot SET battery_percent = ? s"
+                + "where spot_address = ?";
+        try{
+            PreparedStatement putBattery;
+            putBattery =
+                    connection.getConnection().prepareStatement(updatePower);
+            putBattery.setString(1, spotAddress);
+            putBattery.setInt(2, powerLevelPercentage);
+            putBattery.executeUpdate();
+        }catch (Exception e) {
+            System.out.println(e);
+        }
+    }
     private Timestamp findDateRange(Timestamp from, int noOfWeeks){
         Calendar past = Calendar.getInstance();
         past.setTimeInMillis(from.getTime());

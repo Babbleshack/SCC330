@@ -30,6 +30,7 @@ public class TReceivingBattery implements Runnable {
         while(true)
         {
             rRadio.receiveBatteryLevel();//<--- goes straght into DB
+
             //NEED RECEIVING METHODS
             //DB METHOD
         }
