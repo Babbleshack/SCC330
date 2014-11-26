@@ -24,8 +24,7 @@ public class BatteryMonitor extends Task implements IBatteryMonitor
     private static final int MAX_VOLTAGE = 5;
     private static final int MAX_PERCENTAGE = 5;
     private static final long SECOND = 1000;
-    private static final long SAMPLE_RATE = (60 * SECOND)
-    
+    private static final long SAMPLE_RATE = (60 * SECOND);   
     public BatteryMonitor()
     {
         super(SAMPLE_RATE);
@@ -80,11 +79,13 @@ public class BatteryMonitor extends Task implements IBatteryMonitor
         leds.setOff();
     }
 
-    public void doTask() throws Exception {        
+    public void doTask() throws Exception {   
+        //print it 
         System.out.println("Battery Voltage Percentage: " + 
                 Math.floor(Math.abs(((
                         this.getSPOTVoltage()/MAX_VOLTAGE)*MAX_PERCENTAGE)
                 )));
+        //send it
         sRadio.sendBatteryPower((int)Math.floor(Math.abs(
                 ((this.getSPOTVoltage()/MAX_VOLTAGE)*MAX_PERCENTAGE))));
     }
