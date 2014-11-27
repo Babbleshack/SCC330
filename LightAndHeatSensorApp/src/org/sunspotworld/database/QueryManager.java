@@ -257,7 +257,7 @@ public class QueryManager implements IQueryManager
     public String getReadingTableFromJobId(int job_id) {
         String getReadingTableFromJobId = "SELECT * " 
                 + " FROM Job, Sensor"
-                + " WHERE Sensor.job_id = Job.id "
+                + " WHERE Sensor.id = Job.sensor_id "
                 + " AND Job.id = ? "
                 + " LIMIT 1";
 
