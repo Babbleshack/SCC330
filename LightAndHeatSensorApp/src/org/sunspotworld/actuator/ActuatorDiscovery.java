@@ -11,11 +11,11 @@ import com.yoctopuce.YoctoAPI.YModule;
 import com.yoctopuce.YoctoAPI.YRelay;
 import java.util.ArrayList;
 
-public class ActuatorFinder implements Runnable
+public class ActuatorDiscovery implements Runnable
 {
 
     private static final String HUB_ADDRESS = "127.0.0.1:4444";
-    public ActuatorFinder() {
+    public ActuatorDiscovery() {
        try {
             YAPI.RegisterHub(HUB_ADDRESS);
             //YAPI.RegisterHub(HUB_ADDRESS);
@@ -39,7 +39,15 @@ public class ActuatorFinder implements Runnable
          * check thresholds and change actuator status
          */
    // }
-    private ArrayList<Actuator> getActiveRelays()
+    public void run() {
+        ArrayList<Actuator> actuators;
+        while(true)
+        {
+           actuators = getActuators();
+           
+        }
+    }
+    private ArrayList<Actuator> getActuators()
     {
         System.out.println("================");
         /**
@@ -81,49 +89,6 @@ public class ActuatorFinder implements Runnable
         return null;
     }
 
-    public void run() {
-        while(true)
-        {
-            System.out.println("================");
-            /**
-             * TO FIND RELAYS
-             * FIRST FIND THE MODULE NAME AND ADD .relay1
-             * 
-             */
-            YModule module = YModule.FirstModule(); //get first module
-            if(module == null) //catch non existent modules
-            {
-                System.err.println("NO MODULES FOUND");
-            }
-            ArrayList<Actuator> relays = new ArrayList<Actuator>(); 
-            YRelay relay;
-            System.out.println("MODULE LIST");
-            while(module != null)
-            {
-                try {
-                    if(module.get_productName().toLowerCase().contains("hub"))
-                    {
-                        System.out.println("Found Hub " + module.describe());
-                        module = module.nextModule();
-                        continue;
-                    }
-                    System.out.println(module.get_serialNumber() + " (" + module.get_productName() + ")");
-                    relay = YRelay.FindRelay(module.getSerialNumber() + ".relay1");
-                    System.out.println(module.getSerialNumber() + ".relay1");
-                    relay.setState(1);
-                    Utils.sleep(150);
-                    relay.setState(0);
-
-                } catch (YAPI_Exception ex) {
-                    System.out.println("MODULE ERROR");
-                    ex.printStackTrace();
-                }
-                module = module.nextModule();
-            }
-            System.out.println("================");
-            System.out.println("NO MORE RELAYS");
-        }
-    }
     /**
      * Tower Handler
      * Spot Handler
