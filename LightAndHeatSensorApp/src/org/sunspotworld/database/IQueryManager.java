@@ -28,6 +28,9 @@ public interface IQueryManager
     public ArrayList getPastWeekThermo();
 
     public int getOtherTowerZone(String towerAddress, int oldZoneID);
+    
+    public void updateBatteryPower(String spotAddress, int powerLevelPercentage);
+
 
     public void createZoneRecord(int newZoneID, String spotAddress, String towerAddress, long currentTimeMillis);
 }

@@ -4,6 +4,7 @@
  */
 package org.sunspotworld.threads;
 
+import java.io.IOException;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 import org.sunspotworld.basestationRadios.RadiosFactory;
@@ -27,11 +28,18 @@ public class TReceivingBattery implements Runnable {
         }
     }
     public void run() {
+        int batteryLevel = 0;
         while(true)
         {
-            rRadio.receiveBatteryLevel();//<--- goes straght into DB
-            //NEED RECEIVING METHODS
-            //DB METHOD
+            try {
+            batteryLevel =
+                    rRadio.receiveBatteryLevel();//<--- goes straght into DB
+                qManage.updateBatteryPower(rRadio.getReceivedAddress(), batteryLevel);
+                //NEED RECEIVING METHODS
+                //DB METHOD
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
