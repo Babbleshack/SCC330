@@ -45,7 +45,7 @@ public class QueryManager implements IQueryManager
             record.setString(1, spot_address);
 
             /**
-             * Access ResultSet for zone_id
+             * Access ResultSet for spot_address
              */
             ResultSet result = record.executeQuery();
 
@@ -85,6 +85,245 @@ public class QueryManager implements IQueryManager
                 + "insertSpotRecord: " + e);
         }
     }
+
+    /**
+     *
+     * @param actuator_address
+     * @return
+     */
+    public int isActuatorExists(String actuator_address) {
+        String isActuatorExists = "SELECT * FROM Actuator WHERE actuator_address = ?";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(isActuatorExists);
+            record.setString(1, actuator_address);
+
+            /**
+             * Access ResultSet for actuator_address
+             */
+            ResultSet result = record.executeQuery();
+
+            /**
+             * Return result
+             */
+            if(result.next())
+                return 1;
+            else
+                return 0;
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "isActuatorExists: " + e);
+                return 0;
+        }
+    }
+
+    /**
+     * Insert spot record into db
+     * @param actuator_address
+     * @param time long
+     */
+    public void createActuatorRecord(String actuator_address, long time) {
+        String insertActuatorRecord = "INSERT INTO Actuator"
+                + "(actuator_address, created_at, updated_at)"
+                + ("VALUES (?,?,?)");
+        try {
+            PreparedStatement insert =
+                connection.getConnection().prepareStatement(insertActuatorRecord);
+            insert.setString(1, actuator_address);
+            insert.setTimestamp(2, new Timestamp(time));
+            insert.setTimestamp(3, new Timestamp(time));
+            insert.executeUpdate();
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "insertActuatorRecord: " + e);
+        }
+    }
+
+    public String getActuator(String actuator_address) {
+        String getActuator = "SELECT * " 
+                + " FROM Actuator"
+                + " WHERE Actuator.actuator_address = ? ";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getActuator);
+            record.setString(1, actuator_address);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                // return new Actuator(result.getString("Actuator.actuator_address"), this.getActuatorJob(actuator_address));
+                return result.getString("Actuator.title");
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getActuator: " + e);
+                return null;
+        }
+    }
+
+    public int getActuatorJob(String actuator_address) {
+        String getActuator = "SELECT * " 
+                + " FROM actuator_job, Actuator"
+                + " WHERE actuator_job.actuator_id = Actuator.id "
+                + " AND Actuator.actuator_address = ? "
+                + " LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getActuator);
+            record.setString(1, actuator_address);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                //return new ActuatorJob(result.getString("actuator_job.direction"), result.getDouble("actuator_job.threshold"));
+                return result.getInt("actuator_job.job_id");
+            } else {
+                return -1;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getActuator: " + e);
+                return -1;
+        }
+    }
+
+    public double getLatestReadingFromJobId(int job_id) {
+        String reading_table = this.getReadingTableFromJobId(job_id); 
+        String reading_field = this.getReadingFieldFromJobId(job_id);
+
+        if(reading_table == null || reading_field == null) return -1;
+
+        String getReading = "SELECT * " 
+                + " FROM " + reading_table
+                + " WHERE job_id = ? "
+                + " ORDER BY id DESC " 
+                + " LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getReading);
+            record.setInt(1, job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return result.getDouble(reading_table + "." + reading_field);
+            } else {
+                return -1;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getReading: " + e);
+                return -1;
+        }
+    }
+
+    public String getReadingTableFromJobId(int job_id) {
+        String getReadingTableFromJobId = "SELECT * " 
+                + " FROM Job, Sensor"
+                + " WHERE Sensor.job_id = Job.id "
+                + " AND Job.id = ? "
+                + " LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getReadingTableFromJobId);
+            record.setInt(1, job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return result.getString("Sensor.table");
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getReadingTableFromJobId: " + e);
+                return null;
+        }
+    }
+
+    public String getReadingFieldFromJobId(int job_id) {
+        String getReadingTableFromJobId = "SELECT * " 
+                + " FROM Job, Sensor"
+                + " WHERE Sensor.id = Job.sensor_id "
+                + " AND Job.id = ? "
+                + " LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getReadingTableFromJobId);
+            record.setInt(1, job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return result.getString("Sensor.field");
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getReadingTableFromJobId: " + e);
+                return null;
+        }
+    }
+
 
     /**
      * Gets spot_id of a SPOT given a spot_address
