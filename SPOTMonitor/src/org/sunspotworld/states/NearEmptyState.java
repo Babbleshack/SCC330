@@ -23,12 +23,8 @@ public class NearEmptyState implements SmartCupState
         }
         if(fillLevelPercentage <= 10)
         {
-            this.changeState(context, cupAngle);
+            fillLevelPercentage = 0;
         }
         return fillLevelPercentage; 
-    }
-    public void changeState(WaterMonitor context, double currentFillLevel) 
-    {
-        context.setState(new RefillState());
     }
 }
