@@ -27,22 +27,7 @@ public class ActuatorDiscovery implements Runnable
         } 
        qm = new QueryManager();
     }
-    
-  /*  public void doTask() throws Exception {
-        
-           // System.out.println(relay.describe());
-        
-        /**
-         * get list of active of active relays
-         * 
-         * pass list to QM method
-         * returns list with ActuatorJob, field assigned
-         * 
-         * check thresholds and change actuator status
-         * if the status is on DO NOTHING, else change status depending on
-         * whether the actuator has met threshold.
-         */
-   // }
+
     public void run() {
         ArrayList<Actuator> actuators;
         while(true)
@@ -64,13 +49,7 @@ public class ActuatorDiscovery implements Runnable
                    qm.createActuatorRecord(a.getActuatorAddress(), System.currentTimeMillis());
                    System.out.println("Added Actuator: " + a.getActuatorAddress());
                }
-               a.setJob(qm.getActuatorJob(a.getActuatorAddress()));
-               //if no job go to next actuator
-               if(a.getJob() == null)
-               {
-                   System.out.println("No actuator job skipping...");
-                   continue;
-               }
+               
                /**
                 * chekck if field is null
                 * if null then auto mode, else check to see of acutator should
@@ -94,6 +73,14 @@ public class ActuatorDiscovery implements Runnable
                         }
                     }
                } else {
+                    //get the job data
+                    a.setJob(qm.getActuatorJob(a.getActuatorAddress()));
+                    //if no job go to next actuator
+                    if(a.getJob() == null)
+                    {
+                        System.out.println("No actuator job skipping...");
+                        continue;
+                    }
                         /**
                      * Check against threshold
                      * if the reading is meets threshold turn actuator on
@@ -167,17 +154,4 @@ public class ActuatorDiscovery implements Runnable
         }
         return actuators;
     }
-    private void addActuatorJobs(ArrayList<Actuator> actuators)
-    {
-        for(Actuator a: actuators)
-        {
-            a.setJob(qm.getActuatorJob(a.getActuatorAddress()));
-        }
-    }
-
-    /**
-     * Tower Handler
-     * Spot Handler
-     */
-
 }
