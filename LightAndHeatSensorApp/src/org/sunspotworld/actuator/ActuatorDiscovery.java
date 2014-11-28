@@ -47,6 +47,7 @@ public class ActuatorDiscovery implements Runnable
         ArrayList<Actuator> actuators;
         while(true)
         {
+            System.out.println("========================================");
            actuators = getActuators(); //get a list of active actuators
            if(actuators == null)
            {
@@ -78,14 +79,22 @@ public class ActuatorDiscovery implements Runnable
                        a.turnRelayOn();
                    }
                    continue;
+               } else {
+                   System.out.println("Actuator is set to OFF");
+                   if(a.isSwitchedOn() == 1) //if relay is ON switch it OFF
+                   {
+                       a.turnRelayOff();
+                   }
                }
                /**
                 * Check against threshold
                 * if the reading is meets threshold turn actuator on
                 * else turn it off because threshold is not met
                 */
-               if(a.getJob().getDirection().compareTo("ABOVE") == 1) //reading is above
+                   System.out.println(qm.getLatestReadingFromJobId(a.getJob().getId()));
+               if(a.getJob().getDirection().compareTo("ABOVE") == 0) //reading is above
                {
+                   System.out.println("Checking if reading is ABOVE thresh");
                    //check if reading is greater than threshold
                    if(a.getJob().getThreshold() <= 
                            qm.getLatestReadingFromJobId(a.getJob().getId()))
@@ -97,6 +106,7 @@ public class ActuatorDiscovery implements Runnable
                    a.turnRelayOff();
                } else {
                    //check if reading is greater than threshold
+                   System.out.println("Checking if reading is BELOW thresh");
                    if(a.getJob().getThreshold() >= 
                            qm.getLatestReadingFromJobId(a.getJob().getId()))
                    {
@@ -107,6 +117,7 @@ public class ActuatorDiscovery implements Runnable
                    a.turnRelayOff();
                }
            }//end of for actutators
+           System.out.println("========================================");
            Utils.sleep(SAMPLE_RATE);
         }
     }
@@ -131,15 +142,12 @@ public class ActuatorDiscovery implements Runnable
             try {
                 if(module.get_productName().toLowerCase().contains("hub"))
                 {
-                    System.out.println("Found Hub " + module.describe());
                     module = module.nextModule();
                     continue;
                 }
                 relayAddress = module.getSerialNumber() + ".relay1"; //get relay1
                 relay = YRelay.FindRelay(relayAddress);
-                System.out.println("ADDING: " + relayAddress + "to array list");
                 actuators.add(new Actuator(relayAddress,relay));
-
             } catch (YAPI_Exception ex) {
                 System.out.println("MODULE ERROR");
                 ex.printStackTrace();
@@ -148,7 +156,6 @@ public class ActuatorDiscovery implements Runnable
         }
         return actuators;
     }
-    
     private void addActuatorJobs(ArrayList<Actuator> actuators)
     {
         for(Actuator a: actuators)
