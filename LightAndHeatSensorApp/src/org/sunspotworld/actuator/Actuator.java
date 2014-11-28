@@ -17,7 +17,7 @@ public class Actuator {
         this.job = job;
     }
     
-    public Actuator(YRelay actuator, String actuatorAddress) {
+    public Actuator(String actuatorAddress, YRelay actuator) {
         this.actuator = actuator;
         this.job = job;
     }

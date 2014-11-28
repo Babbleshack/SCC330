@@ -3,9 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/actuator/Actuator.java</file>
-            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/actuator/ActuatorFinder.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/database/QueryManager.java</file>
             <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/SunSpotHostApplication.java</file>
+            <file>file:/C:/Users/babbleshack/Documents/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/actuator/ActuatorDiscovery.java</file>
         </group>
     </open-files>
 </project-private>

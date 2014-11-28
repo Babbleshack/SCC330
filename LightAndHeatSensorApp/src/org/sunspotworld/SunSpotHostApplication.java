@@ -40,11 +40,11 @@ public class SunSpotHostApplication implements Runnable
     public SunSpotHostApplication() throws Exception
     {
         this.qm = new QueryManager(); 
-        String actuator_address = "10F20";
-        System.out.println("Title of 10F20:" + qm.getActuator(actuator_address));
+        String actuator_address = "RELAYLO1-10F70.relay1";
+        System.out.println("Title of RELAYLO1-10F70.relay1:" + qm.getActuator(actuator_address));
         int job_id = qm.getActuatorJob(actuator_address);
-        System.out.println("Job ID of 10F20: " + job_id);
-        System.out.println("Latest reading from 10F20's Job: " + qm.getLatestReadingFromJobId(job_id));
+        System.out.println("Job ID of RELAYLO1-10F70.relay1: " + job_id);
+        System.out.println("Latest reading from RELAYLO1-10F70.relay1 Job: " + qm.getLatestReadingFromJobId(job_id));
         startPolling();
     }
 
@@ -82,7 +82,7 @@ public class SunSpotHostApplication implements Runnable
         zoneThread.start();
         waterThread.start();
         batteryMonitor.start();
-       // actuatorFinder.start();   <---REANABLE ME
+        actuatorFinder.start();   
     }
 
     public void run()
