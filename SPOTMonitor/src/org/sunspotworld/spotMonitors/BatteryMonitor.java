@@ -22,7 +22,7 @@ public class BatteryMonitor extends Task implements IBatteryMonitor
     IBattery battery;
     ISendingRadio sRadio;
     private static final int MAX_VOLTAGE = 5;
-    private static final int MAX_PERCENTAGE = 5;
+    private static final int MAX_PERCENTAGE = 100;
     private static final long SECOND = 1000;
     private static final long SAMPLE_RATE = (60 * SECOND);   
     public BatteryMonitor()

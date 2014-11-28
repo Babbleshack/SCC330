@@ -66,7 +66,6 @@ public class ActuatorDiscovery implements Runnable
                     //if no job go to next actuator
                     if(a.getJob() == null)
                     {
-                        System.out.println("No actuator job skipping...");
                         continue;
                     }
                         /**
