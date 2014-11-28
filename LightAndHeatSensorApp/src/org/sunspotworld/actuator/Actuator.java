@@ -18,8 +18,8 @@ public class Actuator {
     }
     
     public Actuator(String actuatorAddress, YRelay actuator) {
+        this.actuatorAddress = actuatorAddress;
         this.actuator = actuator;
-        this.job = job;
     }
 
     /**
