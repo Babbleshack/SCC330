@@ -7,13 +7,22 @@ package org.sunspotworld.actuator;
 
 public class ActuatorJob 
 {
+    private int id;
     private String direction;
     private double threshold;
     
-    public ActuatorJob(String direction, double threshold)
+    public ActuatorJob(int id, String direction, double threshold)
     {
+        this.id = id; 
         this.direction = direction;
         this.threshold = threshold;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
     }
 
     /**

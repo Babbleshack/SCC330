@@ -15,6 +15,8 @@ import org.sunspotworld.homeCollections.ArrayList;
 import org.sunspotworld.valueObjects.LightData;
 import org.sunspotworld.valueObjects.ThermoData;
 import org.sunspotworld.valueObjects.AccelData;
+import org.sunspotworld.actuator.Actuator;
+import org.sunspotworld.actuator.ActuatorJob;
 
 
 public class QueryManager implements IQueryManager
@@ -144,10 +146,10 @@ public class QueryManager implements IQueryManager
         }
     }
 
-    public String getActuator(String actuator_address) {
+    public Actuator getActuator(String actuator_address) {
         String getActuator = "SELECT * " 
                 + " FROM Actuator"
-                + " WHERE Actuator.actuator_address = ? ";
+                + " WHERE Actuator.actuator_address LIKE ? ";
 
         try {
             /**
@@ -155,8 +157,9 @@ public class QueryManager implements IQueryManager
              */
             PreparedStatement record =
                 connection.getConnection().prepareStatement(getActuator);
-            record.setString(1, actuator_address);
+            record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
 
+            System.out.println(record);
             /**
              * Access ResultSet for zone_id
              */
@@ -165,8 +168,7 @@ public class QueryManager implements IQueryManager
                 /**
                  * Return result
                  */
-                // return new Actuator(result.getString("Actuator.actuator_address"), this.getActuatorJob(actuator_address));
-                return result.getString("Actuator.title");
+                return new Actuator(result.getString("Actuator.actuator_address"), this.getActuatorJob(actuator_address));
             } else {
                 return null;
             }
@@ -178,7 +180,7 @@ public class QueryManager implements IQueryManager
         }
     }
 
-    public int getActuatorJob(String actuator_address) {
+    public ActuatorJob getActuatorJob(String actuator_address) {
         String getActuator = "SELECT * " 
                 + " FROM actuator_job, Actuator"
                 + " WHERE actuator_job.actuator_id = Actuator.id "
@@ -201,16 +203,15 @@ public class QueryManager implements IQueryManager
                 /**
                  * Return result
                  */
-                //return new ActuatorJob(result.getString("actuator_job.direction"), result.getDouble("actuator_job.threshold"));
-                return result.getInt("actuator_job.job_id");
+                return new ActuatorJob(result.getInt("actuator_job.id"), result.getString("actuator_job.direction"), result.getDouble("actuator_job.threshold"));
             } else {
-                return -1;
+                return null;
             }
 
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getActuator: " + e);
-                return -1;
+                return null;
         }
     }
 

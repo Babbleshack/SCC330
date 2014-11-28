@@ -16,6 +16,8 @@ import com.sun.spot.peripheral.ota.OTACommandServer;
 import org.sunspotworld.actuator.ActuatorDiscovery;
 import org.sunspotworld.threads.TReceivingBattery;
 import org.sunspotworld.threads.TReceivingWater;
+import org.sunspotworld.actuator.Actuator;
+import org.sunspotworld.actuator.ActuatorJob;
 
 import org.sunspotworld.database.QueryManager;
 
@@ -41,10 +43,10 @@ public class SunSpotHostApplication implements Runnable
     {
         this.qm = new QueryManager(); 
         String actuator_address = "RELAYLO1-10F70.relay1";
-        System.out.println("Title of RELAYLO1-10F70.relay1:" + qm.getActuator(actuator_address));
-        int job_id = qm.getActuatorJob(actuator_address);
-        System.out.println("Job ID of RELAYLO1-10F70.relay1: " + job_id);
-        System.out.println("Latest reading from RELAYLO1-10F70.relay1 Job: " + qm.getLatestReadingFromJobId(job_id));
+        System.out.println("Title of RELAYLO1-10F70.relay1:" + qm.getActuator(actuator_address).getActuatorAddress());
+        ActuatorJob job = qm.getActuatorJob(actuator_address);
+        System.out.println("Job ID of RELAYLO1-10F70.relay1: " + job.getId());
+        System.out.println("Latest reading from RELAYLO1-10F70.relay1 Job: " + qm.getLatestReadingFromJobId(job.getId()));
         startPolling();
     }
 
