@@ -94,7 +94,7 @@ public class QueryManager implements IQueryManager
      * @return
      */
     public int isActuatorExists(String actuator_address) {
-        String isActuatorExists = "SELECT * FROM Actuator WHERE actuator_address = ?";
+        String isActuatorExists = "SELECT * FROM Actuator WHERE Actuator.actuator_address LIKE ? ";
 
         try {
             /**
@@ -181,7 +181,7 @@ public class QueryManager implements IQueryManager
     
     public int isActuatorOn(String actuator_address)
     {
-        String isActuatorOn = "SELECT * FROM Actuator WHERE actuator_address = ?";
+        String isActuatorOn = "SELECT * FROM Actuator WHERE actuator_address LIKE ?";
 
         try {
             /**
@@ -189,7 +189,7 @@ public class QueryManager implements IQueryManager
              */
             PreparedStatement record =
                 connection.getConnection().prepareStatement(isActuatorOn);
-            record.setString(1, actuator_address);
+            record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
 
             /**
              * Access ResultSet for actuator_address
@@ -214,7 +214,7 @@ public class QueryManager implements IQueryManager
         String getActuator = "SELECT * " 
                 + " FROM actuator_job, Actuator"
                 + " WHERE actuator_job.actuator_id = Actuator.id "
-                + " AND Actuator.actuator_address = ? "
+                + " AND Actuator.actuator_address LIKE ? "
                 + " LIMIT 1";
 
         try {
@@ -223,7 +223,7 @@ public class QueryManager implements IQueryManager
              */
             PreparedStatement record =
                 connection.getConnection().prepareStatement(getActuator);
-            record.setString(1, actuator_address);
+            record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
 
             /**
              * Access ResultSet for zone_id
