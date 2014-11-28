@@ -15,7 +15,7 @@ import org.sunspotworld.database.QueryManager;
 public class ActuatorDiscovery implements Runnable
 {
     private static final long SECOND = 1000;
-    private static final long SAMPLE_RATE = SECOND;
+    private static final long SAMPLE_RATE = SECOND/2;
     private static final String HUB_ADDRESS = "127.0.0.1:4444";
     private QueryManager qm;
     public ActuatorDiscovery() {
@@ -32,22 +32,18 @@ public class ActuatorDiscovery implements Runnable
         ArrayList<Actuator> actuators;
         while(true)
         {
-            System.out.println("========================================");
            actuators = getActuators(); //get a list of active actuators
            if(actuators == null)
            {
                continue; //skip no attached actuators.
            }
-           System.out.println("Actuator list size: " + actuators.size());
            if(actuators.isEmpty())
                continue;
            for(Actuator a: actuators)
            {
-               System.out.println(a.getActuatorAddress());
                if(qm.isActuatorExists(a.getActuatorAddress()) == 0) //if the actuator does not exist add it
                {
                    qm.createActuatorRecord(a.getActuatorAddress(), System.currentTimeMillis());
-                   System.out.println("Added Actuator: " + a.getActuatorAddress());
                }
                
                /**
@@ -59,18 +55,10 @@ public class ActuatorDiscovery implements Runnable
                {
                     if(qm.isActuatorOn(a.getActuatorAddress()) == 1/*true*/ ) //if status is on and relay is on skip
                     {
-                        System.out.println("Actuator is set to On");
-                        if(a.isSwitchedOn() == 0) //if relay is off switch it on
-                        {
-                            a.turnRelayOn();
-                        }
+                        a.turnRelayOn();
                         continue;
                     } else {
-                        System.out.println("Actuator is set to OFF");
-                        if(a.isSwitchedOn() == 1) //if relay is ON switch it OFF
-                        {
-                            a.turnRelayOff();
-                        }
+                        a.turnRelayOff();
                     }
                } else {
                     //get the job data
@@ -86,26 +74,21 @@ public class ActuatorDiscovery implements Runnable
                      * if the reading is meets threshold turn actuator on
                      * else turn it off because threshold is not met
                      */
-                        System.out.println(qm.getLatestReadingFromJobId(a.getJob().getId()));
                     if(a.getJob().getDirection().compareTo("ABOVE") == 0) //reading is above
                     {
-                        System.out.println("Checking if reading is ABOVE thresh");
                         //check if reading is greater than threshold
                         if(a.getJob().getThreshold() <= 
                                 qm.getLatestReadingFromJobId(a.getJob().getId()))
                         {
-                            System.out.println("Actuator thresh met switching on...");
                             a.turnRelayOn();
                             continue;
                         }
                         a.turnRelayOff();
                     } else {
                         //check if reading is greater than threshold
-                        System.out.println("Checking if reading is BELOW thresh");
                         if(a.getJob().getThreshold() >= 
                                 qm.getLatestReadingFromJobId(a.getJob().getId()))
                         {
-                            System.out.println("Actuator thresh met switching on...");
                             a.turnRelayOn();
                             continue;
                         }
@@ -115,7 +98,6 @@ public class ActuatorDiscovery implements Runnable
                
                
            }//end of for actutators
-           System.out.println("========================================");
            Utils.sleep(SAMPLE_RATE);
         }
     }

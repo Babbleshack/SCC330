@@ -42,12 +42,6 @@ public class SunSpotHostApplication implements Runnable
     public SunSpotHostApplication() throws Exception
     {
         this.qm = new QueryManager(); 
-        String actuator_address = "RELAYLO1-10F70.relay1";
-        System.out.println("Title of RELAYLO1-10F70.relay1:" + qm.getActuator(actuator_address).getActuatorAddress());
-        System.out.println("Is on? " + qm.isActuatorOn(actuator_address));
-        ActuatorJob job = qm.getActuatorJob(actuator_address);
-        System.out.println("Job ID of RELAYLO1-10F70.relay1: " + job.getId());
-        System.out.println("Latest reading from RELAYLO1-10F70.relay1 Job: " + qm.getLatestReadingFromJobId(job.getId()));
         startPolling();
     }
 
