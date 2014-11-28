@@ -49,19 +49,55 @@ public class ActuatorDiscovery implements Runnable
         {
            actuators = getActuators(); //get a list of active actuators
            System.out.println("Actuator list size: " + actuators.size());
+           if(actuators.isEmpty())
+               continue;
            for(Actuator a: actuators)
            {
                System.out.println(a.getActuatorAddress());
-               if(qm.isActuatorExists(HUB_ADDRESS) == 0) //if the actuator does not exist add it
+               if(qm.isActuatorExists(a.getActuatorAddress()) == 0) //if the actuator does not exist add it
                {
                    qm.createActuatorRecord(a.getActuatorAddress(), System.currentTimeMillis());
                }
-               //get actuator jobs
-               this.addActuatorJobs(actuators);
-               
-           }
-               
-           
+               a.setJob(qm.getActuatorJob(a.getActuatorAddress()));
+               //if no job go to next actuator
+               if(a.getJob() == null)
+               {
+                   continue;
+               }
+               if(qm.isActuatorOn(a.getActuatorAddress()) == 1/*true*/ ) //if status is on and relay is on skip
+               {
+                   if(a.isSwitchedOn() == 0) //if relay is off switch it on
+                   {
+                       a.turnRelayOn();
+                   }
+                   continue;
+               }
+               /**
+                * Check against threshold
+                * if the reading is meets threshold turn actuator on
+                * else turn it off because threshold is not met
+                */
+               if(a.getJob().getDirection().compareTo("ABOVE") == 1) //reading is above
+               {
+                   //check if reading is greater than threshold
+                   if(a.getJob().getThreshold() <= 
+                           qm.getLatestReadingFromJobId(a.getJob().getId()))
+                   {
+                       a.turnRelayOn();
+                       continue;
+                   }
+                   a.turnRelayOff();
+               } else {
+                   //check if reading is greater than threshold
+                   if(a.getJob().getThreshold() >= 
+                           qm.getLatestReadingFromJobId(a.getJob().getId()))
+                   {
+                       a.turnRelayOn();
+                       continue;
+                   }
+                   a.turnRelayOff();
+               }
+           }//end of for actutators
            Utils.sleep(SAMPLE_RATE);
         }
     }

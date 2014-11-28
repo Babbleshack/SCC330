@@ -33,4 +33,6 @@ public interface IQueryManager
 
 
     public void createZoneRecord(int newZoneID, String spotAddress, String towerAddress, long currentTimeMillis);
+    
+    public int isActuatorOn(String actuator_address);
 }

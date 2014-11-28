@@ -178,6 +178,37 @@ public class QueryManager implements IQueryManager
                 return null;
         }
     }
+    
+    public int isActuatorOn(String actuator_address)
+    {
+        String isActuatorOn = "SELECT * FROM Actuator WHERE actuator_address = ?";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(isActuatorOn);
+            record.setString(1, actuator_address);
+
+            /**
+             * Access ResultSet for actuator_address
+             */
+            ResultSet result = record.executeQuery();
+
+            /**
+             * Return result
+             */
+            if(result.getInt("is_on") == 1)
+                return 1;
+            else
+                return 0;
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "isActuatorExists: " + e);
+                return 0;
+        }
+    }
 
     public ActuatorJob getActuatorJob(String actuator_address) {
         String getActuator = "SELECT * " 
