@@ -15,7 +15,7 @@ import org.sunspotworld.database.QueryManager;
 public class ActuatorDiscovery implements Runnable
 {
     private static final long SECOND = 1000;
-    private static final long SAMPLE_RATE = 3 * SECOND;
+    private static final long SAMPLE_RATE = SECOND;
     private static final String HUB_ADDRESS = "127.0.0.1:4444";
     private QueryManager qm;
     public ActuatorDiscovery() {
@@ -48,6 +48,10 @@ public class ActuatorDiscovery implements Runnable
         while(true)
         {
            actuators = getActuators(); //get a list of active actuators
+           if(actuators == null)
+           {
+               continue; //skip no attached actuators.
+           }
            System.out.println("Actuator list size: " + actuators.size());
            if(actuators.isEmpty())
                continue;
@@ -57,15 +61,18 @@ public class ActuatorDiscovery implements Runnable
                if(qm.isActuatorExists(a.getActuatorAddress()) == 0) //if the actuator does not exist add it
                {
                    qm.createActuatorRecord(a.getActuatorAddress(), System.currentTimeMillis());
+                   System.out.println("Added Actuator: " + a.getActuatorAddress());
                }
                a.setJob(qm.getActuatorJob(a.getActuatorAddress()));
                //if no job go to next actuator
                if(a.getJob() == null)
                {
+                   System.out.println("No actuator job skipping...");
                    continue;
                }
                if(qm.isActuatorOn(a.getActuatorAddress()) == 1/*true*/ ) //if status is on and relay is on skip
                {
+                   System.out.println("Actuator is set to On");
                    if(a.isSwitchedOn() == 0) //if relay is off switch it on
                    {
                        a.turnRelayOn();
@@ -83,6 +90,7 @@ public class ActuatorDiscovery implements Runnable
                    if(a.getJob().getThreshold() <= 
                            qm.getLatestReadingFromJobId(a.getJob().getId()))
                    {
+                       System.out.println("Actuator thresh met switching on...");
                        a.turnRelayOn();
                        continue;
                    }
@@ -92,6 +100,7 @@ public class ActuatorDiscovery implements Runnable
                    if(a.getJob().getThreshold() >= 
                            qm.getLatestReadingFromJobId(a.getJob().getId()))
                    {
+                       System.out.println("Actuator thresh met switching on...");
                        a.turnRelayOn();
                        continue;
                    }
@@ -144,7 +153,7 @@ public class ActuatorDiscovery implements Runnable
     {
         for(Actuator a: actuators)
         {
-            //a.setJob(qm.getActuatorJob(a.getActuatorAddress()));
+            a.setJob(qm.getActuatorJob(a.getActuatorAddress()));
         }
     }
 
