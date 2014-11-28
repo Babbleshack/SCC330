@@ -44,10 +44,10 @@ public class ActuatorDiscovery implements Runnable
         while(true)
         {
            actuators = getActuators();
-           for(int i=0;i<actuators.size(); i++)
-           {
-               actuators.get(i).getActuatorAddress();
-           }
+           System.out.println("Actuator list size: " + actuators.size());
+           for(Actuator a: actuators)
+               System.out.println(a.getActuatorAddress());
+           
            
         }
     }
@@ -77,10 +77,9 @@ public class ActuatorDiscovery implements Runnable
                     module = module.nextModule();
                     continue;
                 }
-                System.out.println(module.get_serialNumber() + " (" + module.get_productName() + ")");
                 relayAddress = module.getSerialNumber() + ".relay1"; //get relay1
                 relay = YRelay.FindRelay(relayAddress);
-                System.out.println("STORING: " + relayAddress);
+                System.out.println("ADDING: " + relayAddress + "to array list");
                 actuators.add(new Actuator(relayAddress,relay));
 
             } catch (YAPI_Exception ex) {
