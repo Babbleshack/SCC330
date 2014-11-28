@@ -213,6 +213,45 @@ public class QueryManager implements IQueryManager
                 return 0;
         }
     }
+    /**
+     * returns true if actuator is null
+     * @param actuator_address
+     * @return 
+     */
+    public int isActuatorNull(String actuator_address)
+    {
+        String isActuatorOn = "SELECT * FROM Actuator WHERE actuator_address LIKE ?";
+        int returnedInt;
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(isActuatorOn);
+            record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
+
+            /**
+             * Access ResultSet for actuator_address
+             */
+            ResultSet result = record.executeQuery();
+
+            /**
+             * Return result
+             */
+            result.next();
+            returnedInt = result.getInt("is_on");
+            if(result.wasNull())
+                return 1;
+            else 
+                return 0;
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "isActuatorOn: " + e);
+                return 0;
+        }
+    }
+    
 
     public ActuatorJob getActuatorJob(String actuator_address) {
         String getActuator = "SELECT * " 

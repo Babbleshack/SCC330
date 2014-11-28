@@ -71,51 +71,62 @@ public class ActuatorDiscovery implements Runnable
                    System.out.println("No actuator job skipping...");
                    continue;
                }
-               if(qm.isActuatorOn(a.getActuatorAddress()) == 1/*true*/ ) //if status is on and relay is on skip
-               {
-                   System.out.println("Actuator is set to On");
-                   if(a.isSwitchedOn() == 0) //if relay is off switch it on
-                   {
-                       a.turnRelayOn();
-                   }
-                   continue;
-               } else {
-                   System.out.println("Actuator is set to OFF");
-                   if(a.isSwitchedOn() == 1) //if relay is ON switch it OFF
-                   {
-                       a.turnRelayOff();
-                   }
-               }
                /**
-                * Check against threshold
-                * if the reading is meets threshold turn actuator on
-                * else turn it off because threshold is not met
+                * chekck if field is null
+                * if null then auto mode, else check to see of acutator should
+                * be on
                 */
-                   System.out.println(qm.getLatestReadingFromJobId(a.getJob().getId()));
-               if(a.getJob().getDirection().compareTo("ABOVE") == 0) //reading is above
+               if(qm.isActuatorNull(a.getActuatorAddress()) == 0)
                {
-                   System.out.println("Checking if reading is ABOVE thresh");
-                   //check if reading is greater than threshold
-                   if(a.getJob().getThreshold() <= 
-                           qm.getLatestReadingFromJobId(a.getJob().getId()))
-                   {
-                       System.out.println("Actuator thresh met switching on...");
-                       a.turnRelayOn();
-                       continue;
-                   }
-                   a.turnRelayOff();
+                    if(qm.isActuatorOn(a.getActuatorAddress()) == 1/*true*/ ) //if status is on and relay is on skip
+                    {
+                        System.out.println("Actuator is set to On");
+                        if(a.isSwitchedOn() == 0) //if relay is off switch it on
+                        {
+                            a.turnRelayOn();
+                        }
+                        continue;
+                    } else {
+                        System.out.println("Actuator is set to OFF");
+                        if(a.isSwitchedOn() == 1) //if relay is ON switch it OFF
+                        {
+                            a.turnRelayOff();
+                        }
+                    }
                } else {
-                   //check if reading is greater than threshold
-                   System.out.println("Checking if reading is BELOW thresh");
-                   if(a.getJob().getThreshold() >= 
-                           qm.getLatestReadingFromJobId(a.getJob().getId()))
-                   {
-                       System.out.println("Actuator thresh met switching on...");
-                       a.turnRelayOn();
-                       continue;
-                   }
-                   a.turnRelayOff();
+                        /**
+                     * Check against threshold
+                     * if the reading is meets threshold turn actuator on
+                     * else turn it off because threshold is not met
+                     */
+                        System.out.println(qm.getLatestReadingFromJobId(a.getJob().getId()));
+                    if(a.getJob().getDirection().compareTo("ABOVE") == 0) //reading is above
+                    {
+                        System.out.println("Checking if reading is ABOVE thresh");
+                        //check if reading is greater than threshold
+                        if(a.getJob().getThreshold() <= 
+                                qm.getLatestReadingFromJobId(a.getJob().getId()))
+                        {
+                            System.out.println("Actuator thresh met switching on...");
+                            a.turnRelayOn();
+                            continue;
+                        }
+                        a.turnRelayOff();
+                    } else {
+                        //check if reading is greater than threshold
+                        System.out.println("Checking if reading is BELOW thresh");
+                        if(a.getJob().getThreshold() >= 
+                                qm.getLatestReadingFromJobId(a.getJob().getId()))
+                        {
+                            System.out.println("Actuator thresh met switching on...");
+                            a.turnRelayOn();
+                            continue;
+                        }
+                        a.turnRelayOff();
+                    }
                }
+               
+               
            }//end of for actutators
            System.out.println("========================================");
            Utils.sleep(SAMPLE_RATE);
