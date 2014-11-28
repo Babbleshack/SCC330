@@ -199,13 +199,17 @@ public class QueryManager implements IQueryManager
             /**
              * Return result
              */
-            if(result.getInt("is_on") == 1)
-                return 1;
-            else
+            if(result.next()) {
+                if(result.getInt("is_on") == 1)
+                    return 1;
+                else
+                    return 0;
+            } else {
                 return 0;
+            }
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing "
-                + "isActuatorExists: " + e);
+                + "isActuatorOn: " + e);
                 return 0;
         }
     }
