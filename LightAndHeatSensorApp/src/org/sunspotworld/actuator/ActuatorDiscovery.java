@@ -10,19 +10,22 @@ import com.yoctopuce.YoctoAPI.YAPI_Exception;
 import com.yoctopuce.YoctoAPI.YModule;
 import com.yoctopuce.YoctoAPI.YRelay;
 import java.util.ArrayList;
+import org.sunspotworld.database.QueryManager;
 
 public class ActuatorDiscovery implements Runnable
 {
-
+    private static final long SECOND = 1000;
+    private static final long SAMPLE_RATE = 3 * SECOND;
     private static final String HUB_ADDRESS = "127.0.0.1:4444";
+    private QueryManager qm;
     public ActuatorDiscovery() {
        try {
-            YAPI.RegisterHub(HUB_ADDRESS);
-            //YAPI.RegisterHub(HUB_ADDRESS);
+            YAPI.RegisterHub(HUB_ADDRESS);//YAPI.RegisterHub(HUB_ADDRESS);
         } catch (YAPI_Exception ex) {
             System.err.println("Error instantiating hub.");
             ex.printStackTrace();
         } 
+       qm = new QueryManager();
     }
     
   /*  public void doTask() throws Exception {
@@ -33,27 +36,37 @@ public class ActuatorDiscovery implements Runnable
          * get list of active of active relays
          * 
          * pass list to QM method
-         * 
          * returns list with ActuatorJob, field assigned
          * 
          * check thresholds and change actuator status
+         * if the status is on DO NOTHING, else change status depending on
+         * whether the actuator has met threshold.
          */
    // }
     public void run() {
         ArrayList<Actuator> actuators;
         while(true)
         {
-           actuators = getActuators();
+           actuators = getActuators(); //get a list of active actuators
            System.out.println("Actuator list size: " + actuators.size());
            for(Actuator a: actuators)
+           {
                System.out.println(a.getActuatorAddress());
+               if(qm.isActuatorExists(HUB_ADDRESS) == 0) //if the actuator does not exist add it
+               {
+                   qm.createActuatorRecord(a.getActuatorAddress(), System.currentTimeMillis());
+               }
+               //get actuator jobs
+               this.addActuatorJobs(actuators);
+               
+           }
+               
            
-           
+           Utils.sleep(SAMPLE_RATE);
         }
     }
     private ArrayList<Actuator> getActuators()
     {
-        System.out.println("================");
         /**
          * TO FIND RELAYS
          * FIRST FIND THE MODULE NAME AND ADD .relay1
@@ -63,11 +76,11 @@ public class ActuatorDiscovery implements Runnable
         if(module == null) //catch non existent modules
         {
             System.err.println("NO MODULES FOUND");
+            return null; //no modules return null
         }
         ArrayList<Actuator> actuators = new ArrayList<Actuator>(); 
         YRelay relay;
         String relayAddress;
-        System.out.println("MODULE LIST");
         while(module != null)
         {
             try {
@@ -88,9 +101,15 @@ public class ActuatorDiscovery implements Runnable
             }
             module = module.nextModule();
         }
-        System.out.println("================");
-        System.out.println("NO MORE RELAYS returning: " + actuators.size());
         return actuators;
+    }
+    
+    private void addActuatorJobs(ArrayList<Actuator> actuators)
+    {
+        for(Actuator a: actuators)
+        {
+            //a.setJob(qm.getActuatorJob(a.getActuatorAddress()));
+        }
     }
 
     /**
