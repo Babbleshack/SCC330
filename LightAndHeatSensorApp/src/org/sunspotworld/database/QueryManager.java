@@ -159,7 +159,6 @@ public class QueryManager implements IQueryManager
                 connection.getConnection().prepareStatement(getActuator);
             record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
 
-            System.out.println(record);
             /**
              * Access ResultSet for zone_id
              */
@@ -203,7 +202,7 @@ public class QueryManager implements IQueryManager
                 /**
                  * Return result
                  */
-                return new ActuatorJob(result.getInt("actuator_job.id"), result.getString("actuator_job.direction"), result.getDouble("actuator_job.threshold"));
+                return new ActuatorJob(result.getInt("actuator_job.job_id"), result.getString("actuator_job.direction"), result.getDouble("actuator_job.threshold"));
             } else {
                 return null;
             }
