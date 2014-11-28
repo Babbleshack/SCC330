@@ -102,7 +102,7 @@ public class QueryManager implements IQueryManager
              */
             PreparedStatement record =
                 connection.getConnection().prepareStatement(isActuatorExists);
-            record.setString(1, actuator_address);
+            record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
 
             /**
              * Access ResultSet for actuator_address
