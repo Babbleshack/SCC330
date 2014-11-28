@@ -24,7 +24,7 @@ public class BatteryMonitor extends Task implements IBatteryMonitor
     private static final int MAX_VOLTAGE = 5;
     private static final int MAX_PERCENTAGE = 100;
     private static final long SECOND = 1000;
-    private static final long SAMPLE_RATE = (60 * SECOND);   
+    private static final long SAMPLE_RATE = (30 * SECOND);   
     public BatteryMonitor()
     {
         super(SAMPLE_RATE);
@@ -38,8 +38,8 @@ public class BatteryMonitor extends Task implements IBatteryMonitor
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         }
-        System.out.println(this.getSPOTVoltage());
-        System.out.println("Battery Level " + pwerControl.getBattery().getBatteryLevel() + "%");
+        sRadio.sendBatteryPower((int)Math.floor(Math.abs(
+                ((this.getSPOTVoltage()/MAX_VOLTAGE)*MAX_PERCENTAGE))));
     }
 
     public String getDataAsString() {
