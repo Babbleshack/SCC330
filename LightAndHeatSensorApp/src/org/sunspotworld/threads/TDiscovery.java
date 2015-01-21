@@ -56,10 +56,8 @@ public class TDiscovery implements Runnable
         {
             try
             {
-                // Read light and heat values
+                // Receive discover me 
                 String  spot_address   = discoveryRadio.receiveDiscoverMe();
-
-                // Print out light and heat values
                 System.out.println("Discovery request from: " + spot_address);
 
                 // Query to see if this SPOT exists

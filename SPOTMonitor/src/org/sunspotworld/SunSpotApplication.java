@@ -133,7 +133,25 @@ public class SunSpotApplication extends MIDlet implements Runnable {
             System.out.println("Exception while receiving discover response: " + io);
         }
 
+        /**
+         * taskManager.init()
+         * 
+         * while(true) {
+         *
+         *     taskManager.manage(portsThresholds)
+         *     Loop all instantiated tasks, start them if they're in portsThresholds array, else
+         *     stop them
+         *     foreach(service) {
+         *       if(appears in portsThresholds)
+         *            start service 
+         *       else 
+         *          stop service   
+         *      }
+         * }
+         **/
+
         // Dispatch threads
+        // (This needs moving into taskManager)
         if(portsThresholds != null) {
             for (int i = 0;i < portsThresholds.length; i += 2) {
                 System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
