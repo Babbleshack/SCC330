@@ -4,7 +4,7 @@
  */
 package org.sunspotworld.spotMonitors;
 
-import monitorStates.IThresholdMonitorState;
+import org.sunspotworld.monitorStates.IThresholdMonitorState;
 import org.sunspotword.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.sensors.ISensor;
@@ -12,14 +12,16 @@ import org.sunspotworld.sensors.ISensor;
 
 public class ThresholdMonitor extends TaskObservable implements IThresholdMonitor
 {
-    private static long SAMPLE_RATE = 1000;
-    
+    public static final long SAMPLE_RATE = 1000;
     private double threshold = 0;
-    ISensor sensor;
-    IThresholdMonitorState monitorState;
-    public ThresholdMonitor(double threshold, IThresholdMonitorState state) {
+    private final ISensor sensor;
+    private final IThresholdMonitorState monitorState;
+    public ThresholdMonitor(double threshold, ISensor sensor, 
+            IThresholdMonitorState state) {
         super(SAMPLE_RATE);
+        this.threshold = SAMPLE_RATE;
         this.monitorState = state;
+        this.sensor = sensor;
     }
     public void doTask() throws Exception {
         this.checkSensorReading();

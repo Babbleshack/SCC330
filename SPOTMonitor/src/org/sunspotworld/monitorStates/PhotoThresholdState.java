@@ -1,10 +1,10 @@
-package monitorStates;
+package org.sunspotworld.monitorStates;
 /**
  * PhotoMonitor implementation of checkSensorThreshold()
  * @author Dominic Lindsay
  */
 import org.sunspotworld.spotMonitors.ThresholdMonitor;
-public class PhotoMonitorState {
+public class PhotoThresholdState {
     public void checkThresholdCondition(ThresholdMonitor context) {
         if(context.getThreshold() > context.getSensorReading().getDataAsDouble())
             return;

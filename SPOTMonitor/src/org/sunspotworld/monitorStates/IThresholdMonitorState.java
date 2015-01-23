@@ -1,4 +1,4 @@
-package monitorStates;
+package org.sunspotworld.monitorStates;
 
 import org.sunspotworld.spotMonitors.ThresholdMonitor;
 
