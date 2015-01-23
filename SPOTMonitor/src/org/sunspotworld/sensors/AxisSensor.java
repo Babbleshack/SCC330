@@ -7,8 +7,9 @@ import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.IAccelerometer3D;
 import java.io.IOException;
 import org.sunspotword.data.AxisData;
+import org.sunspotword.data.SensorData;
 
-public class AxisSensor
+public class AxisSensor implements ISensor
 {
     private final IAccelerometer3D accel;
     public AxisSensor()
@@ -50,5 +51,23 @@ public class AxisSensor
             ex.printStackTrace();
         }
         return 0;
+    }
+    public SensorData getData() {
+        try {
+            return new SensorData(new AxisData
+                (this.accel.getAccelX(), this.accel.getAccelY(), this.accel.getAccelZ()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    public SensorData getAccelerationData()
+    {
+        try {
+            return new SensorData(this.accel.getAccel());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

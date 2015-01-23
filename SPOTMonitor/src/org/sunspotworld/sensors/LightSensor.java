@@ -7,9 +7,10 @@ package org.sunspotworld.sensors;
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.ILightSensor;
 import java.io.IOException;
+import org.sunspotword.data.SensorData;
 
 
-public class LightSensor 
+public class LightSensor implements ISensor
 {
     private final ILightSensor lightSensor;
     public LightSensor()
@@ -24,5 +25,14 @@ public class LightSensor
             ex.printStackTrace();
         }
         return 0;
+    }
+
+    public SensorData getData() {
+        try {
+            return new SensorData(this.lightSensor.getAverageValue());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

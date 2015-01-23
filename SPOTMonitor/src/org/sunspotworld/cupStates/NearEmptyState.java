@@ -2,7 +2,7 @@
  * NearEmptyState Controls flow rate when glass is below 20% full.
  * @author Dominic Lindsay
  */
-package org.sunspotworld.states;
+package org.sunspotworld.cupStates;
 
 import org.sunspotworld.spotMonitors.WaterMonitor;
 

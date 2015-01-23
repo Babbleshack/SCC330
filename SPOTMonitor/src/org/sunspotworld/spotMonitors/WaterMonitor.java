@@ -10,8 +10,8 @@ import com.sun.spot.resources.transducers.ISwitch;
 import com.sun.spot.resources.transducers.ISwitchListener;
 import com.sun.spot.resources.transducers.SwitchEvent;
 import org.sunspotworld.homePatterns.TaskObservable;
-import org.sunspotworld.states.FullState;
-import org.sunspotworld.states.SmartCupState;
+import org.sunspotworld.cupStates.FullState;
+import org.sunspotworld.cupStates.SmartCupState;
 import org.sunspotworld.sensors.AxisSensor;
 public class WaterMonitor extends TaskObservable implements IMonitor,
         ISwitchListener

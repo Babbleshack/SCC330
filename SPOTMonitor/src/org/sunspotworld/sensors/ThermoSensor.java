@@ -7,9 +7,10 @@ package org.sunspotworld.sensors;
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.ITemperatureInput;
 import java.io.IOException;
+import org.sunspotword.data.SensorData;
 
 
-public class ThermoSensor {
+public class ThermoSensor implements ISensor {
     private final ITemperatureInput thermostat;
     public ThermoSensor()
     {
@@ -35,4 +36,9 @@ public class ThermoSensor {
         }
         return 0;
     }
+
+    public SensorData getData() {
+        return new SensorData(this.getCelcius());
+    }
+    
 }

@@ -3,7 +3,7 @@
  * full.
  * @author Dominic Lindsay
  */
-package org.sunspotworld.states;
+package org.sunspotworld.cupStates;
 import org.sunspotworld.spotMonitors.WaterMonitor;
 public class HalfFullState implements SmartCupState 
 {

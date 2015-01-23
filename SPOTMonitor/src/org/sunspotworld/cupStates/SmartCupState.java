@@ -4,7 +4,7 @@
  * states include full, half full and empty.
  * Dominic Lindsay
  */
-package org.sunspotworld.states;
+package org.sunspotworld.cupStates;
 
 import org.sunspotworld.spotMonitors.WaterMonitor;
 
