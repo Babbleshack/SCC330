@@ -10,7 +10,8 @@ import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.sensors.ISensor;
 
 
-public class ThresholdMonitor extends TaskObservable implements IThresholdMonitor
+public class ThresholdMonitor extends TaskObservable implements
+        IThresholdMonitor, IMonitor
 {
     public static final long SAMPLE_RATE = 1000;
     private double threshold = 0;
@@ -24,7 +25,7 @@ public class ThresholdMonitor extends TaskObservable implements IThresholdMonito
         this.sensor = sensor;
     }
     public void doTask() throws Exception {
-        this.checkSensorReading();
+        this.getSensorReading();
     }
     public double getThreshold() {
         return this.threshold;
@@ -35,7 +36,11 @@ public class ThresholdMonitor extends TaskObservable implements IThresholdMonito
     public SensorData getSensorReading() {
         return this.sensor.getData();
     }
-    public void checkSensorReading() {
-        monitorState.checkThresholdCondition(this);
+    public void startMonitor(){
+        this.start();
     }
+    public void stopMonitor() {
+        this.stop();
+    }
+    
 }

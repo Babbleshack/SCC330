@@ -3,40 +3,21 @@
  * Dominic Lindsay
  */
 package org.sunspotworld.spotMonitors;
+import org.sunspotworld.monitorStates.IThresholdMonitorState;
+import org.sunspotworld.sensors.ISensor;
 public class MonitorFactory 
 {
-    public static ILightMonitor createLightMonitor(int threshold)
+    public static IMonitor createSampleMonitor(long sampleRate, ISensor sensor)
     {
-        return new LightMonitor(threshold);
+        return new SampleMonitor(sampleRate, sensor);
     }
-    
-    public static IThermoMonitor createThermoMonitor(int threshold)
+    public static IMonitor createThresholdMonitor(double threshold,
+            ISensor sensor, IThresholdMonitorState state)
     {
-        return new ThermoMonitor(threshold);
+        return new ThresholdMonitor(threshold, sensor, state);
     }
-    
-    public static IAccelMonitor createAccelMonitor()
-    {
-    	return new AccelMonitor();
-    }
-    
-    public static IMotionMonitor createMotionMonitor()
-    {
-        return new MotionMonitor();
-    }
-
     public static ISwitchMonitor createSwitchMonitor()
     {
         return new SwitchMonitor();
-    }
-    
-    public static IBatteryMonitor createBatteryMonitor()
-    {
-        return new BatteryMonitor();
-    }
-    
-    public static WaterMonitor createWaterMonitor()
-    {
-        return new WaterMonitor();
     }
 }

@@ -5,14 +5,20 @@
  */
 package org.sunspotworld.spotMonitors;
 
+import org.sunspotword.data.SensorData;
+
 /**
  *
  * @author babbleshack
  */
 public interface IMonitor 
-{
+{/*
     public String getDataAsString();
     public double getDataAsDouble();
     public int getDataAsInt();
-    public long getDataAsLong();
+    public long getDataAsLong();*/
+    //new stuff
+    public SensorData getSensorReading();
+    public void startMonitor();
+    public void stopMonitor();
 }

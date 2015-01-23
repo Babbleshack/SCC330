@@ -14,5 +14,4 @@ public interface IService {
     public static final int MOTION_SAMPLE   = 140;
     void startService();
     void stopService();
-    void pauseService();
 }
