@@ -57,6 +57,15 @@ public class SendingRadio implements ISendingRadio
                     case 140:
                         System.out.println("SPOT has job of sensing motion");
                         break;
+                    case 150:
+                        System.out.println("SPOT has job of being a cell tower");
+                        break;
+                    case 160:
+                        System.out.println("SPOT has job of being a roaming spot");
+                        break;
+                    case 180:
+                        System.out.println("SPOT has job of being a Smart Cup");
+                        break;
                 }
                 datagram.writeInt(
                         ((Integer)portsThresholds.get(i)).intValue());

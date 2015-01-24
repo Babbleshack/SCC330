@@ -7,6 +7,7 @@ package org.sunspotworld.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.net.InetAddress;
 
 /**
  *
@@ -33,8 +34,16 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
     public void connect()
     {
         try { 
-            connection  =
-                DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+            // If testing locally 
+            try {
+                if(InetAddress.getLocalHost().getHostName().contains(".lan") == true) {
+                     connection = DriverManager.getConnection("jdbc:mysql://localhost:33060/testing", USERNAME, PASSWORD);
+                } else { // On live site!
+                    connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+                }
+            } catch (java.net.UnknownHostException ex) {
+                System.out.println("Unknown host exception");
+            }
         } catch (SQLException ex) {
             System.err.println("Failed to connect to DB" + ex);
         }
