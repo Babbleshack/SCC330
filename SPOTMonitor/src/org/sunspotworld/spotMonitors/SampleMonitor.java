@@ -11,6 +11,7 @@ import org.sunspotworld.sensors.ISensor;
 public class SampleMonitor extends TaskObservable implements IMonitor {
     private long sampleRate = 0;
     private final ISensor sensor;
+    private static final String _TYPE = "SAMPLE";
     public SampleMonitor(long sampleRate, ISensor sensor) {
         super(sampleRate);
         this.sampleRate = sampleRate;
@@ -35,5 +36,11 @@ public class SampleMonitor extends TaskObservable implements IMonitor {
 
     public void stopMonitor() {
         this.stop();
+    }
+    public boolean getStatus() {
+        return this.isActive();
+    }
+    public String getType() {
+        return this._TYPE;
     }
 }

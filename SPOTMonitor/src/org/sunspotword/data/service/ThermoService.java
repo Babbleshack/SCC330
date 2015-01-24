@@ -10,16 +10,24 @@ import org.sunspotworld.spotMonitors.IMonitor;
 
 
 public class ThermoService implements TaskObserver, IService {
-    IMonitor monitor;
+    private IMonitor monitor;
+    private int _serviceId;
     //add radio and methods
-    public ThermoService(IMonitor monitor) {
+    public ThermoService(IMonitor monitor, int serviceId) {
         this.monitor = monitor;
+        this._serviceId = serviceId;
     }
     public void startService() {
         monitor.startMonitor();
     }
     public void stopService() {
         monitor.stopMonitor();
+    }
+    public boolean isScheduled() {
+        return this.isScheduled();
+    }
+    public int getServiceId() {
+        return this._serviceId;
     }
     public void update(TaskObservable o, Object arg) {
         //send data across radio connection.

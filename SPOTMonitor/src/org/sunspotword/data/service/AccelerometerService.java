@@ -11,14 +11,19 @@ import org.sunspotworld.spotMonitors.IMonitor;
 
 public class AccelerometerService implements IService, TaskObserver {
     IMonitor monitor;
-    public AccelerometerService(IMonitor monitor) {
+    private final int _serviceId;
+    public AccelerometerService(IMonitor monitor, int serviceId) {
         this.monitor = monitor;
+        this._serviceId = serviceId;
     }
     public void startService() {
         this.monitor.startMonitor();
     }
     public void stopService() {
         this.monitor.stopMonitor();
+    }
+    public boolean isScheduled() {
+        return this.monitor.getStatus();
     }
 
     public void update(TaskObservable o, Object arg) {
@@ -27,5 +32,9 @@ public class AccelerometerService implements IService, TaskObserver {
 
     public void update(TaskObservable o) {
         //sends data on radio
+    }
+
+    public int getServiceId() {
+        return this._serviceId;
     }
 }

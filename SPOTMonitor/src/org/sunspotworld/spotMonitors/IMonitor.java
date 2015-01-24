@@ -21,4 +21,6 @@ public interface IMonitor
     public SensorData getSensorReading();
     public void startMonitor();
     public void stopMonitor();
+    public boolean getStatus();
+    public String getType();
 }
