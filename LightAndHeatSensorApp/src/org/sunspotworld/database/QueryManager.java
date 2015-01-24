@@ -651,7 +651,7 @@ public class QueryManager implements IQueryManager
             ArrayList output_array = new ArrayList();
 
             while (result.next()) {
-                boolean sample_rate_null, threshold_null = false; 
+                boolean sample_rate_null = false, threshold_null = false; 
                 int port_number = result.getInt("Sensor.port_number");
 
                 int sample_rate = result.getInt("Job.sample_rate");
@@ -664,11 +664,11 @@ public class QueryManager implements IQueryManager
                     port_number += 5; 
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(sample_rate));
-                } else if(threshold_null == true && sample_rate == false) { // Threshold is null, sample rate isn't, set up sample rate
+                } else if(threshold_null == true && sample_rate_null == false) { // Threshold is null, sample rate isn't, set up sample rate
                     port_number += 5; 
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(sample_rate));
-                } else if(threshold_null == false && sample_rate == true) { // Sample rate is null, threshold is't null, set up threshold
+                } else if(threshold_null == false && sample_rate_null == true) { // Sample rate is null, threshold is't null, set up threshold
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(threshold));
                 } else { // Default sample rate for both true (impossible though)
