@@ -671,10 +671,9 @@ public class QueryManager implements IQueryManager
                 } else if(threshold_null == false && sample_rate_null == true) { // Sample rate is null, threshold is't null, set up threshold
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(threshold));
-                } else { // Default sample rate for both true (impossible though)
-                    port_number += 5; 
+                } else { // If both sample rate and threshold rate is null, sensor probably doesn't require them
                     output_array.add((Object)Integer.valueOf(port_number));
-                    output_array.add((Object)Integer.valueOf(sample_rate));
+                    output_array.add((Object)Integer.valueOf(null));
                 }
 
             }
