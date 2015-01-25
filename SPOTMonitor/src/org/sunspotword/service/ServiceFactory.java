@@ -2,7 +2,7 @@
  *
  * @author Dominic Lindsay
  */
-package org.sunspotword.data.service;
+package org.sunspotword.service;
 
 import org.sunspotworld.spotMonitors.IMonitor;
 

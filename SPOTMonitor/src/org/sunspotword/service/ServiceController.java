@@ -2,7 +2,7 @@
  *
  * @author Dominic Lindsay
  */
-package org.sunspotword.data.service;
+package org.sunspotword.service;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -80,10 +80,18 @@ public class ServiceController {
      */
     public void autoStopService(int[] serviceIDs)
     {
+        IService service;
         for(Enumeration e = this._services.keys(); e.hasMoreElements() ; ){
            for(int i=0; i<serviceIDs.length; i++){
-            if(((IService)this._services.get(Integer.valueOf(i))).getServiceId() 
-            != i ) {
+               
+               service = (IService) this._services.get(Integer.valueOf(i));
+               System.out.println("service ID autostoping: " + serviceIDs[i] );
+               System.out.println("Service ID of retrieved Service: " +  service.getServiceId());
+               if(service == null) {
+                   System.out.println("Null value");
+                   continue;
+               }
+            if(service.getServiceId() != serviceIDs[i] ) {
                 this.stopService(i);
             }
           }

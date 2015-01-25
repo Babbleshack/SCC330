@@ -2,7 +2,7 @@
  *
  * @author Dominic Lindsay
  */
-package org.sunspotword.data.service;
+package org.sunspotword.service;
 
 import java.io.IOException;
 import org.sunspotworld.homePatterns.TaskObservable;
@@ -23,6 +23,7 @@ public class ThermoService implements TaskObserver, IService {
     public ThermoService(IMonitor monitor, int serviceId) {
         this.monitor = monitor;
         this._serviceId = serviceId;
+        System.out.println("innit Service with ID" + this._serviceId);
         try {
             sRadio = RadiosFactory.createSendingRadio(
                     new SunspotPort(SunspotPort.THERMO_PORT));
@@ -34,9 +35,11 @@ public class ThermoService implements TaskObserver, IService {
     }
     public void startService() {
         monitor.startMonitor();
+        System.out.println("Started Thermo Service");
     }
     public void stopService() {
         monitor.stopMonitor();
+        System.out.println("Stopped Thermo Service");
     }
     public boolean isScheduled() {
         return this.isScheduled();
@@ -47,10 +50,12 @@ public class ThermoService implements TaskObserver, IService {
     public void update(TaskObservable o, Object arg) {
         //send data across radio connection.
         sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
+        System.out.println("Sent Heat");
     }
     public void update(TaskObservable o) {
         //send data across radio connection.
         sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
+        System.out.println("Sent Heat");
     }
     public IMonitor getMonitor(){
         return this.monitor;

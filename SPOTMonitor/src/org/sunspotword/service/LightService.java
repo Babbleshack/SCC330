@@ -2,49 +2,51 @@
  *
  * @author Dominic Lindsay
  */
-package org.sunspotword.data.service;
-
+package org.sunspotword.service;
 import java.io.IOException;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
+import org.sunspotworld.sensors.ISensor;
 import org.sunspotworld.spotMonitors.IMonitor;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.SunspotPort;
-
-
-public class AccelerometerService implements IService, TaskObserver {
-    IMonitor monitor;
+public class LightService implements IService, TaskObserver {
+    private IMonitor monitor;
     private final int _serviceId;
     private ISendingRadio sRadio;
-    public AccelerometerService(IMonitor monitor, int serviceId) {
-        this.monitor = monitor;
-        this._serviceId = serviceId;
+    public LightService(IMonitor monitor, int serviceId) {
         try {
-            sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.ACCEL_PORT));
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            sRadio = RadiosFactory.createSendingRadio(
+                    new SunspotPort(SunspotPort.LIGHT_PORT));
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+        this.monitor = monitor;
+        this._serviceId = serviceId;
+        System.out.println("innit Service with ID" + this._serviceId);
     }
     public void startService() {
-        this.monitor.startMonitor();
+        monitor.startMonitor();
+        System.out.println("Started Light Service");
     }
     public void stopService() {
-        this.monitor.stopMonitor();
+        monitor.stopMonitor();
+        System.out.println("Stopped Light Service");
     }
     public boolean isScheduled() {
-        return this.monitor.getStatus();
+        return this.isScheduled();
     }
+
     public void update(TaskObservable o, Object arg) {
-        //send data on radio
-        sRadio.sendAccel(((IService)o).getMonitor().getSensorReading().getDataAsDouble());
+        sRadio.sendLight(((ISensor)o).getData().getDataAsInt());
     }
+
     public void update(TaskObservable o) {
-        //sends data on radio
-        sRadio.sendAccel(((IService)o).getMonitor().getSensorReading().getDataAsDouble());
+        sRadio.sendLight(((ISensor)o).getData().getDataAsInt());
     }
     public int getServiceId() {
         return this._serviceId;

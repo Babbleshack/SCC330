@@ -26,10 +26,10 @@ import java.lang.Thread;
 import java.util.Hashtable;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
-import org.sunspotword.data.service.IService;
-import org.sunspotword.data.service.ServiceController;
-import org.sunspotword.data.service.ServiceFactory;
-import org.sunspotword.data.service.ThermoService;
+import org.sunspotword.service.IService;
+import org.sunspotword.service.ServiceController;
+import org.sunspotword.service.ServiceFactory;
+import org.sunspotword.service.ThermoService;
 import org.sunspotworld.monitorStates.AxisThresholdState;
 import org.sunspotworld.monitorStates.LightThresholdState;
 import org.sunspotworld.monitorStates.ThermoThresholdState;
@@ -67,6 +67,14 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
         this.serviceController = new ServiceController(this.prepareServices());
         BatteryMonitor bm = new BatteryMonitor();
         bm.start();
+        try {
+            discoverRequestRadio = RadiosFactory.createReceivingRadio(
+                    new SunspotPort(SunspotPort.DISCOVERY_PORT));
+        } catch (PortOutOfRangeException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         discoverMeThread = new Thread(new TDiscoverMe(),"discoverMeService");
         discoverMeThread.start();
 
@@ -117,9 +125,9 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
     }
     public void run()
     {
-        int[] portsThresholds = null;
-        int[] thresholdSamples = null;
-        int[] ports         = null;
+        int[] portsThresholds;
+        int[] thresholdSamples;
+        int[] ports;
         int i,y; 
         while(true) {
             portsThresholds = null;
@@ -138,11 +146,13 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
               ports[y] = portsThresholds[i];
               thresholdSamples[y] = portsThresholds[i+1];
           }
+          System.out.println("ports length: " + ports.length);
+          System.out.println("theshold sample: " + thresholdSamples.length);
           //pass the ports to autostoper 
           //then start all services in ports
           if(portsThresholds != null){
               serviceController.autoStopService(ports);
-              serviceController.autoStartService(ports, ports);
+              serviceController.autoStartService(ports, thresholdSamples);
           } else {
               System.out.println("No ports or thresholds");
           }
@@ -158,7 +168,10 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
         try {
-            this.run(); //start the listener service
+           // SunSpotApplication spa = new SunSpotApplication();
+           // spa.run();
+           this.run(); //start the listener service
+           System.out.println("Running loop");
         } catch(SecurityException se) {
             System.out.println("The current thread cannot create a thread in the specified thread group: " + se);
         }

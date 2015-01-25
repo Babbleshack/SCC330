@@ -21,6 +21,7 @@ public class SampleMonitor extends TaskObservable implements IMonitor {
     }
     public void doTask() throws Exception {
         this.notifyObservers(this.getSensorReading());
+        System.out.println("doing task");
     }
     public long getSampleRate() {
         return this.sampleRate;
