@@ -9,7 +9,7 @@ package org.sunspotworld.spotMonitors;
  *
  * @author babbleshack
  */
-public interface IBatteryMonitor extends IMonitor {
+public interface IBatteryMonitor {
     long SECOND = 1000;
 
     double getDataAsDouble();

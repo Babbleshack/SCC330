@@ -6,10 +6,6 @@
 
 package org.sunspotworld;
 
-import org.sunspotworld.threads.TSendingLight;
-import org.sunspotworld.threads.TSendingMotion;
-import org.sunspotworld.threads.TSendingAccel;
-import org.sunspotworld.threads.TSendingWater;
 import org.sunspotworld.threads.TDiscoverMe;
 import org.sunspotworld.threads.TTower;
 import org.sunspotworld.threads.TDemandSwitch;
@@ -58,24 +54,10 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
     /**
      * Threads for communicating with Basestation
      */
-    private Thread heatThread;
-    private Thread lightThread;
-    private Thread accelThread;
     private Thread switchThread;
-    private Thread motionThread;
-    private Thread waterThread;
+
     private Thread discoverMeThread;
-    private Thread ZoneProccessingThread;
-    private Thread towerThread;
-    
-    private IService ThermoSampleService;
-    private IService ThermoThresholdService;
-    
-    private IService LightSampleService;
-    private IService LightThresholdService;
-    
-    private IService AccelerometerSampleService;
-    private IService AccelerometerThresholdService;
+
     private ServiceController serviceController;
     private static final int MOCK_HEAT_THRESHOLD = 30;
     private IReceivingRadio discoverRequestRadio;
@@ -85,6 +67,11 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
         this.serviceController = new ServiceController(this.prepareServices());
         BatteryMonitor bm = new BatteryMonitor();
         bm.start();
+        discoverMeThread = new Thread(new TDiscoverMe(),"discoverMeService");
+        discoverMeThread.start();
+
+        switchThread = new Thread(new TDemandSwitch(MOCK_HEAT_THRESHOLD),"switchService");
+        switchThread.start();
     }
     public Hashtable prepareServices() 
     {
@@ -128,101 +115,12 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
         return services;
         
     }
-
-    public void startSensor(int port, int value) 
-    {
-        switch(port) {
-            case 110:
-                ThermoSampleService = new ThermoService(
-                        new SampleMonitor(value, new ThermoSensor()),
-                        IService.THERMO_SAMPLE);
-                ThermoSampleService.startService();
-                break;
-            case 115:
-                ThermoThresholdService = new ThermoService(
-                        new ThresholdMonitor((double)value, new ThermoSensor(),
-                        new ThermoThresholdState()),
-                        IService.THERMO_THRESH);
-                ThermoThresholdService.startService();
-                
-            case 120:
-                lightThread = new Thread(new TSendingLight(value),"lightService");
-                System.out.println("Thread started for sensing light (thresh " + value + ")");
-                lightThread.start();
-                break;
-            case 130:
-                accelThread = new Thread(new TSendingAccel(),"accelService");
-                System.out.println("Thread started for sensing accelleration (thresh " + value + ")"); 
-                accelThread.start();
-                break;
-            case 140:
-                motionThread = new Thread(new TSendingMotion(), "motionService");
-                System.out.println("Thread started for sensing motion (thresh " + value + ")");
-                motionThread.start();
-                break;
-            case 150: // tower
-                System.out.println("Starting Tower Threads");
-                towerThread = new Thread(new TTower(), "towerService");
-                towerThread.start();
-                break;
-            case 160: // roaming
-                System.out.println("Starting Roaming Threads");
-                ZoneProccessingThread = new Thread(new TZoneProccessor(),
-                        "roamingService");
-                ZoneProccessingThread.start();
-                break;
-            case SunspotPort.WATER_PORT:
-                waterThread = new Thread(new TSendingWater(), "waterService");
-                System.out.println("Thread started for sensing water (thresh " + value + ")");
-                waterThread.start();
-                break;
-        }
-    }
-
-    /**
-     * Initiate threads for communicating with the basestation
-     */
-    public void startPolling() throws SecurityException
-    {
-        try {
-            discoverRequestRadio = RadiosFactory.createReceivingRadio(new SunspotPort(90));
-        } catch (PortOutOfRangeException p) {
-            System.out.println("Discover me radio port out of range: " + p);
-        } catch (IOException io) {
-            System.out.println("Exception while creating discover me radio: " + io);
-        }
-
-        discoverMeThread = new Thread(new TDiscoverMe(),"discoverMeService");
-        discoverMeThread.start();
-
-        switchThread = new Thread(new TDemandSwitch(MOCK_HEAT_THRESHOLD),"switchService");
-        switchThread.start();
-
-        int[] portsThresholds = null;
-        try {
-            portsThresholds = discoverRequestRadio.receiveDiscoverResponse(); 
-        } catch (IOException io) {
-            System.out.println("Exception while receiving discover response: " + io);
-        }
-
-        // Dispatch threads
-        if(portsThresholds != null) {
-            for (int i = 0;i < portsThresholds.length; i += 2) {
-                System.out.println("Port " + portsThresholds[i] + " threshold: " + portsThresholds[i+1]);
-                this.startSensor(portsThresholds[i], portsThresholds[i+1]);
-            }
-        } else {
-            System.out.println("No ports and thresholds");
-        }
-
-    }
-
     public void run()
     {
         int[] portsThresholds = null;
         int[] thresholdSamples = null;
         int[] ports         = null;
-        int i,y;
+        int i,y; 
         while(true) {
             portsThresholds = null;
             thresholdSamples = null;
@@ -260,7 +158,7 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
         long ourAddr = RadioFactory.getRadioPolicyManager().getIEEEAddress();
         System.out.println("Our radio address = " + IEEEAddress.toDottedHex(ourAddr));
         try {
-            startPolling();
+            this.run(); //start the listener service
         } catch(SecurityException se) {
             System.out.println("The current thread cannot create a thread in the specified thread group: " + se);
         }
