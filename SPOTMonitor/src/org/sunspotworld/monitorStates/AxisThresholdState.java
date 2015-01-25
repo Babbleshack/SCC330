@@ -4,7 +4,7 @@ package org.sunspotworld.monitorStates;
  * @author Dominic Lindsay
  */
 import org.sunspotworld.spotMonitors.ThresholdMonitor;
-public class AxisThresholdState {
+public class AxisThresholdState implements IThresholdMonitorState {
     private static final double LOWER_THRESH = 0.8;
     private static final double UPPER_THRESH = 1.2;
     public void checkThresholdCondition(ThresholdMonitor context) {

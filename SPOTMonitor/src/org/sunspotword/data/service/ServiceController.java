@@ -10,7 +10,7 @@ import java.util.Hashtable;
 
 public class ServiceController {
     private Hashtable _services;
-    ServiceController(Hashtable services) {
+    public ServiceController(Hashtable services) {
         this._services = services;
     }
     /**
@@ -25,19 +25,21 @@ public class ServiceController {
         }
     }
     /**
-     * starts a service first checking if
+     * starts a service and set variable first checking if
      * service exists, 
      * and then the service is not already running
      * @param serviceId id of service to start
+     * @param data the threshold or sample rate of monitor
      */
-    public void startService(int serviceId) {
+    public void startService(int serviceId, int data) {
         Integer SID = Integer.valueOf(serviceId);
-        if(!_services.containsKey(SID))
+        if(!_services.containsKey(SID)) {
             return;
-        else if(((IService)_services.get(SID)).isScheduled())
+        } else if(((IService)_services.get(SID)).isScheduled()) {
             return;
-        else
-            ((IService)_services.get(SID)).startService();
+        }
+       ((IService)_services.get(SID)).getMonitor().setVariable(data);
+       ((IService)_services.get(SID)).startService();
     }
     /**
      * stops a service, first checking
@@ -53,6 +55,39 @@ public class ServiceController {
             return;
         else
             ((IService)_services.get(SID)).stopService();
+    }
+    public void autoStartService(int[] serviceIDs, int[] data) {
+        IService service = null;
+        for(int i = 0; i < serviceIDs.length; i++) {
+            if(!this._services.containsKey(Integer.valueOf(serviceIDs[i]))){
+                continue;
+            }
+            service = (IService)this._services.get(Integer.valueOf(serviceIDs[i]));
+            if(service.isScheduled()) {
+                service.getMonitor().setVariable(data[i]);
+            } else {
+                service.getMonitor().setVariable(data[i]);
+                service.startService();
+            }
+            
+        }
+    }
+    /**
+     * for each service,
+     *  for each serviceID
+     *      if service id does not appear in array
+     *          stop service
+     */
+    public void autoStopService(int[] serviceIDs)
+    {
+        for(Enumeration e = this._services.keys(); e.hasMoreElements() ; ){
+           for(int i=0; i<serviceIDs.length; i++){
+            if(((IService)this._services.get(Integer.valueOf(i))).getServiceId() 
+            != i ) {
+                this.stopService(i);
+            }
+          }
+        }
     }
     /**
      * adds a new service to current service pool
@@ -73,5 +108,13 @@ public class ServiceController {
         if(!this._services.contains(ID))
             return null;
         return (IService) this._services.remove(ID);
+    }
+    
+    
+    public IService getService(int serviceId) {
+        Integer ID = Integer.valueOf(serviceId);
+        if(!this._services.contains(ID))
+            return null;
+        return (IService) this._services.get(ID);
     }
 }

@@ -12,8 +12,10 @@ public class SampleMonitor extends TaskObservable implements IMonitor {
     private long sampleRate = 0;
     private final ISensor sensor;
     private static final String _TYPE = "SAMPLE";
-    public SampleMonitor(long sampleRate, ISensor sensor) {
-        super(sampleRate);
+    private static final int MULTI = 1000;
+    public static final long DEFAULT_SAMPLE_RATE = 1000;
+    public SampleMonitor(ISensor sensor) {
+        super(DEFAULT_SAMPLE_RATE);
         this.sampleRate = sampleRate;
         this.sensor = sensor;
     }
@@ -42,5 +44,9 @@ public class SampleMonitor extends TaskObservable implements IMonitor {
     }
     public String getType() {
         return this._TYPE;
+    }
+
+    public void setVariable(int data) {
+        this.setSampleRate(data * 1000);
     }
 }

@@ -9,12 +9,12 @@ public class MonitorFactory
 {
     public static IMonitor createSampleMonitor(long sampleRate, ISensor sensor)
     {
-        return new SampleMonitor(sampleRate, sensor);
+        return new SampleMonitor(sensor);
     }
-    public static IMonitor createThresholdMonitor(double threshold,
-            ISensor sensor, IThresholdMonitorState state)
+    public static IMonitor createThresholdMonitor(ISensor sensor, 
+            IThresholdMonitorState state)
     {
-        return new ThresholdMonitor(threshold, sensor, state);
+        return new ThresholdMonitor(sensor, state);
     }
     public static ISwitchMonitor createSwitchMonitor()
     {

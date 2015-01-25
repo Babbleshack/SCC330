@@ -7,15 +7,15 @@ package org.sunspotworld.sensors;
 
 public class SensorFactory 
 {
-    public static AxisSensor createAxisSensor()
+    public static ISensor createAxisSensor()
     {
         return new AxisSensor();
     }
-    public static LightSensor createLightSensor()
+    public static ISensor createLightSensor()
     {
         return new LightSensor();
     }
-    public static ThermoSensor createThermoSensor()
+    public static ISensor createThermoSensor()
     {
         return new ThermoSensor();
     }

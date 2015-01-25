@@ -1,4 +1,7 @@
 package org.sunspotword.data.service;
+
+import org.sunspotworld.spotMonitors.IMonitor;
+
 /**
  * Service interface.
  * @author babbleshack
@@ -16,4 +19,5 @@ public interface IService {
     void stopService();
     boolean isScheduled();
     int getServiceId();
+    IMonitor getMonitor();
 }

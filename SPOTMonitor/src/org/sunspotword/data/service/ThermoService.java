@@ -35,4 +35,7 @@ public class ThermoService implements TaskObserver, IService {
     public void update(TaskObservable o) {
         //send data across radio connection.
     }
+    public IMonitor getMonitor(){
+        return this.monitor;
+    }
 }

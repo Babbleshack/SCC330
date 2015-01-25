@@ -23,4 +23,9 @@ public interface IMonitor
     public void stopMonitor();
     public boolean getStatus();
     public String getType();
+    /**
+     * used for setting the variable of the monitor 
+     * i.e. threshold or sample rate
+     */
+    public void setVariable(int data);
 }

@@ -33,4 +33,7 @@ public class LightService implements IService, TaskObserver {
     public int getServiceId() {
         return this._serviceId;
     }
+    public IMonitor getMonitor(){
+        return this.monitor;
+    }
 }

@@ -34,47 +34,13 @@ public class TDiscoverMe implements Runnable
             System.out.println("Unable initiate discover me sending radio");
         }
     }
-
-    public void startPolling() throws Exception
-    {
-    }
-
     public void run()
     {
-        
         while (true)
         {
-            while (true)
-            {
-                // Send thermo reading
-                discoverMeRadio.discoverMe(); 
-                Utils.sleep(SAMPLE_RATE);
-            }
-            /*Vector jobs;
-            try {
-                jobs = discoverMeRadio.discoverMe(30 * 1000);
-            } catch (TimeoutException ex) {
-                ex.printStackTrace();
-                continue;
-            }
-            */
-            
-            ///define what is going into jobs.
-        }
-        /*Send Discover me
-         * wait 30 seconds for reply
-         * When received go through list of services,
-         * Starting ones that correspond.
-         * if no reply send a second discover me. 
-        */
-        
-        
-        // main switch reading/polling loop
-/**        while (true)
-        {
+            // Send thermo reading
             discoverMeRadio.discoverMe(); 
             Utils.sleep(SAMPLE_RATE);
-        }*/
+        }
     }
-
 }

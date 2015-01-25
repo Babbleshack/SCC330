@@ -25,16 +25,16 @@ public class AccelerometerService implements IService, TaskObserver {
     public boolean isScheduled() {
         return this.monitor.getStatus();
     }
-
     public void update(TaskObservable o, Object arg) {
         //send data on radio
     }
-
     public void update(TaskObservable o) {
         //sends data on radio
     }
-
     public int getServiceId() {
         return this._serviceId;
+    }
+    public IMonitor getMonitor(){
+        return this.monitor;
     }
 }
