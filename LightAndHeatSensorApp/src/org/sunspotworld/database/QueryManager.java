@@ -673,7 +673,7 @@ public class QueryManager implements IQueryManager
                     output_array.add((Object)Integer.valueOf(threshold));
                 } else { // If both sample rate and threshold rate is null, sensor probably doesn't require them
                     output_array.add((Object)Integer.valueOf(port_number));
-                    output_array.add((Object)Integer.valueOf(null));
+                    output_array.add((Object)Integer.valueOf(0));
                 }
 
             }
