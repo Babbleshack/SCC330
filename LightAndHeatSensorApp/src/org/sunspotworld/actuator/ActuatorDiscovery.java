@@ -35,7 +35,7 @@ public class ActuatorDiscovery implements Runnable
            actuators = getActuators(); //get a list of active actuators
            if(actuators == null)
            {
-               continue; //skip no attached actuators.
+               break; // nevermind.. no actuators
            }
            if(actuators.isEmpty())
                continue;

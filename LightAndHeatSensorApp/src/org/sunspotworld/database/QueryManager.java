@@ -511,7 +511,7 @@ public class QueryManager implements IQueryManager
                  */
                 return result.getInt("zone_spot.zone_id");
             } else {
-                return -1;
+                return 1;
             }
 
         } catch (SQLException e) {
@@ -621,7 +621,7 @@ public class QueryManager implements IQueryManager
      * Returns all sensor ports and thresholds for a given a spot address
      */
     public ArrayList getSensorPortsJobThresholdsFromSpotAddress(String spot_address) {
-        String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold` "
+        String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold`, `Job`.`sample_rate` "
          + "FROM Job "
          + "LEFT JOIN Sensor "
          + "ON Sensor.id = Job.sensor_id "
@@ -651,10 +651,32 @@ public class QueryManager implements IQueryManager
             ArrayList output_array = new ArrayList();
 
             while (result.next()) {
-                output_array.add((Object)
-                        Integer.valueOf(result.getInt("Sensor.port_number")));
-                output_array.add((Object)
-                        Integer.valueOf(result.getInt("Job.threshold")));
+                boolean sample_rate_null = false, threshold_null = false; 
+                int port_number = result.getInt("Sensor.port_number");
+
+                int sample_rate = result.getInt("Job.sample_rate");
+                if(result.wasNull()) sample_rate_null = true;
+
+                int threshold = result.getInt("Job.threshold");
+                if(result.wasNull()) threshold_null = true;
+
+                if(threshold_null == true && sample_rate_null == true) { // Both null, set up default sample rate
+                    port_number += 5; 
+                    output_array.add((Object)Integer.valueOf(port_number));
+                    output_array.add((Object)Integer.valueOf(sample_rate));
+                } else if(threshold_null == true && sample_rate_null == false) { // Threshold is null, sample rate isn't, set up sample rate
+                    port_number += 5; 
+                    output_array.add((Object)Integer.valueOf(port_number));
+                    output_array.add((Object)Integer.valueOf(sample_rate));
+                } else if(threshold_null == false && sample_rate_null == true) { // Sample rate is null, threshold is't null, set up threshold
+                    output_array.add((Object)Integer.valueOf(port_number));
+                    output_array.add((Object)Integer.valueOf(threshold));
+                } else { // Default sample rate for both true (impossible though)
+                    port_number += 5; 
+                    output_array.add((Object)Integer.valueOf(port_number));
+                    output_array.add((Object)Integer.valueOf(sample_rate));
+                }
+
             }
 
             if(output_array.size() == 0) 
@@ -664,7 +686,7 @@ public class QueryManager implements IQueryManager
 
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing "
-                + "getJobId: " + e);
+                + "getSensorPortsJobThresholdsFromSpotAddress: " + e);
                 return new ArrayList();
         }
     }
