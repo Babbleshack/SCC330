@@ -660,10 +660,9 @@ public class QueryManager implements IQueryManager
                 int threshold = result.getInt("Job.threshold");
                 if(result.wasNull()) threshold_null = true;
 
-                if(threshold_null == true && sample_rate_null == true) { // Both null, set up default sample rate
-                    port_number += 5; 
+                if(threshold_null == true && sample_rate_null == true) { // Both null, sensor probably doesn't need sample rate
                     output_array.add((Object)Integer.valueOf(port_number));
-                    output_array.add((Object)Integer.valueOf(sample_rate));
+                    output_array.add((Object)Integer.valueOf(0));
                 } else if(threshold_null == true && sample_rate_null == false) { // Threshold is null, sample rate isn't, set up sample rate
                     port_number += 5; 
                     output_array.add((Object)Integer.valueOf(port_number));
@@ -671,10 +670,12 @@ public class QueryManager implements IQueryManager
                 } else if(threshold_null == false && sample_rate_null == true) { // Sample rate is null, threshold is't null, set up threshold
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(threshold));
-                } else { // If both sample rate and threshold rate is null, sensor probably doesn't require them
+                } else { // Both sample rate and threshold not null... shouldn't happen but set up anyway
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(0));
                 }
+
+                System.out.println("Port: " + port_number + " - Sample Rate: " + sample_rate + " - Threshold: " + threshold);
 
             }
 
