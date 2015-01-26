@@ -38,7 +38,7 @@ public class LightService implements IService, TaskObserver {
         System.out.println("Stopped Light Service");
     }
     public boolean isScheduled() {
-        return this.isScheduled();
+        return this.getMonitor().getStatus();
     }
 
     public void update(TaskObservable o, Object arg) {

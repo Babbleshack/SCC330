@@ -7,7 +7,6 @@
 package org.sunspotworld;
 
 import org.sunspotworld.threads.TDiscoverMe;
-import org.sunspotworld.threads.TTower;
 import org.sunspotworld.threads.TDemandSwitch;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.IReceivingRadio;
@@ -29,17 +28,13 @@ import javax.microedition.midlet.MIDletStateChangeException;
 import org.sunspotworld.service.IService;
 import org.sunspotworld.service.ServiceController;
 import org.sunspotworld.service.ServiceFactory;
-import org.sunspotworld.service.ThermoService;
 import org.sunspotworld.monitorStates.AxisThresholdState;
 import org.sunspotworld.monitorStates.LightThresholdState;
 import org.sunspotworld.monitorStates.ThermoThresholdState;
 import org.sunspotworld.sensors.SensorFactory;
-import org.sunspotworld.sensors.ThermoSensor;
 import org.sunspotworld.spotMonitors.BatteryMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotMonitors.SampleMonitor;
-import org.sunspotworld.spotMonitors.ThresholdMonitor;
-import org.sunspotworld.threads.TZoneProccessor;
 
 
 /**

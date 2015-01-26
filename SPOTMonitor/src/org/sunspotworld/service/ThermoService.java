@@ -42,7 +42,7 @@ public class ThermoService implements TaskObserver, IService {
         System.out.println("Stopped Thermo Service");
     }
     public boolean isScheduled() {
-        return this.isScheduled();
+        return this.getMonitor().getStatus();
     }
     public int getServiceId() {
         return this._serviceId;

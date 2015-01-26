@@ -12,8 +12,6 @@ public class ServiceController {
     private Hashtable _services;
     public ServiceController(Hashtable services) {
         this._services = services;
-        System.out.println("PRINTING SERVICE TABLE");
-       
     }
     /**
      * starts all services
