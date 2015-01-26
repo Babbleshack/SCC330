@@ -79,11 +79,11 @@ public class ServiceController {
                     continue;
                 }
                 service = (IService)this._services.get(Integer.valueOf(serviceIDs[i]));
-                if(service.getServiceId() == i) {
+                if(service.getServiceId() == serviceIDs[i]) {
                     hasBeenFound = true;
                 }
                 if(hasBeenFound && !service.isScheduled()){ //start if not running
-                    //this.startService(serviceIDs[i], data[i]); 
+                    this.startService(serviceIDs[i], data[i]); 
                     continue;
                 }
                 if(service.isScheduled()){
