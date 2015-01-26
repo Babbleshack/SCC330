@@ -43,11 +43,15 @@ public class LightService implements IService, TaskObserver {
     }
 
     public void update(TaskObservable o, Object arg) {
-        sRadio.sendLight(((ISensor)o).getData().getDataAsInt());
+        //send data across radio connection.
+        sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
+        System.out.println("Sent Light");
     }
 
     public void update(TaskObservable o) {
-        sRadio.sendLight(((ISensor)o).getData().getDataAsInt());
+        //send data across radio connection.
+        sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
+        System.out.println("Sent Light");
     }
     public int getServiceId() {
         return this._serviceId;
