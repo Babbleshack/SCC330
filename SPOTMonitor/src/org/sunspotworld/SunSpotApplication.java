@@ -115,6 +115,14 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
                                 new AxisThresholdState()))
         );
         System.out.println("added Accel services");
+        services.put(Integer.valueOf(IService.PING), 
+                ServiceFactory.createTowerService());
+        System.out.println("added tower service");
+        services.put(Integer.valueOf(IService.TOWER_RECIEVER),
+                ServiceFactory.createZoneProccessorService());
+        System.out.println("added ZoneProcessor service");
+        
+                
         return services;
         
     }

@@ -59,4 +59,7 @@ public class LightService implements IService, TaskObserver {
     public IMonitor getMonitor(){
         return this.monitor;
     }
+    public void setData(int data) {
+        this.monitor.setVariable(data);
+    }
 }

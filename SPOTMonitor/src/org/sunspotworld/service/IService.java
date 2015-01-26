@@ -15,9 +15,13 @@ public interface IService {
     public static final int ACCEL_THRESH    = 130;
     public static final int ACCEL_SAMPLE    = 135;
     public static final int MOTION_SAMPLE   = 140;
+    public static final int PING            = 150;
+    public static final int TOWER_RECIEVER = 160;
+    public static final int BASE_TOWER     = 170;
     void startService();
     void stopService();
     boolean isScheduled();
     int getServiceId();
     IMonitor getMonitor();
+    void setData(int data);
 }

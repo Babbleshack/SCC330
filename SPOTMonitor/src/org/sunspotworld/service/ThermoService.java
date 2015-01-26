@@ -61,4 +61,7 @@ public class ThermoService implements TaskObserver, IService {
     public IMonitor getMonitor(){
         return this.monitor;
     }
+    public void setData(int data) {
+        this.monitor.setVariable(data);
+    }
 }

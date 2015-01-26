@@ -81,9 +81,9 @@ public class ServiceController {
                 if(service.getServiceId() == serviceIDs[i]){
                     hasBeenFound = true;
                     if(service.isScheduled()) {
-                        service.getMonitor().setVariable(data[i]);
+                        service.setData(data[i]);
                     } else {
-                        service.getMonitor().setVariable(data[i]);
+                        service.setData(data[i]);
                         service.startService();
                     }
                 }

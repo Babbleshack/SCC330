@@ -26,4 +26,13 @@ public class ServiceFactory {
         else
             return new AccelerometerService(monitor, IService.ACCEL_THRESH);
     }
+    
+    public static IService createTowerService() {
+        return new TowerService(IService.PING);
+    }
+    
+    public static IService createZoneProccessorService() {
+        return new ZoneProcessorService(IService.TOWER_RECIEVER);
+    }
+    
 }
