@@ -151,8 +151,7 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
           //pass the ports to autostoper 
           //then start all services in ports
           if(portsThresholds != null){
-              serviceController.autoStopService(ports);
-              serviceController.autoStartService(ports, thresholdSamples);
+              serviceController.autoManageServices(ports, thresholdSamples);
           } else {
               System.out.println("No ports or thresholds");
           }

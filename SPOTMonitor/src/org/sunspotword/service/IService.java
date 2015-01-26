@@ -8,8 +8,8 @@ import org.sunspotworld.spotMonitors.IMonitor;
  */
 public interface IService {
     // Identifiers for services
-    public static final int THERMO_SAMPLE   = 150;
-    public static final int THERMO_THRESH   = 155;
+    public static final int THERMO_SAMPLE   = 110;
+    public static final int THERMO_THRESH   = 115;
     public static final int LIGHT_SAMPLE    = 120;
     public static final int LIGHT_THRESH    = 125;
     public static final int ACCEL_SAMPLE    = 130;

@@ -12,6 +12,8 @@ public class ServiceController {
     private Hashtable _services;
     public ServiceController(Hashtable services) {
         this._services = services;
+        System.out.println("PRINTING SERVICE TABLE");
+       
     }
     /**
      * starts all services
@@ -56,47 +58,42 @@ public class ServiceController {
         else
             ((IService)_services.get(SID)).stopService();
     }
-    public void autoStartService(int[] serviceIDs, int[] data) {
-        IService service = null;
-        for(int i = 0; i < serviceIDs.length; i++) {
-            if(!this._services.containsKey(Integer.valueOf(serviceIDs[i]))){
-                continue;
-            }
-            service = (IService)this._services.get(Integer.valueOf(serviceIDs[i]));
-            if(service.isScheduled()) {
-                service.getMonitor().setVariable(data[i]);
-            } else {
-                service.getMonitor().setVariable(data[i]);
-                service.startService();
-            }
-            
-        }
-    }
     /**
-     * for each service,
-     *  for each serviceID
-     *      if service id does not appear in array
-     *          stop service
+     * for each serviceID in services table,
+     *  for each seviceID in array
+     *      if service 'X' is found in array and is not running
+     *          start service 'X'
+     *      if service 'X' does not appear in array and is running
+     *          stop service 'X'
      */
-    public void autoStopService(int[] serviceIDs)
+    public void autoManageServices(int[] serviceIDs, int[] data)
     {
         IService service;
-        for(Enumeration e = this._services.keys(); e.hasMoreElements() ; ){
-           for(int i=0; i<serviceIDs.length; i++){
-               
-               service = (IService) this._services.get(Integer.valueOf(i));
-               System.out.println("service ID autostoping: " + serviceIDs[i] );
-               System.out.println("Service ID of retrieved Service: " +  service.getServiceId());
-               if(service == null) {
-                   System.out.println("Null value");
-                   continue;
-               }
-            if(service.getServiceId() != serviceIDs[i] ) {
-                this.stopService(i);
+        boolean hasBeenFound;
+        for(Enumeration e = this._services.keys();e.hasMoreElements() ;)
+        {
+            hasBeenFound = false;
+            for(int i=0; i<serviceIDs.length; i++){
+                if(!this._services.containsKey(Integer.valueOf(serviceIDs[i]))){
+                    System.out.println("ServiceID: " + serviceIDs[i] + " not found" );
+                    continue;
+                }
+                service = (IService)this._services.get(Integer.valueOf(serviceIDs[i]));
+                if(service.getServiceId() == i) {
+                    hasBeenFound = true;
+                }
+                if(hasBeenFound && !service.isScheduled()){ //start if not running
+                    //this.startService(serviceIDs[i], data[i]); 
+                    continue;
+                }
+                if(service.isScheduled()){
+                    service.stopService();
+                }
+                service = null;
             }
-          }
         }
     }
+    
     /**
      * adds a new service to current service pool
      * @param service 
