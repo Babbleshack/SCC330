@@ -22,6 +22,7 @@ public class ThermoService implements TaskObserver, IService {
     //add radio and methods
     public ThermoService(IMonitor monitor, int serviceId) {
         this.monitor = monitor;
+        this.monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
         System.out.println("innit Service with ID" + this._serviceId);
         try {

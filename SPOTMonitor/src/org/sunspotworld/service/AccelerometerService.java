@@ -20,6 +20,7 @@ public class AccelerometerService implements IService, TaskObserver {
     private ISendingRadio sRadio;
     public AccelerometerService(IMonitor monitor, int serviceId) {
         this.monitor = monitor;
+        this.monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
         try {
             sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.ACCEL_PORT));

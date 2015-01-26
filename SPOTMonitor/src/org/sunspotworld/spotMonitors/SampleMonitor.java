@@ -7,6 +7,7 @@ package org.sunspotworld.spotMonitors;
 
 import org.sunspotworld.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObservable;
+import org.sunspotworld.homePatterns.TaskObserver;
 import org.sunspotworld.sensors.ISensor;
 public class SampleMonitor extends TaskObservable implements IMonitor {
     private long sampleRate = 0;
@@ -49,5 +50,9 @@ public class SampleMonitor extends TaskObservable implements IMonitor {
 
     public void setVariable(int data) {
         this.setSampleRate(data * 1000);
+    }
+
+    public void addMonitorObserver(TaskObserver to) {
+        this.addObserver(to);
     }
 }

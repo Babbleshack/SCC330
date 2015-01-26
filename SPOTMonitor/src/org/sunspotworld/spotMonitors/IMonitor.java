@@ -6,6 +6,7 @@
 package org.sunspotworld.spotMonitors;
 
 import org.sunspotworld.data.SensorData;
+import org.sunspotworld.homePatterns.TaskObserver;
 
 /**
  *
@@ -28,4 +29,5 @@ public interface IMonitor
      * i.e. threshold or sample rate
      */
     public void setVariable(int data);
+    public void addMonitorObserver(TaskObserver to);
 }

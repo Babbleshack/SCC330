@@ -13,7 +13,7 @@ public class ServiceController {
     public ServiceController(Hashtable services) {
         this._services = services;
     }
-    /**
+    /** 
      * starts all services
      */
     public void innitializeServices() {
@@ -68,28 +68,31 @@ public class ServiceController {
     {
         IService service;
         boolean hasBeenFound;
-        for(Enumeration e = this._services.keys();e.hasMoreElements() ;)
+        //for each serviceID
+            //if service[id] is not running start it
+        int i;
+             
+        for(Enumeration e = this._services.keys();e.hasMoreElements(); )
         {
             hasBeenFound = false;
-            for(int i=0; i<serviceIDs.length; i++){
-                if(!this._services.containsKey(Integer.valueOf(serviceIDs[i]))){
-                    System.out.println("ServiceID: " + serviceIDs[i] + " not found" );
-                    continue;
-                }
-                service = (IService)this._services.get(Integer.valueOf(serviceIDs[i]));
-                if(service.getServiceId() == serviceIDs[i]) {
+            service = (IService)this._services.get(Integer.valueOf(e.nextElement().toString()));
+            for(i = 0;i<serviceIDs.length;i++) {
+                //if e is not found.
+                if(service.getServiceId() == serviceIDs[i]){
                     hasBeenFound = true;
+                    if(service.isScheduled()) {
+                        service.getMonitor().setVariable(data[i]);
+                    } else {
+                        service.getMonitor().setVariable(data[i]);
+                        service.startService();
+                    }
                 }
-                if(hasBeenFound && !service.isScheduled()){ //start if not running
-                    this.startService(serviceIDs[i], data[i]); 
-                    continue;
-                }
-                if(service.isScheduled()){
-                    service.stopService();
-                }
-                service = null;
+            }
+            if(!hasBeenFound && service.isScheduled()) {
+                service.stopService();
             }
         }
+        System.out.println("------EXIT SERVICE LOOP----");
     }
     
     /**

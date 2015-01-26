@@ -7,6 +7,7 @@ package org.sunspotworld.spotMonitors;
 import org.sunspotworld.monitorStates.IThresholdMonitorState;
 import org.sunspotworld.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObservable;
+import org.sunspotworld.homePatterns.TaskObserver;
 import org.sunspotworld.sensors.ISensor;
 
 
@@ -51,5 +52,9 @@ public class ThresholdMonitor extends TaskObservable implements
     }
     public void setVariable(int data) {
         this.threshold = data;
+    }
+
+    public void addMonitorObserver(TaskObserver to) {
+        this.addObserver(to);
     }
 }

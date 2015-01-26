@@ -26,6 +26,7 @@ public class LightService implements IService, TaskObserver {
             ex.printStackTrace();
         }
         this.monitor = monitor;
+        this.monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
         System.out.println("innit Service with ID" + this._serviceId);
     }
