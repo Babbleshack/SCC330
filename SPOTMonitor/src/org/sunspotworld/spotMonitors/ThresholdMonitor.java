@@ -5,7 +5,7 @@
 package org.sunspotworld.spotMonitors;
 
 import org.sunspotworld.monitorStates.IThresholdMonitorState;
-import org.sunspotword.data.SensorData;
+import org.sunspotworld.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.sensors.ISensor;
 

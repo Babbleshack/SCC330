@@ -1,4 +1,4 @@
-package org.sunspotword.daemon;
+package org.sunspotworld.daemon;
 
 /**
  *

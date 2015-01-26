@@ -2,7 +2,7 @@
  *
  * @author Dominic Lindsay
  */
-package org.sunspotword.service;
+package org.sunspotworld.service;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

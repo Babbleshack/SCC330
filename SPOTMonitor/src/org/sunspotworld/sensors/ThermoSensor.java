@@ -7,7 +7,7 @@ package org.sunspotworld.sensors;
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.ITemperatureInput;
 import java.io.IOException;
-import org.sunspotword.data.SensorData;
+import org.sunspotworld.data.SensorData;
 
 
 public class ThermoSensor implements ISensor {

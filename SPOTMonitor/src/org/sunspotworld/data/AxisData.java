@@ -1,4 +1,4 @@
-package org.sunspotword.data;
+package org.sunspotworld.data;
 
 /**
  *

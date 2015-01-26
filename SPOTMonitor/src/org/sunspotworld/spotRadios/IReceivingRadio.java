@@ -5,7 +5,7 @@
 package org.sunspotworld.spotRadios;
 
 import java.io.IOException;
-import org.sunspotword.data.TowerSpot;
+import org.sunspotworld.data.TowerSpot;
 public interface IReceivingRadio 
 {
     /**

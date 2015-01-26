@@ -9,7 +9,7 @@ import com.sun.spot.io.j2me.radiogram.Radiogram;
 
 import java.io.*;
 import javax.microedition.io.*;
-import org.sunspotword.data.TowerSpot;
+import org.sunspotworld.data.TowerSpot;
 
 public class ReceivingRadio implements IReceivingRadio
 {

@@ -1,4 +1,4 @@
-package org.sunspotword.service;
+package org.sunspotworld.service;
 
 import org.sunspotworld.spotMonitors.IMonitor;
 

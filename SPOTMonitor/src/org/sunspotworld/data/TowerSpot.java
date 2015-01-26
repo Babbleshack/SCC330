@@ -1,4 +1,4 @@
-package org.sunspotword.data;
+package org.sunspotworld.data;
 /**
  * @author Dominic Lindsay
  * Wrapper for Tower address and power level data

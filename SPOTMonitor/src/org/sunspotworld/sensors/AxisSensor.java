@@ -6,8 +6,8 @@ package org.sunspotworld.sensors;
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.IAccelerometer3D;
 import java.io.IOException;
-import org.sunspotword.data.AxisData;
-import org.sunspotword.data.SensorData;
+import org.sunspotworld.data.AxisData;
+import org.sunspotworld.data.SensorData;
 
 public class AxisSensor implements ISensor
 {

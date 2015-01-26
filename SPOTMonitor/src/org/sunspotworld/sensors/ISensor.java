@@ -1,6 +1,6 @@
 package org.sunspotworld.sensors;
 
-import org.sunspotword.data.SensorData;
+import org.sunspotworld.data.SensorData;
 
 /**
  *

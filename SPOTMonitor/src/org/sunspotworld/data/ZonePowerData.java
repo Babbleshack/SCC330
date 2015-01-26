@@ -1,5 +1,5 @@
 
-package org.sunspotword.data;
+package org.sunspotworld.data;
 
 import java.util.Vector;
 

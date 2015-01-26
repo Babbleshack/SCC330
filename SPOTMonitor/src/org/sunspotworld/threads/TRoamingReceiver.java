@@ -11,8 +11,8 @@ import org.sunspotworld.spotRadios.IReceivingRadio;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.SunspotPort;
 import java.lang.Exception;
-import org.sunspotword.data.TowerSpot;
-import org.sunspotword.data.ZonePowerData;
+import org.sunspotworld.data.TowerSpot;
+import org.sunspotworld.data.ZonePowerData;
 
 public class TRoamingReceiver extends Thread implements Runnable
 {

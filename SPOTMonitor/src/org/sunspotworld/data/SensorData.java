@@ -2,7 +2,10 @@
  *
  * @author Dominic Lindsay
  */
-package org.sunspotword.data;
+package org.sunspotworld.data;
+
+import org.sunspotword.data.ISensorData;
+
 public class SensorData implements ISensorData {
     private double data;
     private AxisData axisData;

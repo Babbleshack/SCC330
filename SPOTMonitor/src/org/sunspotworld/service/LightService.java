@@ -2,7 +2,7 @@
  *
  * @author Dominic Lindsay
  */
-package org.sunspotword.service;
+package org.sunspotworld.service;
 import java.io.IOException;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;

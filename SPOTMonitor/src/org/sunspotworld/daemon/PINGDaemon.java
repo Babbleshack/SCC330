@@ -2,7 +2,7 @@
  *
  * @author Dominic Lindsay
  */
-package org.sunspotword.daemon;
+package org.sunspotworld.daemon;
 
 
 public class PINGDaemon {

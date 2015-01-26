@@ -7,7 +7,7 @@ package org.sunspotworld.sensors;
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.ILightSensor;
 import java.io.IOException;
-import org.sunspotword.data.SensorData;
+import org.sunspotworld.data.SensorData;
 
 
 public class LightSensor implements ISensor

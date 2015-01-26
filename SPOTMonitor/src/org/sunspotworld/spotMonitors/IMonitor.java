@@ -5,7 +5,7 @@
  */
 package org.sunspotworld.spotMonitors;
 
-import org.sunspotword.data.SensorData;
+import org.sunspotworld.data.SensorData;
 
 /**
  *
