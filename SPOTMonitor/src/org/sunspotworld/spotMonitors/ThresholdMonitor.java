@@ -27,7 +27,7 @@ public class ThresholdMonitor extends TaskObservable implements
         this.sensor = sensor;
     }
     public void doTask() throws Exception {
-        this.getSensorReading();
+        this.monitorState.checkThresholdCondition(this);
     }
     public double getThreshold() {
         return this.threshold;

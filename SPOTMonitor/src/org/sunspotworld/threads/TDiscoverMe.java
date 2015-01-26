@@ -15,7 +15,7 @@ import org.sunspotworld.spotRadios.PortOutOfRangeException;
 public class TDiscoverMe implements Runnable
 {
     ISendingRadio discoverMeRadio;
-    private static final int SAMPLE_RATE = 30 * 1000; // 30 seconds
+    private static final int SAMPLE_RATE = 5 * 1000; // 30 seconds
 
     /**
      * Instantiates the sending radio required
