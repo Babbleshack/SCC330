@@ -13,7 +13,7 @@ public class ScheduledJob implements Runnable{
 	public void run() {
 		try {
 			actuatorController.checkUpdatesForDevices();
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
