@@ -1,20 +1,13 @@
 import com.yoctopuce.YoctoAPI.*;
 public class Actuator
 {
-	//declares a relay variable
 	YRelay relay1;
 	Boolean isOn = false;
 
-	//creates Actuator class and calls method to setup virtual hub on local computer
 	public Actuator(String name)
 	{
 		setRelays(name);
 	}
-
-	// public boolean getStatus()
-	// {
-	// 	return isOn;
-	// }
 
 	public void setStatus(boolean isOn)
 	{
@@ -48,10 +41,10 @@ public class Actuator
 
 	private void turnLightON()
 	{
-	//turns lights connected to relay1 ON by setting its state to 1
 		try
 		{
 			System.out.println("is Online: " + relay1.isOnline());
+			//turns lights connected to relay1 ON by setting its state to 1
 			relay1.set_state(1);
 		}
 		catch(YAPI_Exception e)
@@ -62,10 +55,10 @@ public class Actuator
 
 	private void turnLightOFF()
 	{
-	//turns lights connected to relay1 OFF by setting its state to 0
 		try
 		{
 			System.out.println("is Online: " + relay1.isOnline());
+			//turns lights connected to relay1 OFF by setting its state to 0
 			relay1.set_state(0);
 		}
 		catch(YAPI_Exception e)
