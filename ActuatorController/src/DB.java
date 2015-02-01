@@ -1,4 +1,3 @@
-import java.net.SocketException;
 import java.sql.*;
 
 public class DB {
