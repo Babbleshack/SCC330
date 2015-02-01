@@ -75,4 +75,302 @@ public class DB {
 //		preparedStatement_checkBids.setInt(1, this.id);
 		return execute(preStatementCreate("SELECT id, actuator_address, is_on FROM Actuator"));
 	}
+
+	/**
+	 * Insert spot record into db
+	 * @param actuator_address
+	 * @param time long
+	 */
+	public void createActuatorRecord(String actuator_address, long time)
+	{
+		String insertActuatorRecord = "INSERT INTO Actuator"
+				+ "(actuator_address, created_at, updated_at)"
+				+ ("VALUES (?,?,?)");
+		try
+		{
+			PreparedStatement insert = con.prepareStatement(insertActuatorRecord);
+			insert.setString(1, actuator_address);
+			insert.setTimestamp(2, new Timestamp(time));
+			insert.setTimestamp(3, new Timestamp(time));
+			insert.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+				System.err.println("SQL Exception while preparing/Executing"
+				+ "insertActuatorRecord: " + e);
+		}
+	}
+
+	/**
+	 * returns true if actuator is null
+	 * @param actuator_address
+	 * @return
+	 */
+	public int isActuatorNull(String actuator_address)
+	{
+		try
+		{
+			String isActuatorOn = "SELECT * FROM Actuator WHERE actuator_address LIKE ?";
+			int returnedInt;
+
+			/**
+			 * Execute select query
+			 */
+			PreparedStatement record = con.prepareStatement(isActuatorOn);
+			record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
+
+			/**
+			 * Access ResultSet for actuator_address
+			 */
+			ResultSet result = record.executeQuery();
+
+			/**
+			 * Return result
+			 */
+			result.next();
+			returnedInt = result.getInt("is_on");
+			if(result.wasNull())
+				return 1;
+			else
+				return 0;
+		}
+		catch (SQLException e)
+		{
+				System.err.println("SQL Exception while preparing/Executing "
+				+ "isActuatorOn: " + e);
+				return 0;
+		}
+	}
+
+	public int isActuatorOn(String actuator_address)
+	{
+		String isActuatorOn = "SELECT * FROM Actuator WHERE actuator_address LIKE ?";
+
+		try
+		{
+			/**
+			 * Execute select query
+			 */
+			PreparedStatement record = con.prepareStatement(isActuatorOn);
+			record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
+
+			/**
+			 * Access ResultSet for actuator_address
+			 */
+			ResultSet result = record.executeQuery();
+
+			/**
+			 * Return result
+			 */
+			if(result.next())
+			{
+				if(result.getInt("is_on") == 1)
+					return 1;
+				else
+					return 0;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		catch (SQLException e)
+		{
+				System.err.println("SQL Exception while preparing/Executing "
+				+ "isActuatorOn: " + e);
+				return 0;
+		}
+	}
+
+	public ActuatorJob getActuatorJob(String actuator_address)
+	{
+		try
+		{
+			String getActuator = "SELECT * "
+					+ " FROM actuator_job, Actuator"
+					+ " WHERE actuator_job.actuator_id = Actuator.id "
+					+ " AND Actuator.actuator_address LIKE ? "
+					+ " LIMIT 1";
+
+			/**
+			 * Execute select query
+			 */
+			PreparedStatement record = con.prepareStatement(getActuator);
+			record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
+
+			/**
+			 * Access ResultSet for zone_id
+			 */
+			ResultSet result = record.executeQuery();
+			if(result.next())
+			{
+				/**
+				 * Return result
+				 */
+				return new ActuatorJob(result.getInt("actuator_job.job_id"), result.getString("actuator_job.direction"), result.getDouble("actuator_job.threshold"));
+			}
+			else
+			{
+				return null;
+			}
+
+		}
+		catch (SQLException e)
+		{
+				System.err.println("SQL Exception while preparing/Executing "
+				+ "getActuator: " + e);
+				return null;
+		}
+	}
+
+	public double getLatestReadingFromJobId(int job_id)
+	{
+		String reading_table = this.getReadingTableFromJobId(job_id);
+		String reading_field = this.getReadingFieldFromJobId(job_id);
+
+		if(reading_table == null || reading_field == null) return -1;
+
+		String getReading = "SELECT * "
+				+ " FROM " + reading_table
+				+ " WHERE job_id = ? "
+				+ " ORDER BY id DESC "
+				+ " LIMIT 1";
+
+		try {
+			/**
+			 * Execute select query
+			 */
+			PreparedStatement record = con.prepareStatement(getReading);
+			record.setInt(1, job_id);
+
+			/**
+			 * Access ResultSet for zone_id
+			 */
+			ResultSet result = record.executeQuery();
+			if(result.next())
+			{
+				/**
+				 * Return result
+				 */
+				return result.getDouble(reading_table + "." + reading_field);
+			}
+			else
+			{
+				return -1;
+			}
+
+		} catch (SQLException e)
+		{
+				System.err.println("SQL Exception while preparing/Executing "
+				+ "getReading: " + e);
+				return -1;
+		}
+	}
+
+	public String getReadingTableFromJobId(int job_id) {
+		String getReadingTableFromJobId = "SELECT * "
+				+ " FROM Job, Sensor"
+				+ " WHERE Sensor.id = Job.sensor_id "
+				+ " AND Job.id = ? "
+				+ " LIMIT 1";
+
+		try {
+			/**
+			 * Execute select query
+			 */
+			PreparedStatement record = con.prepareStatement(getReadingTableFromJobId);
+			record.setInt(1, job_id);
+
+			/**
+			 * Access ResultSet for zone_id
+			 */
+			ResultSet result = record.executeQuery();
+			if(result.next()) {
+				/**
+				 * Return result
+				 */
+				return result.getString("Sensor.table");
+			} else {
+				return null;
+			}
+
+		} catch (SQLException e) {
+				System.err.println("SQL Exception while preparing/Executing "
+				+ "getReadingTableFromJobId: " + e);
+				return null;
+		}
+	}
+
+	public String getReadingFieldFromJobId(int job_id) {
+		String getReadingTableFromJobId = "SELECT * "
+				+ " FROM Job, Sensor"
+				+ " WHERE Sensor.id = Job.sensor_id "
+				+ " AND Job.id = ? "
+				+ " LIMIT 1";
+
+		try {
+			/**
+			 * Execute select query
+			 */
+			PreparedStatement record = con.prepareStatement(getReadingTableFromJobId);
+			record.setInt(1, job_id);
+
+			/**
+			 * Access ResultSet for zone_id
+			 */
+			ResultSet result = record.executeQuery();
+			if(result.next()) {
+				/**
+				 * Return result
+				 */
+				return result.getString("Sensor.field");
+			} else {
+				return null;
+			}
+
+		} catch (SQLException e) {
+				System.err.println("SQL Exception while preparing/Executing "
+				+ "getReadingTableFromJobId: " + e);
+				return null;
+		}
+	}
+
+	/**
+	 *
+	 * @param actuator_address
+	 * @return
+	 */
+	public int isActuatorExists(String actuator_address)
+	{
+		try
+		{
+			String isActuatorExists = "SELECT * FROM Actuator WHERE Actuator.actuator_address LIKE ? ";
+
+			/**
+			 * Execute select query
+			 */
+			PreparedStatement record = con.prepareStatement(isActuatorExists);
+			record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
+
+			/**
+			 * Access ResultSet for actuator_address
+			 */
+			ResultSet result = record.executeQuery();
+
+			/**
+			 * Return result
+			 */
+			if(result.next())
+				return 1;
+			else
+				return 0;
+
+		}
+		catch (SQLException e)
+		{
+				System.err.println("SQL Exception while preparing/Executing "
+				+ "isActuatorExists: " + e);
+				return 0;
+		}
+	}
 }

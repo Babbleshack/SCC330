@@ -1,69 +1,97 @@
 import com.yoctopuce.YoctoAPI.*;
+
 public class Actuator
 {
 	YRelay relay1;
-	Boolean isOn = false;
+	String relayAddress;
+	int isOn = -1; // means status unknown yet
+	private ActuatorJob job;
+	private static final int ON = 1;
+	private static final int OFF = 0;
 
-	public Actuator(String name)
+	public Actuator(String name, YRelay relay1)
 	{
-		setRelays(name);
+		this.relay1 = relay1;
+		this.relayAddress = name;
 	}
 
-	public void setStatus(boolean isOn)
+	private void reconnect()
 	{
-		if(this.isOn != isOn)
-		{
-			this.isOn = isOn;
+		relay1 = YRelay.FindRelay(relayAddress);
+	}
 
-			if(isOn)
-				turnLightON();
+	public void setStatus(int i)
+	{
+//		reconnect();
+		System.out.println("status: " + i);
+		if(this.isOn != i)
+		{
+//			this.isOn = i;
+
+			if(i == 1)
+			{
+				System.out.println("turning on ...");
+				turnRelayOn();
+			}
 			else
-				turnLightOFF();
+			{
+				System.out.println("turning off ...");
+				turnRelayOff();
+			}
 		}
 	}
 
-	//sets up hub API on local computer and returns relay connected to USB port
-	private void setRelays(String name)
+	/**
+	 * @return the actuatorAddress
+	 */
+	public String getActuatorAddress()
 	{
-		System.out.println("Setting relay address to: " + name);
-
-		try
-		{
-			YAPI.RegisterHub("127.0.0.1");
-			//finds & returns relay with specified address if connected to USB port
-			relay1 = YRelay.FindRelay(name);
-		}
-		catch(YAPI_Exception e)
-		{
-			System.out.println("cannot contact virtual hub");
-		}
+		return relayAddress;
 	}
 
-	private void turnLightON()
+	/**
+	 * @return the job
+	 */
+	public ActuatorJob getJob()
 	{
-		try
-		{
-			System.out.println("is Online: " + relay1.isOnline());
-			//turns lights connected to relay1 ON by setting its state to 1
-			relay1.set_state(1);
-		}
-		catch(YAPI_Exception e)
-		{
-			System.out.println("Can't turn light ON");
-		}
+		return job;
 	}
 
-	private void turnLightOFF()
+	/**
+	 * @param job the job to set
+	 */
+	public void setJob(ActuatorJob job)
 	{
+		System.out.println("JOB SET: " + job);
+		this.job = job;
+	}
+
+	void turnRelayOn() //turns lights connected to relay1 ON by setting its state to 1
+	{
+			try {
+//				System.out.println("RESULT: " + relay1.get_state());
+				relay1.set_state(1);
+			} catch (YAPI_Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println("Can't turn light ON");
+				System.out.println(relay1);
+				e.printStackTrace();
+			}
+	}
+
+	void turnRelayOff() //turns lights connected to relay1 OFF by setting its state to 0
+	{
+		//turns lights connected to relay1 OFF by setting its state to 0
 		try
 		{
-			System.out.println("is Online: " + relay1.isOnline());
-			//turns lights connected to relay1 OFF by setting its state to 0
+//			System.out.println("RESULT: " + relay1.get_state());
 			relay1.set_state(0);
 		}
 		catch(YAPI_Exception e)
 		{
 			System.out.println("Can't turn light OFF");
+			System.out.println(relay1);
+			e.printStackTrace();
 		}
 	}
 }
