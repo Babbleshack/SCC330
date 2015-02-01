@@ -703,7 +703,8 @@ public class QueryManager implements IQueryManager
          + "ON Object.id = Job.object_id "
          + "LEFT JOIN Spot "
          + "ON Spot.id = Object.spot_id "
-         + "WHERE Spot.spot_address = ? ";
+         + "WHERE Spot.spot_address = ? "
+         + "AND Job.tracking = 1 ";
 
         try {
             /**
