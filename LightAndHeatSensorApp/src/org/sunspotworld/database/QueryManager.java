@@ -760,6 +760,7 @@ public class QueryManager implements IQueryManager
             insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
             insert.setTimestamp(4, new Timestamp(time));
             insert.executeUpdate();
+            this.updateSpotUpdatedAtTime(spot_address);
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createSwitchRecord: " + e);
@@ -786,6 +787,7 @@ public class QueryManager implements IQueryManager
                 insert.setInt(3, job_id);
                 insert.setTimestamp(4, new Timestamp(time));
                 insert.executeUpdate();
+                this.updateSpotUpdatedAtTime(spot_address);
             } else {
                 System.out.println("No job_id for this zone change reading!");
             }
@@ -817,6 +819,7 @@ public class QueryManager implements IQueryManager
                 insert.setInt(4, job_id);
                 insert.setTimestamp(5, new Timestamp(time));
                 insert.executeUpdate();
+                this.updateSpotUpdatedAtTime(spot_address);
             } else {
                 System.out.println("No job_id for this motion reading!");
             }
@@ -847,6 +850,7 @@ public class QueryManager implements IQueryManager
                 insert.setInt(4, job_id);
                 insert.setTimestamp(5, new Timestamp(time));
                 insert.executeUpdate();
+                this.updateSpotUpdatedAtTime(spot_address);
             } else {
                 System.out.println("No job_id for this light reading!");
             }
@@ -878,6 +882,7 @@ public class QueryManager implements IQueryManager
                 insert.setInt(4, job_id);
                 insert.setTimestamp(5, new Timestamp(time));
                 insert.executeUpdate();
+                this.updateSpotUpdatedAtTime(spot_address);
             } else {
                 System.out.println("No job_id for this heat reading!");
             }
@@ -907,6 +912,7 @@ public class QueryManager implements IQueryManager
                 insert.setInt(4, job_id);
                 insert.setTimestamp(5, new Timestamp(time));
                 insert.executeUpdate();
+                this.updateSpotUpdatedAtTime(spot_address);
             } else {
                 System.out.println("No job_id for this acceleration reading!");
             }
@@ -937,6 +943,7 @@ public class QueryManager implements IQueryManager
                 insert.setInt(4, job_id);
                 insert.setTimestamp(5, new Timestamp(time));
                 insert.executeUpdate();
+                this.updateSpotUpdatedAtTime(spot_address);
             } else {
                 System.out.println("No job_id for this water reading!");
             }
@@ -1130,6 +1137,23 @@ public class QueryManager implements IQueryManager
             putBattery.setInt(1, powerLevelPercentage);
             putBattery.setString(2, spotAddress);
             putBattery.executeUpdate();
+            this.updateSpotUpdatedAtTime(spotAddress);
+        }catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateSpotUpdatedAtTime(String spotAddress)
+    {
+        String setSpotUpdatedAt = "UPDATE Spot SET updated_at = ? "
+                + "where spot_address = ?";
+        try{
+            PreparedStatement update;
+            update =
+                    connection.getConnection().prepareStatement(setSpotUpdatedAt);
+            update.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            update.setString(2, spotAddress); 
+            update.executeUpdate();
         }catch (Exception e) {
             System.out.println(e);
         }
