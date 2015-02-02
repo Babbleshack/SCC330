@@ -13,11 +13,8 @@ import org.sunspotworld.threads.TReceivingAccel;
 import org.sunspotworld.threads.TReceivingLight;
 import org.sunspotworld.threads.TZoneController;
 import com.sun.spot.peripheral.ota.OTACommandServer;
-import org.sunspotworld.actuator.ActuatorDiscovery;
 import org.sunspotworld.threads.TReceivingBattery;
 import org.sunspotworld.threads.TReceivingWater;
-import org.sunspotworld.actuator.Actuator;
-import org.sunspotworld.actuator.ActuatorJob;
 
 import org.sunspotworld.database.QueryManager;
 
@@ -32,7 +29,7 @@ public class SunSpotHostApplication implements Runnable
      */
     private Thread discoveryThread, switchThread, 
             heatThread, lightThread, accelThread, 
-            zoneThread, waterThread, batteryMonitor, actuatorFinder = null;
+            zoneThread, waterThread, batteryMonitor = null;
     
     private QueryManager qm  = null; 
 
@@ -59,7 +56,6 @@ public class SunSpotHostApplication implements Runnable
         zoneThread = new Thread(new TZoneController(), "zoneControllerService");
         waterThread = new Thread(new TReceivingWater(), "waterLevelService");
         batteryMonitor = new Thread(new TReceivingBattery(), "BatteryMonitorService");
-        actuatorFinder = new Thread(new ActuatorDiscovery(), "actuatorService");
         //set Daemons
         discoveryThread.setDaemon(true);
         switchThread.setDaemon(true);
@@ -69,7 +65,6 @@ public class SunSpotHostApplication implements Runnable
         zoneThread.setDaemon(true);
         waterThread.setDaemon(true);
         batteryMonitor.setDaemon(true);
-        actuatorFinder.setDaemon(true);
         //start threads
         discoveryThread.start();
         switchThread.start();
@@ -79,7 +74,6 @@ public class SunSpotHostApplication implements Runnable
         zoneThread.start();
         waterThread.start();
         batteryMonitor.start();
-        actuatorFinder.start();   
     }
 
     public void run()

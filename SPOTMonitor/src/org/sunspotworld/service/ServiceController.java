@@ -77,7 +77,7 @@ public class ServiceController {
             hasBeenFound = false;
             service = (IService)this._services.get(Integer.valueOf(e.nextElement().toString()));
             for(i = 0;i<serviceIDs.length;i++) {
-                //if e is not found.
+                //if enumerated Service ID is not found.
                 if(service.getServiceId() == serviceIDs[i]){
                     hasBeenFound = true;
                     if(service.isScheduled()) {
@@ -85,10 +85,13 @@ public class ServiceController {
                     } else {
                         service.setData(data[i]);
                         service.startService();
+                        System.out.println("Service " +  service.getServiceId() + "Started");
+                        
                     }
                 }
             }
             if(!hasBeenFound && service.isScheduled()) {
+                System.out.println("Service " + service.getServiceId() + "Stopped");
                 service.stopService();
             }
         }
