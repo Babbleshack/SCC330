@@ -17,7 +17,7 @@ import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.SunspotPort;
 
 
-public class ZoneProcessorService implements IService, Runnable {
+public class ZoneProcessorService extends Thread implements IService {
 
     private Thread tReceiver;
     private ISendingRadio sRadio;
@@ -46,7 +46,6 @@ public class ZoneProcessorService implements IService, Runnable {
         Resources.lookup(ITriColorLEDArray.class );
         
         this.serviceID = serviceID;
-        this.run();
     }
     public void run(){
        findAnyTower(); //find a tower
@@ -112,7 +111,13 @@ public class ZoneProcessorService implements IService, Runnable {
         this.running = true;
         leds.setRGB(0, 255, 0);
         leds.setOn();
-        this.run();
+        if(this.isAlive())
+        {
+            System.out.println("zone processor already started......");
+            return;
+        }
+        this.start();
+        System.out.println("Zone Proccessor Started");
     }
     public void setData(int data) {
     }  
@@ -120,6 +125,8 @@ public class ZoneProcessorService implements IService, Runnable {
     public void stopService() {
         this.running = false;
         leds.setOff();
+        Thread.yield();
+        System.out.println("------------STOPPING ZONE PROCESSOR-------------");
     }
 
     public boolean isScheduled() {

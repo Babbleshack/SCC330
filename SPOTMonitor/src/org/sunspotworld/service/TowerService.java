@@ -41,7 +41,6 @@ public class TowerService extends Task implements IService {
          gen = new Random();
          leds = (ITriColorLEDArray)Resources.lookup(ITriColorLEDArray.class );
          leds.setRGB(0, 0, 255);
-         leds.setOn();
          led = leds.getLED(7);
          led.setRGB(255, 0, 0);
          System.out.println("STARTING TOWER");
@@ -54,11 +53,15 @@ public class TowerService extends Task implements IService {
         this.setScheduledTime(wait);
     }
     public void startService() {
+        this.leds.setOn();
         this.start();
+        System.out.println("Tower Service Started");
     }
 
     public void stopService() {
+        this.leds.setOff();
         this.stop();
+        System.out.println("Tower Service Stopped");
     }
 
     public boolean isScheduled() {
