@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import com.yoctopuce.YoctoAPI.YAPI;
 import com.yoctopuce.YoctoAPI.YAPI_Exception;
 import com.yoctopuce.YoctoAPI.YModule;
 import com.yoctopuce.YoctoAPI.YRelay;
@@ -115,22 +116,32 @@ public class ActuatorController {
 		 * FIRST FIND THE MODULE NAME AND ADD .relay1
 		 *
 		 */
+		try {
+			YAPI.UpdateDeviceList();
+		} catch (YAPI_Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		YModule module = YModule.FirstModule(); //get first module
 		if(module == null) //catch non existent modules
 		{
 			System.err.println("NO MODULES FOUND");
 			return null; //no modules return null
 		}
+		
 		HashMap<String, Actuator> actuators = new HashMap<String, Actuator>();
 		YRelay relay;
 		String relayAddress;
 		while(module != null)
 		{
+			System.out.println("module: " + module);
 			try
 			{
 				if(module.get_productName().toLowerCase().contains("hub"))
 				{
+					System.out.println("contains hub!");
 					module = module.nextModule();
+					System.out.println("next module: " + module);
 					continue;
 				}
 				relayAddress = module.getSerialNumber() + ".relay1"; //get relay1
