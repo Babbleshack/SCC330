@@ -15,6 +15,8 @@ import org.sunspotworld.homeCollections.ArrayList;
 import org.sunspotworld.valueObjects.LightData;
 import org.sunspotworld.valueObjects.ThermoData;
 import org.sunspotworld.valueObjects.AccelData;
+import org.sunspotworld.actuator.Actuator;
+import org.sunspotworld.actuator.ActuatorJob;
 
 
 public class QueryManager implements IQueryManager
@@ -144,7 +146,38 @@ public class QueryManager implements IQueryManager
         }
     }
 
- 
+    public Actuator getActuator(String actuator_address) {
+        String getActuator = "SELECT * " 
+                + " FROM Actuator"
+                + " WHERE Actuator.actuator_address LIKE ? ";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getActuator);
+            record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return new Actuator(result.getString("Actuator.actuator_address"), this.getActuatorJob(actuator_address));
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getActuator: " + e);
+                return null;
+        }
+    }
     
     public int isActuatorOn(String actuator_address)
     {
@@ -220,6 +253,40 @@ public class QueryManager implements IQueryManager
     }
     
 
+    public ActuatorJob getActuatorJob(String actuator_address) {
+        String getActuator = "SELECT * " 
+                + " FROM actuator_job, Actuator"
+                + " WHERE actuator_job.actuator_id = Actuator.id "
+                + " AND Actuator.actuator_address LIKE ? "
+                + " LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getActuator);
+            record.setString(1, "%" + actuator_address.replace(".relay1", "") + "%");
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return new ActuatorJob(result.getInt("actuator_job.job_id"), result.getString("actuator_job.direction"), result.getDouble("actuator_job.threshold"));
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getActuator: " + e);
+                return null;
+        }
+    }
 
     public double getLatestReadingFromJobId(int job_id) {
         String reading_table = this.getReadingTableFromJobId(job_id); 
