@@ -29,7 +29,7 @@ public class SendingRadio implements ISendingRadio
         try {
             radioConn = (RadiogramConnection) Connector.open("radiogram://broadcast:" + port.getPort());
             System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
-            datagram = radioConn.newDatagram(50);
+            datagram = radioConn.newDatagram(radioConn.getMaximumLength());
         } catch (IOException ex) {
             ex.printStackTrace();
         }

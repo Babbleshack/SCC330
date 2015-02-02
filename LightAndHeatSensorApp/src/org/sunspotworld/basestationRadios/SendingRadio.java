@@ -31,7 +31,7 @@ public class SendingRadio implements ISendingRadio
     {
         radioConn = (RadiogramConnection) Connector.open("radiogram://broadcast:" + port.getPort());
 		System.out.println("Sending Radio created for " + spotAddress + " on port " + port.getPort()); 
-        datagram = radioConn.newDatagram(50); 
+        datagram = radioConn.newDatagram(radioConn.getMaximumLength()); 
     }
 
     public void sendDiscoverReponse(String spot_address, ArrayList portsThresholds) 

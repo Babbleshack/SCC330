@@ -6,6 +6,8 @@
 
 package org.sunspotworld;
 
+import com.sun.spot.peripheral.ISleepManager;
+import com.sun.spot.peripheral.Spot;
 import org.sunspotworld.threads.TDiscoverMe;
 import org.sunspotworld.threads.TDemandSwitch;
 import org.sunspotworld.spotRadios.RadiosFactory;
@@ -72,9 +74,11 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
         }
         discoverMeThread = new Thread(new TDiscoverMe(),"discoverMeService");
         discoverMeThread.start();
-
+        
         switchThread = new Thread(new TDemandSwitch(MOCK_HEAT_THRESHOLD),"switchService");
         switchThread.start();
+        //disable deep sleep.
+        this._disableDeepSleep();
     }
     public Hashtable prepareServices() 
     {
@@ -166,7 +170,15 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
           }
         }
     }
-
+    /**
+     * disable deep sleep functionality.
+     */
+    private void _disableDeepSleep()
+    {
+        ISleepManager sleepManager = Spot.getInstance().getSleepManager();
+        sleepManager.disableDeepSleep();
+        System.out.println("deep sleep in enabled?: " + sleepManager.isDeepSleepEnabled());
+    }
     /**
      * Starts polling threads
      * @throws MIDletStateChangeException [description]
