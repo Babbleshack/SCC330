@@ -1,7 +1,7 @@
 /*
  * Defines a 'Command' style operator class.
  */
-package conditionprocessor.operators;
+package org.conditionprocessor.operators;
 
 /**
  *
