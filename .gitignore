@@ -1,0 +1,25 @@
+ass
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+#Mac Crap
+.DS_Store
+
+# Add MySQLConnectionManager to .gitignore as we all have custom connection configs
+# LightAndHeatSensorApp/src/org/sunspotworld/DB/MySQLConnectionManager.java
+
+LightAndHeatSensorApp/build
+LightAndHeatSensorApp/j2meclasses
+LightAndHeatSensorApp/suite
+SPOTMonitor/build
+SPOTMonitor/j2meclasses
+SPOTMonitor/suite
