@@ -22,7 +22,7 @@ public class CondtionProcessor extends Thread {
     public void Run(){
         ActuatorCondition actCond = null;
         Result res = null;
-        while(true){
+        while(true/*add a stopping flag*/){
             try {
                 //take item of queue, blocking if its empty.
                 actCond = (ActuatorCondition) sharedQueue.take();
@@ -33,11 +33,35 @@ public class CondtionProcessor extends Thread {
                 if(actCond == null)
                     continue;
             }
-            actCond.getOp().operate(
+            //create a new result object with the result of the 
+            //actuator condition
+            res = new Result(
+                    actCond.getOp().operate(
                         qm.checkActuatorJob(actCond.getActJob1()),
                         qm.checkActuatorJob(actCond.getActJob1())
-                    );
+                    )
+            );
+            //go through 'next' conditions.
+            while(actCond.getNext_op() != null)
+            {
+                actCond = qm.getNextCondition(actCond.getCondID());
+                //reaval result with result of new condition 'Operator' 
+                //old condition result. i.e. res OR new cond
+                res.setResult(actCond.getNext_op().operate(
+                        res.getResult(), actCond.getOp().operate(
+                        qm.checkActuatorJob(actCond.getActJob1()),
+                        qm.checkActuatorJob(actCond.getActJob1())
+                    )));
+            }
+            //eval last cond ----REPEATED CODE SHOOULD BE REFACTORED-----
+            actCond = qm.getNextCondition(actCond.getCondID());
+            //reaval result with result of new condition 'Operator' 
+            //old condition result. i.e. res OR new cond
+            res.setResult(actCond.getNext_op().operate(
+                    res.getResult(), actCond.getOp().operate(
+                    qm.checkActuatorJob(actCond.getActJob1()),
+                    qm.checkActuatorJob(actCond.getActJob1())
+                )));
         }
     }
-    
 }
