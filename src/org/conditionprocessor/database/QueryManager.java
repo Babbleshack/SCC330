@@ -11,6 +11,6 @@ public class QueryManager {
     {
         connection = DatabaseConnectionFactory.createMySQLConnection();
     }
-    
+    public boolean checkActuatorJob(int actuatorJobID){return true;}
     
 }
