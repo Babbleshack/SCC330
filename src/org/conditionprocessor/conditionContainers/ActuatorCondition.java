@@ -30,5 +30,47 @@ public class ActuatorCondition {
             this.op = operation;
             this.next_op = next_operation;
     }
+
+    /**
+     * @return the condition ID
+     */
+    public int getCondID() {
+        return condID;
+    }
+
+    /**
+     * @return the actuator ID
+     */
+    public int getActID() {
+        return actID;
+    }
+
+    /**
+     * @return the actuator Job 1
+     */
+    public int getActJob1() {
+        return actJob1;
+    }
+
+    /**
+     * @return the actuator Job 2
+     */
+    public int getActJob2() {
+        return actJob2;
+    }
+
+    /**
+     * @return the operation for this condition
+     */
+    public Operator getOp() {
+        return op;
+    }
+
+    /**
+     * @return the next_operation
+     */
+    public Operator getNext_op() {
+        return next_op;
+    }
    
 }
