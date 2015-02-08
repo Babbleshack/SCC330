@@ -24,7 +24,7 @@ public class ConditionManager {
         ExecutorService producer = Executors.newFixedThreadPool(THREAD_COUNT);
         ExecutorService consumer = Executors.newFixedThreadPool(THREAD_COUNT);
         BlockingQueue<ActuatorCondition> conditionQueue =
-                new SynchronousQueue<>();
+                new SynchronousQueue();
         QueryManager qm = new QueryManager();
         producer.submit(new ConditionProducer(conditionQueue, qm));
         consumer.submit(new ConditionProcessor(conditionQueue, qm));
