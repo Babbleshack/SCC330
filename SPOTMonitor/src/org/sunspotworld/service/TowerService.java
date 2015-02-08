@@ -28,6 +28,7 @@ public class TowerService extends Task implements IService {
     private int _serviceId;
     public TowerService(int serviceID) 
     {
+        super(SAMPLE_RATE);
         this._serviceId = serviceID;
          try
         {
@@ -40,17 +41,15 @@ public class TowerService extends Task implements IService {
         }
          gen = new Random();
          leds = (ITriColorLEDArray)Resources.lookup(ITriColorLEDArray.class );
-         leds.setRGB(0, 0, 255);
+         leds.setRGB(0, 0, 10);
          led = leds.getLED(7);
-         led.setRGB(255, 0, 0);
+         led.setRGB(127, 0, 0);
          System.out.println("STARTING TOWER");
     }
     public void doTask() {
         led.setOn();
         radio.ping();
         led.setOff();
-        long wait = (SECOND / (gen.nextInt(10) + 1));
-        this.setScheduledTime(wait);
     }
     public void startService() {
         this.leds.setOn();

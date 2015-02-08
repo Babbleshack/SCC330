@@ -109,7 +109,7 @@ public class ZoneProcessorService extends Thread implements IService {
     }
     public void startService() {
         this.running = true;
-        leds.setRGB(0, 255, 0);
+        leds.setRGB(0, 127, 0);
         leds.setOn();
         if(this.isAlive())
         {
