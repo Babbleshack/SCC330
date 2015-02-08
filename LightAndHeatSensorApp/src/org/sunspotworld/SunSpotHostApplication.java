@@ -17,6 +17,7 @@ import org.sunspotworld.threads.TReceivingBattery;
 import org.sunspotworld.threads.TReceivingWater;
 
 import org.sunspotworld.database.QueryManager;
+import org.sunspotworld.threads.TReceivingBearing;
 
 /**
  * Host application that polls for temperature and
@@ -29,7 +30,8 @@ public class SunSpotHostApplication implements Runnable
      */
     private Thread discoveryThread, switchThread, 
             heatThread, lightThread, accelThread, 
-            zoneThread, waterThread, batteryMonitor = null;
+            zoneThread, waterThread, batteryMonitor,
+            barrometerThread = null;
     
     private QueryManager qm  = null; 
 
@@ -56,6 +58,8 @@ public class SunSpotHostApplication implements Runnable
         zoneThread = new Thread(new TZoneController(), "zoneControllerService");
         waterThread = new Thread(new TReceivingWater(), "waterLevelService");
         batteryMonitor = new Thread(new TReceivingBattery(), "BatteryMonitorService");
+        barrometerThread = new Thread(new TReceivingBearing(), "BearingService");
+        
         //set Daemons
         discoveryThread.setDaemon(true);
         switchThread.setDaemon(true);
@@ -65,6 +69,7 @@ public class SunSpotHostApplication implements Runnable
         zoneThread.setDaemon(true);
         waterThread.setDaemon(true);
         batteryMonitor.setDaemon(true);
+        barrometerThread.setDaemon(true);
         //start threads
         discoveryThread.start();
         switchThread.start();
@@ -74,6 +79,7 @@ public class SunSpotHostApplication implements Runnable
         zoneThread.start();
         waterThread.start();
         batteryMonitor.start();
+        barrometerThread.start();
     }
 
     public void run()
