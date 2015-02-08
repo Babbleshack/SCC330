@@ -2,7 +2,7 @@
  * 'Or' Command class
  * @author Dominic Lindsay
  */
-package org.conditionprocessor.operators;
+package org.conditionManager.operators;
 
 public class Or implements Operator {
     public Or(){}

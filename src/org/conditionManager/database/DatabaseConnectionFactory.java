@@ -2,7 +2,7 @@
  * Factory for creating Database Connections
  * Dominic Lindsay
  */
-package org.conditionprocessor.database;
+package org.conditionManager.database;
 
 
 /**

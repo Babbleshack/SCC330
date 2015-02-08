@@ -2,9 +2,9 @@
  * encapsulates boolean results from condition processing.
  * @author Dominic Lindsay
  */
-package org.conditionProcessor.conditionContainers;
+package org.conditionManager.conditionContainers;
 
-import org.conditionprocessor.operators.Operator;
+import org.conditionManager.operators.Operator;
 
 public class Result {
     private boolean result;

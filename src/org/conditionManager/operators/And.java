@@ -2,7 +2,7 @@
  * And operation command.
  * @author Dominic Lindsay
  */
-package org.conditionprocessor.operators;
+package org.conditionManager.operators;
 public class And implements Operator {
     public And(){};
     @Override
