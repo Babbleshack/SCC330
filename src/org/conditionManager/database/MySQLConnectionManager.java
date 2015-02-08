@@ -2,7 +2,7 @@
  * JDBC connection handler for MySQL
  * Dominic Lindsay
  */
-package org.conditionprocessor.database;
+package org.conditionManager.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

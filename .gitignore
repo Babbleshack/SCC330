@@ -24,3 +24,4 @@ SPOTMonitor/build
 SPOTMonitor/j2meclasses
 SPOTMonitor/suite
 /build/
+/nbproject/private/

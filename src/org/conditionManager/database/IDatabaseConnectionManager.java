@@ -2,7 +2,7 @@
  * Defines a database connection interface
  * Dominic Lindsay
  */
-package org.conditionprocessor.database;
+package org.conditionManager.database;
 
 import java.sql.Connection;
 
