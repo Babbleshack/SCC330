@@ -18,8 +18,8 @@ public interface IService {
     public static final int PING            = 150;
     public static final int TOWER_RECIEVER = 160;
     public static final int BASE_TOWER     = 170;
-    public static final int BAROMETER_THRESH = 180;
-    public static final int BAROMETER_SAMPLE = 185;
+    public static final int BAROMETER_THRESH = 200;
+    public static final int BAROMETER_SAMPLE = 205;
     void startService();
     void stopService();
     boolean isScheduled();
