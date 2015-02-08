@@ -155,8 +155,114 @@ public class QueryManager {
                 return null;
         }
     }
-    
-    public ArrayList<Integer> getActuatorIds(){return null;}
-    public void setRelayOn(int relayId){/**should check if relay is already on do nothing*/};
-    public void setRelayOff(int relayId){/**same as above only turning relay off*/};
+
+    public ArrayList<Integer> getActuatorIds()
+    {
+        String getActuatorIds = "SELECT * " 
+                + " FROM Actuator";
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(getActuatorIds);
+
+            /**
+             * Return result
+             */
+            ArrayList output_array = new ArrayList<Integer>();
+
+            while (result.next()) {
+                output_array.add((Object)Integer.valueOf(result.getInt('id')));
+            }
+
+            return output_array;
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getActuatorIds: " + e);
+                return null;
+        }
+    }
+
+    /**
+     * Checks if actuator is on, if it isn't set it to on
+     * @param actuator_id actuator id
+     */
+    public void setRelayOn(int actuator_id){
+        if(!this.isActuatorOn(actuator_id)) 
+            this.setRelayStatus(actuator_id, 1);
+    }
+
+    /**
+     * Checks if actuator is on, if it is set it to off
+     * @param actuator_id actuator id
+     */
+    public void setRelayOff(int actuator_id){
+        if(this.isActuatorOn(actuator_id)) 
+            this.setRelayStatus(actuator_id, 0);
+    }
+
+    /**
+     * Sets relay status
+     * @param actuator_id   actuator id to change
+     * @param status        status to change to
+     *                      1 = on
+     *                      0 = off
+     */
+    private void setRelayStatus(int actuator_id, int status)
+    {
+        String setRelayOn = "UPDATE Actuator SET is_on = ? "
+                + "WHERE id = ?";
+        try {
+            PreparedStatement putBattery;
+            putBattery =
+                    connection.getConnection().prepareStatement(setRelayOn);
+            putBattery.setint(1, status);
+            putBattery.setInt(2, actuator_id);
+            putBattery.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * Returns if actuator is currently on or not
+     * @param  actuator_id  Actuator to check
+     * @return       int    1 if actuator is on, 0 if actuator is off   
+     */
+    public int isActuatorOn(String actuator_id)
+    {
+        String isActuatorOn = "SELECT * FROM Actuator WHERE id = ?";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record =
+                connection.getConnection().prepareStatement(isActuatorOn);
+            record.setInt(1, actuator_id);
+
+            /**
+             * Access ResultSet for actuator_address
+             */
+            ResultSet result = record.executeQuery();
+
+            /**
+             * Return result
+             */
+            if(result.next()) {
+                if(result.getInt("is_on") == 1)
+                    return 1;
+                else
+                    return 0;
+            } else {
+                return 0;
+            }
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "isActuatorOn: " + e);
+                return 0;
+        }
+    }
 }
