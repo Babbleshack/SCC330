@@ -965,7 +965,7 @@ public class QueryManager implements IQueryManager
     }
 
     public void createBarometerRecord(double bearing, String spot_address, long time) {
-        String insertBearingRecord = "INSERT INTO Bearing"
+        String insertBearingRecord = "INSERT INTO Bearings"
                 + "(bearing, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
