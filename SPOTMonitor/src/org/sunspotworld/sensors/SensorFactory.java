@@ -19,4 +19,8 @@ public class SensorFactory
     {
         return new ThermoSensor();
     }
+    public static ISensor createBearingSensor()
+    {
+        return new BearingSensor();
+    }
 }
