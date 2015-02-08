@@ -14,15 +14,6 @@ public class QueryManager {
     {
         connection = DatabaseConnectionFactory.createMySQLConnection();
     }
-   /**
-     * Check if a given actuator job id meets its job thresholds
-     * @param  actuator_job_id  id of actuator job to check
-     * @return boolean          true or false                 
-     */
-    public boolean checkActuatorJob(int actuator_job_id)
-    {
-        return false; 
-    }
 
     /**
      * Return an operator, given a string for an operator
@@ -263,6 +254,283 @@ public class QueryManager {
                 System.err.println("SQL Exception while preparing/Executing "
                 + "isActuatorOn: " + e);
                 return 0;
+        }
+    }
+
+    /**
+     * Check if a given actuator job id meets its job thresholds
+     * @param  actuator_job_id  id of actuator job to check
+     * @return boolean          true or false                 
+     */
+    public boolean checkActuatorJob(int actuator_job_id)
+    {
+        int job_id = this.getJobIdFromActuatorJobId(actuator_job_id); 
+
+        // If job id found
+        if(job_id >= 0) {
+
+            double latest_reading = this.getLatestReadingFromJobId(job_id); 
+
+            if(latest_reading >= 0) {
+
+                String direction = this.getDirectionFromActuatorJobId(actuator_job_id); 
+                double threshold = this.getThresholdFromActuatorJobId(actuator_job_id); 
+
+                if(direction.equals("ABOVE")) {
+                    if(latest_reading > threshold) return true; 
+                } else if(direction.equals("BELOW")) {
+                    if(latest_reading < threshold) return true; 
+                }
+
+            } else {
+
+                System.out.println("checkActuatorJob() - Could not find latest reading for job id " + job_id);
+            
+            }
+
+        } else {
+
+            System.out.println("checkActuatorJob() - Could not find job id " + job_id);
+            
+        }
+
+        return false; 
+    }
+
+    private int getJobIdFromActuatorJobId(int actuator_job_id) 
+    {
+        try
+        {
+            String getThresholdFromActuatorJobId = "SELECT * "
+                    + " FROM actuator_job"
+                    + " WHERE id = ? "
+                    + " LIMIT 1";
+
+            /**
+             * Execute select query
+             */
+            PreparedStatement record = con.prepareStatement(getThresholdFromActuatorJobId);
+            record.setInt(1, actuator_job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next())
+            {
+                /**
+                 * Return result
+                 */
+                return result.getInt("actuator_job.job_id");
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+        catch (SQLException e)
+        {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getThresholdFromActuatorJobId: " + e);
+                return -1;
+        }
+    }
+
+    private double getThresholdFromActuatorJobId(int actuator_job_id)
+    {
+        try
+        {
+            String getThresholdFromActuatorJobId = "SELECT * "
+                    + " FROM actuator_job"
+                    + " WHERE id = ? "
+                    + " LIMIT 1";
+
+            /**
+             * Execute select query
+             */
+            PreparedStatement record = con.prepareStatement(getThresholdFromActuatorJobId);
+            record.setInt(1, actuator_job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next())
+            {
+                /**
+                 * Return result
+                 */
+                return result.getDouble("actuator_job.threshold");
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+        catch (SQLException e)
+        {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getThresholdFromActuatorJobId: " + e);
+                return -1;
+        }
+    }
+
+    private String getDirectionFromActuatorJobId(int actuator_job_id)
+    {
+        try
+        {
+            String getDirectionFromActuatorJobId = "SELECT * "
+                    + " FROM actuator_job"
+                    + " WHERE id = ? "
+                    + " LIMIT 1";
+
+            /**
+             * Execute select query
+             */
+            PreparedStatement record = con.prepareStatement(getDirectionFromActuatorJobId);
+            record.setInt(1, actuator_job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next())
+            {
+                /**
+                 * Return result
+                 */
+                return result.getString("actuator_job.direction");
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
+        catch (SQLException e)
+        {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getDirectionFromActuatorJobId: " + e);
+                return -1;
+        }
+    }
+
+    /**
+     * Get latest reading for a job, given a job id
+     * @param  job_id job id
+     * @return        [description]
+     */
+    private double getLatestReadingFromJobId(int job_id)
+    {
+        String reading_table = this.getReadingTableFromJobId(job_id);
+        String reading_field = this.getReadingFieldFromJobId(job_id);
+
+        if(reading_table == null || reading_field == null) return -1;
+
+        String getReading = "SELECT * "
+                + " FROM " + reading_table
+                + " WHERE job_id = ? "
+                + " ORDER BY id DESC "
+                + " LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record = con.prepareStatement(getReading);
+            record.setInt(1, job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next())
+            {
+                /**
+                 * Return result
+                 */
+                return result.getDouble(reading_table + "." + reading_field);
+            }
+            else
+            {
+                return -1;
+            }
+
+        } catch (SQLException e)
+        {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getReading: " + e);
+                return -1;
+        }
+    }
+
+    private String getReadingTableFromJobId(int job_id) {
+        String getReadingTableFromJobId = "SELECT * "
+                + " FROM Job, Sensor"
+                + " WHERE Sensor.id = Job.sensor_id "
+                + " AND Job.id = ? "
+                + " LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record = con.prepareStatement(getReadingTableFromJobId);
+            record.setInt(1, job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return result.getString("Sensor.table");
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getReadingTableFromJobId: " + e);
+                return null;
+        }
+    }
+
+    private String getReadingFieldFromJobId(int job_id) {
+        String getReadingTableFromJobId = "SELECT * "
+                + " FROM Job, Sensor"
+                + " WHERE Sensor.id = Job.sensor_id "
+                + " AND Job.id = ? "
+                + " LIMIT 1";
+
+        try {
+            /**
+             * Execute select query
+             */
+            PreparedStatement record = con.prepareStatement(getReadingTableFromJobId);
+            record.setInt(1, job_id);
+
+            /**
+             * Access ResultSet for zone_id
+             */
+            ResultSet result = record.executeQuery();
+            if(result.next()) {
+                /**
+                 * Return result
+                 */
+                return result.getString("Sensor.field");
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing "
+                + "getReadingTableFromJobId: " + e);
+                return null;
         }
     }
 }
