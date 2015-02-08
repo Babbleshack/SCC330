@@ -963,4 +963,29 @@ public class QueryManager implements IQueryManager
         past.add(Calendar.WEEK_OF_YEAR, noOfWeeks);
         return new Timestamp(past.getTimeInMillis());
     }
+
+    public void createBarometerRecord(double bearing, String spot_address, long time) {
+        String insertBearingRecord = "INSERT INTO Bearing"
+                + "(bearing, spot_address, zone_id, job_id, created_at)"
+                + ("VALUES (?,?,?,?,?)");
+        try {
+            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "heat_temperature");
+            if(job_id > 0) {
+               PreparedStatement insert =
+                    connection.getConnection().prepareStatement(insertBearingRecord);
+                insert.setDouble(1, bearing);
+                insert.setString(2, spot_address);
+                insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+                insert.setInt(4, job_id);
+                insert.setTimestamp(5, new Timestamp(time));
+                insert.executeUpdate();
+                this.updateSpotUpdatedAtTime(spot_address);
+            } else {
+                System.out.println("No job_id for this heat reading!");
+            }
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "createThermoRecord: " + e);
+        }
+    }
 }
