@@ -14,6 +14,7 @@ public class ConditionProcessor implements Runnable {
     private final QueryManager _qm;
     private Result _res;
     private BlockingQueue _sharedQueue;
+    private static final int FAKE_RELAY = -1;
     public ConditionProcessor(BlockingQueue sharedBlockingQueue,
             final QueryManager queryManager ) {
         this._qm = queryManager;
@@ -22,6 +23,7 @@ public class ConditionProcessor implements Runnable {
     public void run(){
         ActuatorCondition actCond = null;
         _res = null;
+        int relayId;
         while(true/*add a stopping flag*/){
             try {
                 //take item of queue, blocking if its empty.
@@ -33,6 +35,8 @@ public class ConditionProcessor implements Runnable {
                 if(actCond == null)
                     continue;
             }
+            //grab relay id
+            relayId = actCond.getActID();
             //create a new result object with the result of the 
             //actuator condition
             _res = new Result(
@@ -64,9 +68,10 @@ public class ConditionProcessor implements Runnable {
                 )));
             //take action on sensors
             if(_res.getResult())
-                System.out.println("TURN RELAY ON");
+                _qm.setRelayOn(relayId);
             else 
-                System.out.println("TURN RELAY OFF");
+                _qm.setRelayOff(relayId);
+            relayId = FAKE_RELAY;
         }
     }
 }

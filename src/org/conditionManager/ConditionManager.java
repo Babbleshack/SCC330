@@ -14,14 +14,15 @@ import org.conditionManager.producers.ConditionProducer;
  * @author Dominic Lindsay
  */
 public class ConditionManager {
+    private static final int THREAD_COUNT = 1;
     /**
      * create and starts consumer and producer threads, sharing a blocking queue
      * and query manager
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ExecutorService producer = Executors.newFixedThreadPool(1);
-        ExecutorService consumer = Executors.newFixedThreadPool(1);
+        ExecutorService producer = Executors.newFixedThreadPool(THREAD_COUNT);
+        ExecutorService consumer = Executors.newFixedThreadPool(THREAD_COUNT);
         BlockingQueue<ActuatorCondition> conditionQueue =
                 new SynchronousQueue<>();
         QueryManager qm = new QueryManager();
