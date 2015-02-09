@@ -37,19 +37,20 @@ public class ZoneProcessorService extends Thread implements IService {
         try
         {
             sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.BASE_TOWER_PORT));
-            rRadio = RadiosFactory.createReceivingRadio(new SunspotPort(SunspotPort.TOWER_RECIEVER_PORT));
+            rRadio = RadiosFactory.createReceivingRadio(new SunspotPort(SunspotPort.PING_PORT));
         } catch (Exception e) {
             System.err.println("error creating Roaming radios " + e);
         }   
         zpd = zpd;
         leds = (ITriColorLEDArray)
-        Resources.lookup(ITriColorLEDArray.class );
-        
+            Resources.lookup(ITriColorLEDArray.class );
+        toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
         this.serviceID = serviceID;
     }
     public void run(){
-       findAnyTower(); //find a tower
-
+        System.out.println("Running Roaming");
+        this.findAnyTower(); //find a tower
+        System.out.println("FOUND CLOSET TOWER");
         int count = 0; 
         String countTower = null;
         while(running)
@@ -91,10 +92,7 @@ public class ZoneProcessorService extends Thread implements IService {
                 
                 // New closest tower
                 closestTower = tSpot; 
-
                 sRadio.sendTowerAddress(closestTower.getAddress());
-
-                long wait = (SECOND / (rGen.nextInt(5) + 1));
             }
         }
     }
@@ -103,6 +101,7 @@ public class ZoneProcessorService extends Thread implements IService {
     * init to any tower that pings.
     */
     private void findAnyTower(){
+        System.out.println("WAITING FOR A PING FROM ANY TOWER");
         this.closestTower = rRadio.receivePing();
         System.out.println("Initial tower: [" + 
                 closestTower.getAddress() + "]");

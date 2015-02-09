@@ -47,6 +47,7 @@ public class TowerService extends Task implements IService {
          System.out.println("STARTING TOWER");
     }
     public void doTask() {
+        System.out.println("Running TOWER");
         led.setOn();
         radio.ping();
         led.setOff();
