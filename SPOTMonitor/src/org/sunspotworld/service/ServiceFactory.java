@@ -27,6 +27,13 @@ public class ServiceFactory {
             return new AccelerometerService(monitor, IService.ACCEL_THRESH);
     }
     
+    public static IService createBarometerService(IMonitor monitor) {
+        if(monitor.getType().equals("SAMPLE"))
+            return new BarometerService(monitor, IService.BAROMETER_SAMPLE);
+        else
+            return new BarometerService(monitor, IService.BAROMETER_THRESH);
+    }
+    
     public static IService createTowerService() {
         return new TowerService(IService.PING);
     }

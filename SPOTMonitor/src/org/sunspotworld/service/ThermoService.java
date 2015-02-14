@@ -16,17 +16,17 @@ import org.sunspotworld.spotRadios.SunspotPort;
 
 
 public class ThermoService implements TaskObserver, IService {
-    private IMonitor monitor;
-    private int _serviceId;
-    private ISendingRadio sRadio;
+    private final IMonitor _monitor;
+    private final int _serviceId;
+    private ISendingRadio _sRadio;
     //add radio and methods
     public ThermoService(IMonitor monitor, int serviceId) {
-        this.monitor = monitor;
-        this.monitor.addMonitorObserver(this);
+        this._monitor = monitor;
+        this._monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
         System.out.println("innit Service with ID" + this._serviceId);
         try {
-            sRadio = RadiosFactory.createSendingRadio(
+            _sRadio = RadiosFactory.createSendingRadio(
                     new SunspotPort(SunspotPort.THERMO_PORT));
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
@@ -35,11 +35,11 @@ public class ThermoService implements TaskObserver, IService {
         }
     }
     public void startService() {
-        monitor.startMonitor();
+        _monitor.startMonitor();
         System.out.println("Started Thermo Service");
     }
     public void stopService() {
-        monitor.stopMonitor();
+        _monitor.stopMonitor();
         System.out.println("Stopped Thermo Service");
     }
     public boolean isScheduled() {
@@ -50,18 +50,18 @@ public class ThermoService implements TaskObserver, IService {
     }
     public void update(TaskObservable o, Object arg) {
         //send data across radio connection.
-        sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
+        _sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
         System.out.println("Sent Heat");
     }
     public void update(TaskObservable o) {
         //send data across radio connection.
-        sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
+        _sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
         System.out.println("Sent Heat");
     }
     public IMonitor getMonitor(){
-        return this.monitor;
+        return this._monitor;
     }
     public void setData(int data) {
-        this.monitor.setVariable(data);
+        this._monitor.setVariable(data);
     }
 }

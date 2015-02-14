@@ -45,6 +45,8 @@ public interface ISendingRadio
     * Method that sends a "discover me" message to the base station
     */
    public void discoverMe();
+   
+   public void sendBarometerReadion(double angle);
 
    /**
     * Sends empty packet to be used as a 'pinging' service

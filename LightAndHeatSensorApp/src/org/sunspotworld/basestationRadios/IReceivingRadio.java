@@ -76,4 +76,6 @@ public interface IReceivingRadio
          * current battery level percentage of spot.
          */
         public int receiveBatteryLevel();
+        
+        public double receiveBarometer() throws IOException;
 }

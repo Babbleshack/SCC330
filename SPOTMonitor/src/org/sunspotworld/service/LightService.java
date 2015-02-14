@@ -6,7 +6,6 @@ package org.sunspotworld.service;
 import java.io.IOException;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
-import org.sunspotworld.sensors.ISensor;
 import org.sunspotworld.spotMonitors.IMonitor;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;

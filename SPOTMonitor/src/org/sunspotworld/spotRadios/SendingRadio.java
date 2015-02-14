@@ -186,4 +186,15 @@ public class SendingRadio implements ISendingRadio
             System.err.println("IOException occured while sending Battery Data: " + e);
         }  
     }
+
+    public void sendBarometerReadion(double angle) {
+        try {
+            datagram.reset();
+            datagram.writeDouble(angle);
+            radioConn.send(datagram);
+            System.out.println("Barometer value " + angle + " sent...");
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending Barometer: " + e);
+        }
+    }
 }
