@@ -15,11 +15,11 @@ import org.sunspotworld.spotRadios.SendingRadio;
 import org.sunspotworld.spotRadios.SunspotPort;
 
 
-public class BarometerService implements IService, TaskObserver {
+public class CompassService implements IService, TaskObserver {
     private final IMonitor _monitor;
     private final int _serviceId; 
     private ISendingRadio _sRadio;
-    public BarometerService(final IMonitor monitor, final int serviceId) {
+    public CompassService(final IMonitor monitor, final int serviceId) {
         _monitor = monitor;
         _serviceId = serviceId;
         try {

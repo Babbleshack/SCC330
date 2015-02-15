@@ -29,9 +29,9 @@ public class ServiceFactory {
     
     public static IService createBarometerService(IMonitor monitor) {
         if(monitor.getType().equals("SAMPLE"))
-            return new BarometerService(monitor, IService.BAROMETER_SAMPLE);
+            return new CompassService(monitor, IService.BAROMETER_SAMPLE);
         else
-            return new BarometerService(monitor, IService.BAROMETER_THRESH);
+            return new CompassService(monitor, IService.BAROMETER_THRESH);
     }
     
     public static IService createTowerService() {
