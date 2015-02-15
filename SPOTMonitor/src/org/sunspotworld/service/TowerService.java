@@ -40,8 +40,6 @@ public class TowerService extends Task implements IService {
         }
          _serviceColour = LEDColor.ORANGE;
         _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
-        LEDController.turnLEDOn(
-                LEDController.getLED(LEDController.TOWER_LED), _serviceColour);
          System.out.println("STARTING TOWER");
     }
     public void doTask() {
@@ -51,11 +49,15 @@ public class TowerService extends Task implements IService {
     }
     public void startService() {
         this.start();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.TOWER_LED), _serviceColour);
         System.out.println("Tower Service Started");
     }
 
     public void stopService() {
         this.stop();
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.TOWER_LED));
         System.out.println("Tower Service Stopped");
     }
 

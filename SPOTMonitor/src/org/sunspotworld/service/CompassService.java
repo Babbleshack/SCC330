@@ -35,10 +35,6 @@ public class CompassService implements IService, TaskObserver {
             ex.printStackTrace();
         }
         _serviceColour = LEDColor.MAGENTA;
-        LEDController.turnLEDOn(
-                LEDController.getLED(LEDController.COMPASS_LED),
-                _serviceColour
-        );
         _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
     }
 
@@ -46,12 +42,19 @@ public class CompassService implements IService, TaskObserver {
         if(_monitor.getStatus())
             return;
         _monitor.startMonitor();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.COMPASS_LED),
+                _serviceColour
+        );
     }
 
     public void stopService() {
         if(!_monitor.getStatus())
             return;
         _monitor.stopMonitor();
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.COMPASS_LED)
+        );
     }
 
     public boolean isScheduled() {

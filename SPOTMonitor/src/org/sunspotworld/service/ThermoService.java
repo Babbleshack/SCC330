@@ -38,15 +38,17 @@ public class ThermoService implements TaskObserver, IService {
         }
         _serviceColour = LEDColor.RED;
         _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
-        LEDController.turnLEDOn(
-                LEDController.getLED(LEDController.THERMAL_LED), _serviceColour);
     }
     public void startService() {
         _monitor.startMonitor();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.THERMAL_LED), _serviceColour);
         System.out.println("Started Thermo Service");
     }
     public void stopService() {
         _monitor.stopMonitor();
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.THERMAL_LED));
         System.out.println("Stopped Thermo Service");
     }
     public boolean isScheduled() {

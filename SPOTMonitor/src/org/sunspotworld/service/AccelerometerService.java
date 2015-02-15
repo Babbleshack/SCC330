@@ -36,19 +36,23 @@ public class AccelerometerService implements IService, TaskObserver {
         }
         serviceColour = LEDColor.GREEN;
         //LED CONTROLLER TIME
-        LEDController.turnLEDOn(
-                LEDController.getLED(LEDController.ACCEL_LED),
-                serviceColour
-        );
+        
         _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
         System.out.println("innit Service with ID" + this._serviceId);
     }
     public void startService() {
         _monitor.startMonitor();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.ACCEL_LED),
+                serviceColour
+        );
         System.out.println("Started accel Service");
     }
     public void stopService() {
         _monitor.stopMonitor();
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.ACCEL_LED)
+        );
         System.out.println("Stopped accel Service");
     }
     public boolean isScheduled() {

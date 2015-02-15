@@ -42,8 +42,6 @@ public class ZoneProcessorService extends Thread implements IService {
         _zpd = _zpd;
         _serviceColour = LEDColor.YELLOW;
         _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
-        LEDController.turnLEDOn(
-                LEDController.getLED(LEDController.ROAMING_LED), _serviceColour);
         _toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
         this._serviceID = serviceID;
     }
@@ -115,6 +113,8 @@ public class ZoneProcessorService extends Thread implements IService {
             return;
         }
         this.start();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.ROAMING_LED), _serviceColour);
         System.out.println("Zone Proccessor Started");
     }
     public void setData(int data) {
@@ -122,6 +122,8 @@ public class ZoneProcessorService extends Thread implements IService {
 
     public void stopService() {
         this._running = false;
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.ROAMING_LED));
         Thread.yield();
         System.out.println("------------STOPPING ZONE PROCESSOR-------------");
     }

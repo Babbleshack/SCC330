@@ -35,16 +35,18 @@ public class LightService implements IService, TaskObserver {
         
         _serviceColour = LEDColor.CYAN;
         _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
-        LEDController.turnLEDOn(
-                LEDController.getLED(LEDController.LIGHT_LED), _serviceColour);
         System.out.println("innit Service with ID" + this._serviceId);
     }
     public void startService() {
         _monitor.startMonitor();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.LIGHT_LED), _serviceColour);
         System.out.println("Started Light Service");
     }
     public void stopService() {
         _monitor.stopMonitor();
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.LIGHT_LED));
         System.out.println("Stopped Light Service");
     }
     public boolean isScheduled() {
