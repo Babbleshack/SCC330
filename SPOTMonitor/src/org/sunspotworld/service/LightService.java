@@ -3,7 +3,10 @@
  * @author Dominic Lindsay
  */
 package org.sunspotworld.service;
+import com.sun.spot.resources.transducers.ITriColorLED;
+import com.sun.spot.resources.transducers.LEDColor;
 import java.io.IOException;
+import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
 import org.sunspotworld.spotMonitors.IMonitor;
@@ -12,29 +15,36 @@ import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.SunspotPort;
 public class LightService implements IService, TaskObserver {
-    private IMonitor monitor;
+    private final IMonitor _monitor;
     private final int _serviceId;
-    private ISendingRadio sRadio;
+    private ISendingRadio _sRadio;
+    private final ITriColorLED _feedbackLED;
+    private  final LEDColor _serviceColour;
     public LightService(IMonitor monitor, int serviceId) {
         try {
-            sRadio = RadiosFactory.createSendingRadio(
+            _sRadio = RadiosFactory.createSendingRadio(
                     new SunspotPort(SunspotPort.LIGHT_PORT));
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        this.monitor = monitor;
-        this.monitor.addMonitorObserver(this);
+        this._monitor = monitor;
+        this._monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
+        
+        _serviceColour = LEDColor.CYAN;
+        _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.LIGHT_LED), _serviceColour);
         System.out.println("innit Service with ID" + this._serviceId);
     }
     public void startService() {
-        monitor.startMonitor();
+        _monitor.startMonitor();
         System.out.println("Started Light Service");
     }
     public void stopService() {
-        monitor.stopMonitor();
+        _monitor.stopMonitor();
         System.out.println("Stopped Light Service");
     }
     public boolean isScheduled() {
@@ -43,22 +53,24 @@ public class LightService implements IService, TaskObserver {
 
     public void update(TaskObservable o, Object arg) {
         //send data across radio connection.
-        sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
+        LEDController.flashLED(_feedbackLED, _serviceColour);
+        _sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
         System.out.println("Sent Light");
     }
 
     public void update(TaskObservable o) {
         //send data across radio connection.
-        sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
+        LEDController.flashLED(_feedbackLED, _serviceColour);
+        _sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
         System.out.println("Sent Light");
     }
     public int getServiceId() {
         return this._serviceId;
     }
     public IMonitor getMonitor(){
-        return this.monitor;
+        return this._monitor;
     }
     public void setData(int data) {
-        this.monitor.setVariable(data);
+        this._monitor.setVariable(data);
     }
 }

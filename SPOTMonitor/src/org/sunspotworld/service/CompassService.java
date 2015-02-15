@@ -4,14 +4,16 @@
  */
 package org.sunspotworld.service;
 
+import com.sun.spot.resources.transducers.ITriColorLED;
+import com.sun.spot.resources.transducers.LEDColor;
 import java.io.IOException;
+import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
 import org.sunspotworld.spotMonitors.IMonitor;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.RadiosFactory;
-import org.sunspotworld.spotRadios.SendingRadio;
 import org.sunspotworld.spotRadios.SunspotPort;
 
 
@@ -19,6 +21,8 @@ public class CompassService implements IService, TaskObserver {
     private final IMonitor _monitor;
     private final int _serviceId; 
     private ISendingRadio _sRadio;
+    private final ITriColorLED _feedbackLED;
+    private final LEDColor _serviceColour;
     public CompassService(final IMonitor monitor, final int serviceId) {
         _monitor = monitor;
         _serviceId = serviceId;
@@ -30,6 +34,12 @@ public class CompassService implements IService, TaskObserver {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        _serviceColour = LEDColor.MAGENTA;
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.COMPASS_LED),
+                _serviceColour
+        );
+        _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
     }
 
     public void startService() {
@@ -61,12 +71,14 @@ public class CompassService implements IService, TaskObserver {
     }
 
     public void update(TaskObservable o, Object arg) {
+        LEDController.flashLED(_feedbackLED, _serviceColour);
         _sRadio.sendBarometerReadion(
                 ((IMonitor)o).getSensorReading().getDataAsDouble()
         );
     }
 
     public void update(TaskObservable o) {
+        LEDController.flashLED(_feedbackLED, _serviceColour);
         _sRadio.sendBarometerReadion(
                 ((IMonitor)o).getSensorReading().getDataAsDouble()
         

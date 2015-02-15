@@ -34,7 +34,7 @@ public abstract class LEDController {
      * @param led LED to power on
      * @param colour colour of LED
      */
-    public static void turnLEDOn(ITriColorLED led, LEDColor colour){
+    public static void turnLEDOn(final ITriColorLED led, final LEDColor colour){
         led.setColor(colour);
         if(led.isOn())
             return;
@@ -44,7 +44,7 @@ public abstract class LEDController {
      * Always powers LED off
      * @param led led to turn off
      */
-    public static void turnLEDOff(ITriColorLED led){
+    public static void turnLEDOff(final ITriColorLED led){
         led.setOff();
     };
     /**
@@ -52,7 +52,7 @@ public abstract class LEDController {
      * @param led led to flash
      * @param colour colour
      */
-    public static void flashLED(ITriColorLED led, LEDColor colour){
+    public static void flashLED(final ITriColorLED led, final LEDColor colour){
         if(led.isOn())
             return;
         led.setColor(colour);
@@ -66,5 +66,14 @@ public abstract class LEDController {
      */
     public static ITriColorLEDArray getLEDArrayInstance(){
         return (ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class);
+    }
+    /**
+     * returns led at index value
+     * @param ledIndex index of led to return
+     * @return 
+     */
+    public static ITriColorLED getLED(int ledIndex) {
+        return ((ITriColorLEDArray) Resources.lookup(ITriColorLEDArray.class)).
+                getLED(ledIndex);
     }
 }
