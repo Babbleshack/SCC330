@@ -579,6 +579,7 @@ public class QueryManager implements IQueryManager
         try {
             int job_id = this.getJobIdFromSpotAddressReadingField(tower_address, "zone_id");
             if(job_id > 0) {
+                this.createZoneRecordForRoaming(zone_id, spot_address, time);
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertZoneRecord);
                 insert.setInt(1, zone_id);
@@ -593,6 +594,29 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createZoneRecord: " + e);
+        }
+    }
+
+    public void createZoneRecordForRoaming(int zone_id, String spot_address, long time) {
+        String insertZoneRecordForRoaming = "INSERT INTO zone_spot"
+                + "(zone_id, spot_id, job_id, created_at)"
+                + ("VALUES (?,?,?,?)");
+        try {
+            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "zone_id");
+            if(job_id > 0) {
+                PreparedStatement insert =
+                    connection.getConnection().prepareStatement(insertZoneRecordForRoaming);
+                insert.setInt(1, zone_id);
+                insert.setInt(2, this.getSpotIdFromSpotAddress(spot_address));
+                insert.setInt(3, job_id);
+                insert.setTimestamp(4, new Timestamp(time));
+                insert.executeUpdate();
+            } else {
+                System.out.println("No job_id for this zone change reading!");
+            }
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "createZoneRecordForRoaming: " + e);
         }
     }
 
