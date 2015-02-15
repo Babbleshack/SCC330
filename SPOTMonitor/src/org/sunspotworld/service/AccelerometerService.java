@@ -4,7 +4,10 @@
  */
 package org.sunspotworld.service;
 
+import com.sun.spot.resources.transducers.ITriColorLED;
+import com.sun.spot.resources.transducers.LEDColor;
 import java.io.IOException;
+import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
 import org.sunspotworld.spotMonitors.IMonitor;
@@ -15,48 +18,63 @@ import org.sunspotworld.spotRadios.SunspotPort;
 
 
 public class AccelerometerService implements IService, TaskObserver {
-    IMonitor monitor;
+    private IMonitor _monitor;
     private final int _serviceId;
-    private ISendingRadio sRadio;
+    private ISendingRadio _sRadio;
+    private final ITriColorLED _feedbackLED;
+    private final LEDColor serviceColour;
     public AccelerometerService(IMonitor monitor, int serviceId) {
-        this.monitor = monitor;
-        this.monitor.addMonitorObserver(this);
+        this._monitor = monitor;
+        this._monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
         try {
-            sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.ACCEL_PORT));
+            _sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.ACCEL_PORT));
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         }
+        serviceColour = LEDColor.GREEN;
+        //LED CONTROLLER TIME
+        
+        _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
         System.out.println("innit Service with ID" + this._serviceId);
     }
     public void startService() {
-        monitor.startMonitor();
+        _monitor.startMonitor();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.ACCEL_LED),
+                serviceColour
+        );
         System.out.println("Started accel Service");
     }
     public void stopService() {
-        monitor.stopMonitor();
+        _monitor.stopMonitor();
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.ACCEL_LED)
+        );
         System.out.println("Stopped accel Service");
     }
     public boolean isScheduled() {
-        return this.monitor.getStatus();
+        return this._monitor.getStatus();
     }
     public void update(TaskObservable o, Object arg) {
         //send data on radio
-        sRadio.sendAccel(((IService)o).getMonitor().getSensorReading().getDataAsDouble());
+        LEDController.flashLED(_feedbackLED, serviceColour);
+        _sRadio.sendAccel(((IMonitor)o).getSensorReading().getDataAsDouble());
     }
     public void update(TaskObservable o) {
         //sends data on radio
-        sRadio.sendAccel(((IService)o).getMonitor().getSensorReading().getDataAsDouble());
+        LEDController.flashLED(_feedbackLED, serviceColour);
+        _sRadio.sendAccel(((IMonitor)o).getSensorReading().getDataAsDouble());
     }
     public int getServiceId() {
         return this._serviceId;
     }
     public IMonitor getMonitor(){
-        return this.monitor;
+        return this._monitor;
     }
     public void setData(int data) {
-        this.monitor.setVariable(data);
+        this._monitor.setVariable(data);
     }
 }

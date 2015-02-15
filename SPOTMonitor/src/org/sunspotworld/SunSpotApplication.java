@@ -31,12 +31,14 @@ import org.sunspotworld.service.IService;
 import org.sunspotworld.service.ServiceController;
 import org.sunspotworld.service.ServiceFactory;
 import org.sunspotworld.monitorStates.AxisThresholdState;
+import org.sunspotworld.monitorStates.BearingMonitorState;
 import org.sunspotworld.monitorStates.LightThresholdState;
 import org.sunspotworld.monitorStates.ThermoThresholdState;
 import org.sunspotworld.sensors.SensorFactory;
 import org.sunspotworld.spotMonitors.BatteryMonitor;
 import org.sunspotworld.spotMonitors.MonitorFactory;
 import org.sunspotworld.spotMonitors.SampleMonitor;
+import org.sunspotworld.spotMonitors.ThresholdMonitor;
 
 
 /**
@@ -130,7 +132,20 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
                  ServiceFactory.createZoneProccessorService());
         System.out.println("added ZoneProcessor service");
         
-                
+        services.put(Integer.valueOf(IService.BAROMETER_SAMPLE), 
+                ServiceFactory.createBarometerService(
+                        new SampleMonitor(SensorFactory.createBearingSensor())
+                )
+        );
+        services.put(Integer.valueOf(IService.BAROMETER_THRESH), 
+                ServiceFactory.createBarometerService(
+                        new ThresholdMonitor(
+                                SensorFactory.createBearingSensor(),
+                                new BearingMonitorState()
+                        )
+                )
+        );
+        System.out.println("Added Barometer stuff");        
         return services;
         
     }

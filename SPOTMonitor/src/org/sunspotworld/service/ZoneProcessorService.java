@@ -6,8 +6,10 @@ package org.sunspotworld.service;
 
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.IToneGenerator;
+import com.sun.spot.resources.transducers.ITriColorLED;
 import com.sun.spot.resources.transducers.ITriColorLEDArray;
-import java.util.Random;
+import com.sun.spot.resources.transducers.LEDColor;
+import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.data.TowerSpot;
 import org.sunspotworld.data.ZonePowerData;
 import org.sunspotworld.spotMonitors.IMonitor;
@@ -19,33 +21,29 @@ import org.sunspotworld.spotRadios.SunspotPort;
 
 public class ZoneProcessorService extends Thread implements IService {
 
-    private Thread tReceiver;
-    private ISendingRadio sRadio;
-    private IReceivingRadio rRadio;
-    private ZonePowerData zpd;
-    private ITriColorLEDArray leds;
-    private IToneGenerator toneGen;
-    private TowerSpot closestTower;
-    private Random rGen;
-    private static final long SECOND = 1000;
-    private static final long SAMPLE_RATE = (2*SECOND);
-    private static final int FALSE_READING = -66;
+    private ISendingRadio _sRadio;
+    private IReceivingRadio _rRadio;
+    private ZonePowerData _zpd;
+    private final IToneGenerator _toneGen;
+    private TowerSpot _closestTower;
+    private final int _serviceID;
+    private boolean _running = false;
+    private  final ITriColorLED _feedbackLED;
+    private  final LEDColor _serviceColour;
     private static final int THRESHOLD = 3;
-    private final int serviceID;
-    private boolean running = false;
     public ZoneProcessorService(int serviceID) {
         try
         {
-            sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.BASE_TOWER_PORT));
-            rRadio = RadiosFactory.createReceivingRadio(new SunspotPort(SunspotPort.PING_PORT));
+            _sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.BASE_TOWER_PORT));
+            _rRadio = RadiosFactory.createReceivingRadio(new SunspotPort(SunspotPort.PING_PORT));
         } catch (Exception e) {
             System.err.println("error creating Roaming radios " + e);
         }   
-        zpd = zpd;
-        leds = (ITriColorLEDArray)
-            Resources.lookup(ITriColorLEDArray.class );
-        toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
-        this.serviceID = serviceID;
+        _zpd = _zpd;
+        _serviceColour = LEDColor.YELLOW;
+        _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
+        _toneGen = (IToneGenerator) Resources.lookup(IToneGenerator.class);
+        this._serviceID = serviceID;
     }
     public void run(){
         System.out.println("Running Roaming");
@@ -53,23 +51,23 @@ public class ZoneProcessorService extends Thread implements IService {
         System.out.println("FOUND CLOSET TOWER");
         int count = 0; 
         String countTower = null;
-        while(running)
+        while(_running)
         {
             
-            TowerSpot tSpot = rRadio.receivePing();
+            TowerSpot tSpot = _rRadio.receivePing();
             
             // Error did not receive
             if(tSpot == null) continue;
 
             // Discard packet if same tower 
             // But we should update the closest tower anyway
-            if(tSpot.getAddress().equals(closestTower.getAddress())) {
-                closestTower = tSpot;
+            if(tSpot.getAddress().equals(_closestTower.getAddress())) {
+                _closestTower = tSpot;
                 continue;
             }
 
             // Discard if less power than closest tower
-            if(tSpot.getPowerLevel() - THRESHOLD <= closestTower.getPowerLevel() + THRESHOLD) {   
+            if(tSpot.getPowerLevel() - THRESHOLD <= _closestTower.getPowerLevel() + THRESHOLD) {   
                 continue;
             } else {
                 if(count == 0) countTower = tSpot.getAddress(); 
@@ -86,13 +84,14 @@ public class ZoneProcessorService extends Thread implements IService {
             // Only switch tower if we are reasonably sure we're in the new zone (not just anomaly)
             if(count > 5) {       
                 count = 0;     
-                toneGen.startTone(250.0, 40);
+                _toneGen.startTone(250.0, 40);
                 
-                System.out.println("New closest tower. Moved from " + closestTower.getAddress() + " (" + closestTower.getPowerLevel() + ") to " + tSpot.getAddress() + "(" + tSpot.getPowerLevel() + ")");
+                System.out.println("New closest tower. Moved from " + _closestTower.getAddress() + " (" + _closestTower.getPowerLevel() + ") to " + tSpot.getAddress() + "(" + tSpot.getPowerLevel() + ")");
                 
                 // New closest tower
-                closestTower = tSpot; 
-                sRadio.sendTowerAddress(closestTower.getAddress());
+                _closestTower = tSpot; 
+                LEDController.flashLED(_feedbackLED, _serviceColour);
+                _sRadio.sendTowerAddress(_closestTower.getAddress());
             }
         }
     }
@@ -102,38 +101,39 @@ public class ZoneProcessorService extends Thread implements IService {
     */
     private void findAnyTower(){
         System.out.println("WAITING FOR A PING FROM ANY TOWER");
-        this.closestTower = rRadio.receivePing();
+        this._closestTower = _rRadio.receivePing();
         System.out.println("Initial tower: [" + 
-                closestTower.getAddress() + "]");
+                _closestTower.getAddress() + "]");
     }
     public void startService() {
-        this.running = true;
-        leds.setRGB(0, 127, 0);
-        leds.setOn();
+        this._running = true;
         if(this.isAlive())
         {
             System.out.println("zone processor already started......");
             return;
         }
         this.start();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.ROAMING_LED), _serviceColour);
         System.out.println("Zone Proccessor Started");
     }
     public void setData(int data) {
     }  
 
     public void stopService() {
-        this.running = false;
-        leds.setOff();
+        this._running = false;
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.ROAMING_LED));
         Thread.yield();
         System.out.println("------------STOPPING ZONE PROCESSOR-------------");
     }
 
     public boolean isScheduled() {
-        return this.running;
+        return this._running;
     }
 
     public int getServiceId() {
-        return this.serviceID;
+        return this._serviceID;
     }
 
     public IMonitor getMonitor() {

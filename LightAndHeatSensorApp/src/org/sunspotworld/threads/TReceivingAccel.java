@@ -11,8 +11,6 @@ import org.sunspotworld.basestationMonitors.IAccelMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 
-import org.sunspotworld.database.DatabaseConnectionFactory;
-import org.sunspotworld.database.MySQLConnectionManager;
 import org.sunspotworld.database.QueryManager;
 public class TReceivingAccel implements Runnable
 {
@@ -21,7 +19,7 @@ public class TReceivingAccel implements Runnable
     private QueryManager queryManager;
 
     // Init receiving radio
-    IReceivingRadio accelReceivingRadio;
+    private IReceivingRadio accelReceivingRadio;
 
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables

@@ -108,5 +108,11 @@ public class ReceivingRadio implements IReceivingRadio
         }
             return 0;
     }
+
+    public double receiveBarometer() throws IOException {
+        datagram.reset();   
+        radioConn.receive(datagram); 
+        return datagram.readDouble();
+    }
     
 }

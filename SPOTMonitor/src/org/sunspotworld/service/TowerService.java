@@ -4,12 +4,12 @@
  */
 package org.sunspotworld.service;
 
-import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.ITriColorLED;
-import com.sun.spot.resources.transducers.ITriColorLEDArray;
+import com.sun.spot.resources.transducers.LEDColor;
 import com.sun.spot.service.Task;
 import java.io.IOException;
 import java.util.Random;
+import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.spotMonitors.IMonitor;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
@@ -19,48 +19,45 @@ import org.sunspotworld.spotRadios.SunspotPort;
 
 public class TowerService extends Task implements IService {
 
-    private ISendingRadio radio;
-    private ITriColorLEDArray leds;
-    private ITriColorLED led;
-    private Random gen;
+    private ISendingRadio _sRadio;
     private static final long SECOND = 1000;
     private static final long SAMPLE_RATE = SECOND;
     private int _serviceId;
+    private  final ITriColorLED _feedbackLED;
+    private  final LEDColor _serviceColour;
     public TowerService(int serviceID) 
     {
         super(SAMPLE_RATE);
         this._serviceId = serviceID;
          try
         {
-            radio = RadiosFactory.createSendingRadio(
+            _sRadio = RadiosFactory.createSendingRadio(
                     new SunspotPort(SunspotPort.PING_PORT));	
         } catch (PortOutOfRangeException e) {
             System.err.println("error creating PING radio: " + e);
         } catch (IOException e) {
             System.err.println("error creating PING radio: " + e);
         }
-         gen = new Random();
-         leds = (ITriColorLEDArray)Resources.lookup(ITriColorLEDArray.class );
-         leds.setRGB(0, 0, 10);
-         led = leds.getLED(7);
-         led.setRGB(127, 0, 0);
+         _serviceColour = LEDColor.ORANGE;
+        _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
          System.out.println("STARTING TOWER");
     }
     public void doTask() {
         System.out.println("Running TOWER");
-        led.setOn();
-        radio.ping();
-        led.setOff();
+        LEDController.flashLED(_feedbackLED, _serviceColour);
+        _sRadio.ping();
     }
     public void startService() {
-        this.leds.setOn();
         this.start();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.TOWER_LED), _serviceColour);
         System.out.println("Tower Service Started");
     }
 
     public void stopService() {
-        this.leds.setOff();
         this.stop();
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.TOWER_LED));
         System.out.println("Tower Service Stopped");
     }
 

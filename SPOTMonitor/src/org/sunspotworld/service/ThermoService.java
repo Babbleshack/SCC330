@@ -4,11 +4,13 @@
  */
 package org.sunspotworld.service;
 
+import com.sun.spot.resources.transducers.ITriColorLED;
+import com.sun.spot.resources.transducers.LEDColor;
 import java.io.IOException;
+import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
 import org.sunspotworld.spotMonitors.IMonitor;
-import org.sunspotworld.spotRadios.IReceivingRadio;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.RadiosFactory;
@@ -16,30 +18,37 @@ import org.sunspotworld.spotRadios.SunspotPort;
 
 
 public class ThermoService implements TaskObserver, IService {
-    private IMonitor monitor;
-    private int _serviceId;
-    private ISendingRadio sRadio;
-    //add radio and methods
-    public ThermoService(IMonitor monitor, int serviceId) {
-        this.monitor = monitor;
-        this.monitor.addMonitorObserver(this);
+    private final IMonitor _monitor;
+    private final int _serviceId;
+    private ISendingRadio _sRadio;
+    private final ITriColorLED _feedbackLED;
+    private  final LEDColor _serviceColour;
+    public ThermoService(final IMonitor monitor, final int serviceId) {
+        this._monitor = monitor;
+        this._monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
         System.out.println("innit Service with ID" + this._serviceId);
         try {
-            sRadio = RadiosFactory.createSendingRadio(
+            _sRadio = RadiosFactory.createSendingRadio(
                     new SunspotPort(SunspotPort.THERMO_PORT));
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        _serviceColour = LEDColor.RED;
+        _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
     }
     public void startService() {
-        monitor.startMonitor();
+        _monitor.startMonitor();
+        LEDController.turnLEDOn(
+                LEDController.getLED(LEDController.THERMAL_LED), _serviceColour);
         System.out.println("Started Thermo Service");
     }
     public void stopService() {
-        monitor.stopMonitor();
+        _monitor.stopMonitor();
+        LEDController.turnLEDOff(
+                LEDController.getLED(LEDController.THERMAL_LED));
         System.out.println("Stopped Thermo Service");
     }
     public boolean isScheduled() {
@@ -50,18 +59,20 @@ public class ThermoService implements TaskObserver, IService {
     }
     public void update(TaskObservable o, Object arg) {
         //send data across radio connection.
-        sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
+        LEDController.flashLED(_feedbackLED, _serviceColour);
+        _sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
         System.out.println("Sent Heat");
     }
     public void update(TaskObservable o) {
         //send data across radio connection.
-        sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
+        LEDController.flashLED(_feedbackLED, _serviceColour);
+        _sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
         System.out.println("Sent Heat");
     }
     public IMonitor getMonitor(){
-        return this.monitor;
+        return this._monitor;
     }
     public void setData(int data) {
-        this.monitor.setVariable(data);
+        this._monitor.setVariable(data);
     }
 }
