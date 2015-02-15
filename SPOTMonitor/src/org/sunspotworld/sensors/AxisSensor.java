@@ -54,8 +54,7 @@ public class AxisSensor implements ISensor
     }
     public SensorData getData() {
         try {
-            return new SensorData(new AxisData
-                (this.accel.getAccelX(), this.accel.getAccelY(), this.accel.getAccelZ()));
+            return new SensorData(this.accel.getAccel());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
