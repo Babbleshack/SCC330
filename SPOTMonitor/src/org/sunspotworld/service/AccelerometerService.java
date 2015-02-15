@@ -61,12 +61,12 @@ public class AccelerometerService implements IService, TaskObserver {
     public void update(TaskObservable o, Object arg) {
         //send data on radio
         LEDController.flashLED(_feedbackLED, serviceColour);
-        _sRadio.sendAccel(((IService)o).getMonitor().getSensorReading().getDataAsDouble());
+        _sRadio.sendAccel(((IMonitor)o).getSensorReading().getDataAsDouble());
     }
     public void update(TaskObservable o) {
         //sends data on radio
         LEDController.flashLED(_feedbackLED, serviceColour);
-        _sRadio.sendAccel(((IService)o).getMonitor().getSensorReading().getDataAsDouble());
+        _sRadio.sendAccel(((IMonitor)o).getSensorReading().getDataAsDouble());
     }
     public int getServiceId() {
         return this._serviceId;
