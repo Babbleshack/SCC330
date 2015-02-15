@@ -29,6 +29,7 @@ public class SampleMonitor extends TaskObservable implements IMonitor {
     }
     public void setSampleRate(long sampleRate) {
         this.sampleRate = sampleRate;
+        this.setScheduledTime(sampleRate);
     }
     public SensorData getSensorReading() {
         return this.sensor.getData();
