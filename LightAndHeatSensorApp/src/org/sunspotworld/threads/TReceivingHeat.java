@@ -11,6 +11,7 @@ import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationMonitors.IThermoMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
+import org.sunspotworld.basestationRadios.SunspotPort;
 
 import org.sunspotworld.database.QueryManager;
 
@@ -61,7 +62,7 @@ public class TReceivingHeat implements Runnable
 
                 try
                 {
-                    queryManager.createThermoRecord(thermoValue, thermoReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
+                    queryManager.createThermoRecord(thermoValue, thermoReceivingRadio.getReceivedAddress(), System.currentTimeMillis(), SunspotPort.THERMO_PORT);
                 } catch (NullPointerException npe) {
                     System.out.println("heatService: queryManager - NullPointerException");
                 }

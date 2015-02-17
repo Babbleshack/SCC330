@@ -48,7 +48,7 @@ public class ReceivingRadio implements IReceivingRadio
             while(!spot_address.equals(spotAddress)) {
                 radioConn.receive(datagram);
                 spot_address = datagram.readUTF();
-                System.out.println("Sun SPOT address " + spotAddress + " has received a discover response with the recipient of " + spot_address);
+                // System.out.println("Sun SPOT address " + spotAddress + " has received a discover response with the recipient of " + spot_address);
             }
             
             

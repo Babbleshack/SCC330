@@ -36,7 +36,7 @@ public class TReceivingBearing implements Runnable {
             try {
                 angle = _rRadio.receiveBarometer();
                 _qm.createBarometerRecord(angle, _rRadio.getReceivedAddress(),
-                        System.currentTimeMillis());
+                        System.currentTimeMillis(), SunspotPort.BAROMETER_PORT);
 
             } catch (IOException ex) {
                 System.err.println("Error storing barometer reading");

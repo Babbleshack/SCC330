@@ -40,7 +40,7 @@ public class TReceivingWater implements Runnable
                  */
                 int waterLevel = rRadio.receiveWater();
                 qManage.createWaterRecord(waterLevel, rRadio.getReceivedAddress(),
-                        System.currentTimeMillis());
+                        System.currentTimeMillis(), SunspotPort.WATER_PORT);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

@@ -370,13 +370,14 @@ public class QueryManager implements IQueryManager
     /**
      * Returns a job_id, given a spot address and field column
      */
-    public int getJobIdFromSpotAddressReadingField(String spot_address, String column_name) {
+    public int getJobIdFromSpotAddressReadingFieldPortNumber(String spot_address, String column_name, int port_number) {
         String getJobId = "SELECT Job.id "
          + "FROM Job, Spot, Object, Sensor "
          + "WHERE Spot.spot_address = ? "
          + "AND Object.spot_id = Spot.id "
          + "AND Job.object_id = Object.id "
          + "AND Sensor.field = ? "
+         + "AND Sensor.port_number = ? " 
          + "AND Sensor.id = Job.sensor_id";
 
         try {
@@ -390,6 +391,7 @@ public class QueryManager implements IQueryManager
 
             record.setString(1, spot_address);
             record.setString(2, column_name);
+            record.setInt(3, port_number);
 
             /**
              * Access ResultSet for job_id
@@ -572,14 +574,14 @@ public class QueryManager implements IQueryManager
      * @param spot_address int
      * @param time long
      */
-    public void createZoneRecord(int zone_id, String spot_address, String tower_address, long time) {
+    public void createZoneRecord(int zone_id, String spot_address, String tower_address, long time, int port_number) {
         String insertZoneRecord = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(tower_address, "zone_id");
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(tower_address, "zone_id", port_number);
             if(job_id > 0) {
-                this.createZoneRecordForRoaming(zone_id, spot_address, time);
+                this.createZoneRecordForRoaming(zone_id, spot_address, time, port_number);
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertZoneRecord);
                 insert.setInt(1, zone_id);
@@ -597,12 +599,12 @@ public class QueryManager implements IQueryManager
         }
     }
 
-    public void createZoneRecordForRoaming(int zone_id, String spot_address, long time) {
+    public void createZoneRecordForRoaming(int zone_id, String spot_address, long time, int port_number) {
         String insertZoneRecordForRoaming = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "zone_id");
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "zone_id", port_number);
             if(job_id > 0) {
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertZoneRecordForRoaming);
@@ -627,12 +629,12 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createMotionRecord(int motion, String spot_address, long time) {
+    public void createMotionRecord(int motion, String spot_address, long time, int port_number) {
         String insertMotionRecord = "INSERT INTO Motion"
                 + "(motion, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "motion");
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "motion", port_number);
             if(job_id > 0) {
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertMotionRecord);
@@ -658,12 +660,12 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createLightRecord(int light, String spot_address, long time) {
+    public void createLightRecord(int light, String spot_address, long time, int port_number) {
         String insertLightRecord = "INSERT INTO Light"
                 + "(light_intensity, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "light_intensity");
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "light_intensity", port_number);
             if(job_id > 0) {
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertLightRecord);
@@ -690,12 +692,12 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createThermoRecord(double celsiusData, String spot_address, long time) {
+    public void createThermoRecord(double celsiusData, String spot_address, long time, int port_number) {
         String insertThermoRecord = "INSERT INTO Heat"
                 + "(heat_temperature, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "heat_temperature");
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "heat_temperature", port_number);
             if(job_id > 0) {
                PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertThermoRecord);
@@ -720,12 +722,12 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createAccelRecord(double accelData, String spot_address, long time) {
+    public void createAccelRecord(double accelData, String spot_address, long time, int port_number) {
         String insertAccelRecord = "INSERT INTO Acceleration"
                 + "(acceleration, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "acceleration");
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "acceleration", port_number);
             if(job_id > 0) {
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertAccelRecord);
@@ -751,12 +753,12 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createWaterRecord(int water_percent, String spot_address, long time) {
+    public void createWaterRecord(int water_percent, String spot_address, long time, int port_number) {
         String insertWaterRecord = "INSERT INTO Water"
                 + "(water_percent, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "water_percent");
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "water_percent", port_number);
             if(job_id > 0) {
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertWaterRecord);
@@ -988,12 +990,12 @@ public class QueryManager implements IQueryManager
         return new Timestamp(past.getTimeInMillis());
     }
 
-    public void createBarometerRecord(double bearing, String spot_address, long time) {
+    public void createBarometerRecord(double bearing, String spot_address, long time, int port_number) {
         String insertBearingRecord = "INSERT INTO Bearings"
                 + "(bearing, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingField(spot_address, "heat_temperature");
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "heat_temperature", port_number);
             if(job_id > 0) {
                PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertBearingRecord);

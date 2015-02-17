@@ -82,7 +82,7 @@ public class ZoneProcessorService extends Thread implements IService {
             }
 
             // Only switch tower if we are reasonably sure we're in the new zone (not just anomaly)
-            if(count > 5) {       
+            if(count > 3) {       
                 count = 0;     
                 _toneGen.startTone(250.0, 40);
                 

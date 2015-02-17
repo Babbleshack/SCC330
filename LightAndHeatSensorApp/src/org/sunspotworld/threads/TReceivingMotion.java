@@ -10,6 +10,7 @@ import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationMonitors.IMotionMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
+import org.sunspotworld.basestationRadios.SunspotPort;
 
 import org.sunspotworld.database.DatabaseConnectionFactory;
 import org.sunspotworld.database.MySQLConnectionManager;
@@ -58,7 +59,7 @@ public class TReceivingMotion implements Runnable
 
                 try
                 {
-                    queryManager.createMotionRecord(1, motionReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
+                    queryManager.createMotionRecord(1, motionReceivingRadio.getReceivedAddress(), System.currentTimeMillis(), SunspotPort.WATER_PORT);
                 } catch (NullPointerException npe) {
                     System.out.println("MotionService: queryManager - NullPointerException");
                 }

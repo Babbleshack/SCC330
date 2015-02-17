@@ -11,6 +11,7 @@ import org.sunspotworld.basestationMonitors.ILightMonitor;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
+import org.sunspotworld.basestationRadios.SunspotPort;
 
 import org.sunspotworld.database.DatabaseConnectionFactory;
 import org.sunspotworld.database.MySQLConnectionManager;
@@ -63,7 +64,7 @@ public class TReceivingLight implements Runnable
 
                 try
                 {
-                    queryManager.createLightRecord(lightValue, lightReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
+                    queryManager.createLightRecord(lightValue, lightReceivingRadio.getReceivedAddress(), System.currentTimeMillis(), SunspotPort.LIGHT_PORT);
                 } catch (NullPointerException npe) {
                     System.out.println("lightService: queryManager - NullPointerException");
                 }
