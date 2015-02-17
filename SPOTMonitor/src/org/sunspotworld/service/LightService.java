@@ -23,7 +23,7 @@ public class LightService implements IService, TaskObserver {
     public LightService(IMonitor monitor, int serviceId) {
         try {
             _sRadio = RadiosFactory.createSendingRadio(
-                    new SunspotPort(SunspotPort.LIGHT_PORT));
+                    new SunspotPort(serviceId));
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
