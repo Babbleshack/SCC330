@@ -283,11 +283,11 @@ public class QueryManager implements IQueryManager
      * @return int zone id
      */
     public int getZoneIdFromSpotAddress(String spot_address) {
-        String getZoneId = "SELECT zone_spot.zone_id " 
-                + " FROM Spot, zone_spot"
+        String getZoneId = "SELECT ZoneSpot.zone_id " 
+                + " FROM Spot, ZoneSpot"
                 + " WHERE Spot.spot_address = ? "
-                + " AND zone_spot.spot_id = Spot.id "
-                + " ORDER BY zone_spot.id DESC " 
+                + " AND ZoneSpot.spot_id = Spot.id "
+                + " ORDER BY ZoneSpot.id DESC " 
                 + " LIMIT 1";
 
         try {
@@ -306,7 +306,7 @@ public class QueryManager implements IQueryManager
                 /**
                  * Return result
                  */
-                return result.getInt("zone_spot.zone_id");
+                return result.getInt("ZoneSpot.zone_id");
             } else {
                 return 1;
             }
@@ -573,7 +573,7 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createZoneRecord(int zone_id, String spot_address, String tower_address, long time) {
-        String insertZoneRecord = "INSERT INTO zone_spot"
+        String insertZoneRecord = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
         try {
@@ -598,7 +598,7 @@ public class QueryManager implements IQueryManager
     }
 
     public void createZoneRecordForRoaming(int zone_id, String spot_address, long time) {
-        String insertZoneRecordForRoaming = "INSERT INTO zone_spot"
+        String insertZoneRecordForRoaming = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
         try {
@@ -822,7 +822,7 @@ public class QueryManager implements IQueryManager
      * @param spot_id int
      */
     public void createSpotZoneRecord(String spot_address, int spot_id) {
-        String insertSpotZoneRecord = "INSERT INTO zone_spot"
+        String insertSpotZoneRecord = "INSERT INTO ZoneSpot"
                 + "(spot_address, spot_id, created_at)"
                 + "VALUES (?,?,?)";
         try {
