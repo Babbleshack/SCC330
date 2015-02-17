@@ -28,7 +28,7 @@ public class CompassService implements IService, TaskObserver {
         _serviceId = serviceId;
         try {
             _sRadio = RadiosFactory.createSendingRadio(
-                    new SunspotPort(SunspotPort.BAROMETER_PORT));
+                    new SunspotPort(serviceId));
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {

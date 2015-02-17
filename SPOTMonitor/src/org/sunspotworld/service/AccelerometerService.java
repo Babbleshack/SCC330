@@ -28,7 +28,7 @@ public class AccelerometerService implements IService, TaskObserver {
         this._monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
         try {
-            _sRadio = RadiosFactory.createSendingRadio(new SunspotPort(SunspotPort.ACCEL_PORT));
+            _sRadio = RadiosFactory.createSendingRadio(new SunspotPort(serviceId));
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (PortOutOfRangeException ex) {

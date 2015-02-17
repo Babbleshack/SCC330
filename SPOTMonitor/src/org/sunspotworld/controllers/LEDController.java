@@ -29,15 +29,20 @@ public abstract class LEDController {
     public static final int ROAMING_LED = 4;
     public static final int TOWER_LED   = 5;
     public static final int STATUS_LED  = 7; //SERVICE LED USED FOR PACKAGE FEEDBACK
+    
+    private static final int DIVISOR = 10;
     /**
      * First Come First Serve LED Power on method
      * @param led LED to power on
      * @param colour colour of LED
      */
     public static void turnLEDOn(final ITriColorLED led, final LEDColor colour){
-        led.setColor(colour);
         if(led.isOn())
             return;
+        led.setColor(new LEDColor(
+                (colour.red()/DIVISOR),
+                (colour.green()/DIVISOR), (colour.blue()/DIVISOR))
+        );
         led.setOn();
     };
     /**
@@ -55,7 +60,10 @@ public abstract class LEDController {
     public static void flashLED(final ITriColorLED led, final LEDColor colour){
         if(led.isOn())
             return;
-        led.setColor(colour);
+        led.setColor(new LEDColor(
+                (colour.red()/DIVISOR),
+                (colour.green()/DIVISOR), (colour.blue()/DIVISOR))
+        );
         led.setOn();
         Utils.sleep(500);
         led.setOff();

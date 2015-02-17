@@ -30,7 +30,7 @@ public class ThermoService implements TaskObserver, IService {
         System.out.println("innit Service with ID" + this._serviceId);
         try {
             _sRadio = RadiosFactory.createSendingRadio(
-                    new SunspotPort(SunspotPort.THERMO_PORT));
+                    new SunspotPort(serviceId));
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
