@@ -27,8 +27,10 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
         {
             Class.forName(JDBC_DRIVER);
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("MySQL driver not found HERE" + e);
         }
+
         this.connect();
     }
     public void connect()
