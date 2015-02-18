@@ -95,6 +95,39 @@ public class ServiceController {
         System.out.println("------EXIT SERVICE LOOP----");
     }
     
+     public void autoManageServices(int[] serviceIDs, int[] data, int[] dir)
+    {
+        IService service;
+        boolean hasBeenFound;
+        //for each serviceID
+            //if service[id] is not running start it
+        int i;
+             
+        for(Enumeration e = this._services.keys();e.hasMoreElements(); )
+        {
+            hasBeenFound = false;
+            service = (IService)this._services.get(Integer.valueOf(e.nextElement().toString()));
+            for(i = 0;i<serviceIDs.length;i++) {
+                //if e is not found.
+                if(service.getServiceId() == serviceIDs[i]){
+                    hasBeenFound = true;
+                    if(service.isScheduled()) {
+                        service.setData(data[i]);
+                        service.setDirection(dir[i]);
+                    } else {
+                        service.setData(data[i]);
+                        service.setDirection(dir[i]);
+                        service.startService();
+                    }
+                }
+            }
+            if(!hasBeenFound && service.isScheduled()) {
+                service.stopService();
+            }
+        }
+        System.out.println("------EXIT SERVICE LOOP----");
+    }
+    
     /**
      * adds a new service to current service pool
      * @param service 

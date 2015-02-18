@@ -26,4 +26,5 @@ public interface IService {
     int getServiceId();
     IMonitor getMonitor();
     void setData(int data);
+    void setDirection(int direction);
 }

@@ -152,13 +152,15 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
     public void run()
     {
         int[] portsThresholds;
-        int[] thresholdSamples;
+        int[] serviceParams;
         int[] ports;
+        int[] direction;
         int i,y; 
         while(true) {
             portsThresholds = null;
-            thresholdSamples = null;
+            serviceParams = null;
             ports = null;
+            direction = null;
           try {
               portsThresholds = discoverRequestRadio.receiveDiscoverResponse(); 
           } catch (IOException io) {
@@ -166,21 +168,20 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
           }
           //build new array because some silly bugger put both thresholds 
           //and ports into the same array :p
-          ports = new int[portsThresholds.length/2];
-          thresholdSamples = new int[portsThresholds.length/2];
-          for (i = 0, y = 0;i < portsThresholds.length; i += 2, y++) {
+          int arrayLength = portsThresholds.length/3;
+          ports = new int[arrayLength];
+          serviceParams = new int[arrayLength];
+          direction = new int[arrayLength];
+          for (i = 0, y = 0;i < portsThresholds.length; i += 3, y++) {
               ports[y] = portsThresholds[i];
-              thresholdSamples[y] = portsThresholds[i+1];
+              serviceParams[y] = portsThresholds[i+1];
+              direction[y] = portsThresholds[i+2];
           }
-          System.out.println("ports length: " + ports.length);
-          System.out.println("theshold sample: " + thresholdSamples.length);
-          //pass the ports to autostoper 
-          //then start all services in ports
-          if(portsThresholds != null){
-              serviceController.autoManageServices(ports, thresholdSamples);
-          } else {
+          if(portsThresholds == null){
               System.out.println("No ports or thresholds");
+              continue;
           }
+          serviceController.autoManageServices(ports, serviceParams, direction);
         }
     }
     /**
