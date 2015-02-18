@@ -394,7 +394,7 @@ public class QueryManager implements IQueryManager
              + "AND Sensor.port_number = ? " 
              + "AND Sensor.id = Job.sensor_id";
 
-             
+
         // If our port number ends in 0, we are looking for a threshold monitor, so look for jobs 
         // where sample rate is null
         // Don't check if threshold is not null because some monitors don't require thresholds
@@ -815,13 +815,14 @@ public class QueryManager implements IQueryManager
      */
     public void createSpotRecord(String spot_address) {
         String insertSpotRecord = "INSERT INTO Spot"
-                + "(spot_id, created_at)"
-                + "VALUES (?,?)";
+                + "(spot_id, basestation_id, created_at)"
+                + "VALUES (?,?,?)";
         try {
            PreparedStatement insert =
                 connection.getConnection().prepareStatement(insertSpotRecord);
             insert.setString(1, spot_address);
-            insert.setDate(2, new Date(System.currentTimeMillis()));
+            insert.setInt(2, 1); 
+            insert.setDate(3, new Date(System.currentTimeMillis()));
             insert.executeUpdate();
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
