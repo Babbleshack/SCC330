@@ -7,6 +7,10 @@ package org.sunspotworld.service;
 import com.sun.spot.resources.transducers.ITriColorLED;
 import com.sun.spot.resources.transducers.LEDColor;
 import java.io.IOException;
+import operators.GreaterThan;
+import operators.IOperator;
+import operators.LessThan;
+import operators.NullOperator;
 import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
@@ -23,6 +27,7 @@ public class CompassService implements IService, TaskObserver {
     private ISendingRadio _sRadio;
     private final ITriColorLED _feedbackLED;
     private final LEDColor _serviceColour;
+    private IOperator _direction;
     public CompassService(final IMonitor monitor, final int serviceId) {
         _monitor = monitor;
         _serviceId = serviceId;
@@ -86,6 +91,17 @@ public class CompassService implements IService, TaskObserver {
                 ((IMonitor)o).getSensorReading().getDataAsDouble()
         
         );
+    }
+    public void setDirection(int dir) {
+        if(dir == IOperator.ABOVE)
+            _direction = new GreaterThan();
+        else if(dir == IOperator.BELOW)
+            _direction = new LessThan();
+        else 
+            _direction = new NullOperator();
+    }
+    public IOperator getDirecton() {
+        return _direction;
     }
     
     

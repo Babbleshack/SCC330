@@ -22,7 +22,6 @@ import org.sunspotworld.database.QueryManager;
 public class TDiscovery implements Runnable
 {
 
-    private IThermoMonitor thermoMonitor;
     private QueryManager queryManager;
 
     // Init receiving radio
@@ -67,10 +66,10 @@ public class TDiscovery implements Runnable
                 } 
 
                 // 2. Get all jobs + sensors + sensor ports attached to this SPOT
-                ArrayList portThresholds = queryManager.getSensorPortsJobThresholdsFromSpotAddress(spot_address);
+                ArrayList spotParameters = queryManager.getSensorPortsJobThresholdsFromSpotAddress(spot_address);
                 System.out.println("got ports "  + spot_address.toString());
                 // 3. Send list of ports back to SPOT 
-                responseRadio.sendDiscoverReponse(spot_address, portThresholds);
+                responseRadio.sendDiscoverReponse(spot_address, spotParameters);
             }
             catch (IOException io)
             {

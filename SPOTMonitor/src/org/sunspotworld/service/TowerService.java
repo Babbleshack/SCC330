@@ -8,7 +8,8 @@ import com.sun.spot.resources.transducers.ITriColorLED;
 import com.sun.spot.resources.transducers.LEDColor;
 import com.sun.spot.service.Task;
 import java.io.IOException;
-import java.util.Random;
+import operators.IOperator;
+import operators.NullOperator;
 import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.spotMonitors.IMonitor;
 import org.sunspotworld.spotRadios.ISendingRadio;
@@ -74,6 +75,14 @@ public class TowerService extends Task implements IService {
     }
     public void setData(int data) {
         return;
+    }
+
+    public void setDirection(int direction) {
+        return;
+    }
+
+    public IOperator getDirecton() {
+        return new NullOperator();
     }
     
 

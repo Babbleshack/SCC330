@@ -451,7 +451,7 @@ public class QueryManager implements IQueryManager
      * Returns all sensor ports and thresholds for a given a spot address
      */
     public ArrayList getSensorPortsJobThresholdsFromSpotAddress(String spot_address) {
-        String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold`, `Job`.`sample_rate` "
+        String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold`, `Job`.`sample_rate`, `direction` "
          + "FROM Job "
          + "LEFT JOIN Sensor "
          + "ON Sensor.id = Job.sensor_id "
@@ -495,15 +495,19 @@ public class QueryManager implements IQueryManager
                 if(threshold_null == true && sample_rate_null == true) { // Both null, sensor probably doesn't need sample rate
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(0));
-                    output_array.add((Object)"NULL"); //no direction needed
+                    output_array.add(Integer.valueOf(-1)); //no direction needed
                 } else if(threshold_null == true && sample_rate_null == false) { // Threshold is null, sample rate isn't, set up sample rate
                     port_number += 5; 
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(sample_rate));
-                    output_array.add((Object)"NULL"); //no direction needed
+                    output_array.add(Integer.valueOf(-1)); //no direction needed
                 } else if(threshold_null == false && sample_rate_null == true) { // Sample rate is null, threshold is't null, set up threshold
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(threshold));
+                    if(result.getString("direction").compareTo("Below") == 0 ) //string are the same
+                        output_array.add(0); // new below threshold
+                    else
+                        output_array.add(1); //new add threshold
                     output_array.add((Object)result.getString("direction"));
                 } else { // Both sample rate and threshold not null... shouldn't happen but set up anyway
                     output_array.add((Object)Integer.valueOf(port_number));

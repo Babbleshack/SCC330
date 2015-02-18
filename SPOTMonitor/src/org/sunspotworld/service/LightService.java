@@ -6,6 +6,10 @@ package org.sunspotworld.service;
 import com.sun.spot.resources.transducers.ITriColorLED;
 import com.sun.spot.resources.transducers.LEDColor;
 import java.io.IOException;
+import operators.GreaterThan;
+import operators.IOperator;
+import operators.LessThan;
+import operators.NullOperator;
 import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
@@ -20,6 +24,7 @@ public class LightService implements IService, TaskObserver {
     private ISendingRadio _sRadio;
     private final ITriColorLED _feedbackLED;
     private  final LEDColor _serviceColour;
+    private IOperator _direction;
     public LightService(IMonitor monitor, int serviceId) {
         try {
             _sRadio = RadiosFactory.createSendingRadio(
@@ -74,5 +79,16 @@ public class LightService implements IService, TaskObserver {
     }
     public void setData(int data) {
         this._monitor.setVariable(data);
+    }
+    public void setDirection(int dir) {
+        if(dir == IOperator.ABOVE)
+            _direction = new GreaterThan();
+        else if(dir == IOperator.BELOW)
+            _direction = new LessThan();
+        else 
+            _direction = new NullOperator();
+    }
+    public IOperator getDirecton() {
+        return _direction;
     }
 }

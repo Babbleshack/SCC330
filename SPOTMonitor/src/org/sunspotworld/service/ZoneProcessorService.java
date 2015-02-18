@@ -7,8 +7,9 @@ package org.sunspotworld.service;
 import com.sun.spot.resources.Resources;
 import com.sun.spot.resources.transducers.IToneGenerator;
 import com.sun.spot.resources.transducers.ITriColorLED;
-import com.sun.spot.resources.transducers.ITriColorLEDArray;
 import com.sun.spot.resources.transducers.LEDColor;
+import operators.IOperator;
+import operators.NullOperator;
 import org.sunspotworld.controllers.LEDController;
 import org.sunspotworld.data.TowerSpot;
 import org.sunspotworld.data.ZonePowerData;
@@ -138,6 +139,14 @@ public class ZoneProcessorService extends Thread implements IService {
 
     public IMonitor getMonitor() {
         return null;
+    }
+
+    public void setDirection(int direction) {
+        return;
+    }
+
+    public IOperator getDirecton() {
+        return new NullOperator();
     }
 
 }

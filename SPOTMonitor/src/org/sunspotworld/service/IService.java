@@ -1,5 +1,6 @@
 package org.sunspotworld.service;
 
+import operators.IOperator;
 import org.sunspotworld.spotMonitors.IMonitor;
 
 /**
@@ -27,4 +28,5 @@ public interface IService {
     IMonitor getMonitor();
     void setData(int data);
     void setDirection(int direction);
+    IOperator getDirecton();
 }
