@@ -8,6 +8,9 @@ import org.sunspotworld.spotMonitors.ThresholdMonitor;
 public class LightThresholdState implements IThresholdMonitorState {
     public void checkThresholdCondition(ThresholdMonitor context) {
         System.out.println("HAS BEEN MET: " + context.getHasBeenMet());
+        System.out.println("GOT OPERATOR: " + context.getDirection().toString());
+        System.out.println("Current Reading: " + context.getSensorReading().getDataAsDouble()) ;
+        
         if(!context.getDirection().operate(context.getSensorReading().getDataAsDouble(),
                 context.getThreshold())){
             //threshold has not been met
