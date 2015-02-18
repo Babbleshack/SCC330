@@ -15,16 +15,20 @@ public class SunspotPort
     // PORTS FOR SENSORS
     public static final int DISCOVERY_PORT      = 90;
     public static final int SWITCH_PORT         = 100;
-    public static final int THERMO_PORT         = 110;
-    public static final int LIGHT_PORT          = 120;
-    public static final int ACCEL_PORT          = 130;
-    public static final int MOTION_PORT         = 140;
+    public static final int THERMO_THRESH         = 110;
+    public static final int THERMO_SAMPLE         = 115;
+    public static final int LIGHT_THRESH          = 120;
+    public static final int LIGHT_SAMPLE          = 125;
+    public static final int ACCEL_THRESH          = 130;
+    public static final int ACCEL_SAMPLE          = 135;
+    public static final int MOTION_THRESH         = 140;
     public static final int PING_PORT           = 150;
     public static final int TOWER_RECIEVER_PORT = 160;
     public static final int BASE_TOWER_PORT     = 170;
     public static final int WATER_PORT          = 180;
     public static final int BATTERY_PORT        = 190;
-    public static final int BAROMETER_PORT      = 200;
+    public static final int COMPASS_THRESH      = 200;
+    public static final int COMPASS_SAMPLE      = 205;
 
 
     private final int value;

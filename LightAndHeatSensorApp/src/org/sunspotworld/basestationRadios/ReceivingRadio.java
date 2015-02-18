@@ -18,14 +18,11 @@ public class ReceivingRadio implements IReceivingRadio
     //Connection and datagram variables
     private RadiogramConnection radioConn;
     private Datagram datagram;
-   
-    //thread for communicating with SPOT
-    private Thread pollingThread = null;
-
     private String spotAddress = System.getProperty("IEEE_ADDRESS");
-
+    private SunspotPort _port;
     public ReceivingRadio(SunspotPort port) throws IOException
     {
+        _port = port;
         radioConn = (RadiogramConnection) Connector.open("radiogram://:" + port.getPort());
         datagram = radioConn.newDatagram(radioConn.getMaximumLength());   
         System.out.println("Receiving Radio created for " + spotAddress + " on port " + port.getPort());
