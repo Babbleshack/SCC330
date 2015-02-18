@@ -66,6 +66,7 @@ public class TReceivingLightSample implements Runnable
                     _qm.createLightRecord(lightValue,
                             lightReceivingRadio.getReceivedAddress(),
                             System.currentTimeMillis(), _port);
+                    System.out.println("Created Light Sample Record for ID: " + lightReceivingRadio.getReceivedAddress()); 
                 } catch (NullPointerException npe) {
                     System.out.println("lightService: queryManager - NullPointerException");
                 }

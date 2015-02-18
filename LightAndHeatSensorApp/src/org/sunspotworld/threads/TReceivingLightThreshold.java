@@ -66,6 +66,7 @@ public class TReceivingLightThreshold implements Runnable
                     _qm.createLightRecord(lightValue,
                             lightReceivingRadio.getReceivedAddress(),
                             System.currentTimeMillis(), _port);
+                    System.out.println("GOT LIGHT THRESHOLD VAL: " + lightValue);
                 } catch (NullPointerException npe) {
                     System.out.println("lightService: queryManager - NullPointerException");
                 }
