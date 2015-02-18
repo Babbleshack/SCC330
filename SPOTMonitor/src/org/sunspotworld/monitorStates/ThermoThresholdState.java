@@ -6,8 +6,9 @@ package org.sunspotworld.monitorStates;
 import org.sunspotworld.spotMonitors.ThresholdMonitor;
 public class ThermoThresholdState implements IThresholdMonitorState {
     public void checkThresholdCondition(ThresholdMonitor context) {
-        if(context.getThreshold() > context.getSensorReading().getDataAsDouble()){ 
-          //if threshold has not been met an set
+        if(!context.getDirection().operate(context.getSensorReading().getDataAsDouble(),
+                context.getThreshold())){
+            //threshold has not been met
             context.setHasBeenMet(false);
             return;
         }
