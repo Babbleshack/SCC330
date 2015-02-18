@@ -19,6 +19,7 @@ public class ThresholdMonitor extends TaskObservable implements
     private final ISensor sensor;
     private final IThresholdMonitorState monitorState;
     private static final String _TYPE = "THRESHOLD";
+    private boolean _hasBeenMet = false;
     public ThresholdMonitor(ISensor sensor, 
             IThresholdMonitorState state) {
         super(SAMPLE_RATE);
@@ -56,5 +57,13 @@ public class ThresholdMonitor extends TaskObservable implements
 
     public void addMonitorObserver(TaskObserver to) {
         this.addObserver(to);
+    }
+
+    public boolean getHasBeenMet() {
+        return _hasBeenMet;
+    }
+
+    public void setHasBeenMet(boolean hasBeenMet) {
+        _hasBeenMet = hasBeenMet;
     }
 }

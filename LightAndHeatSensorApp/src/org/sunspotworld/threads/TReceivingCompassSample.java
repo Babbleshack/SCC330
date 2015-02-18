@@ -20,7 +20,7 @@ public class TReceivingCompassSample implements Runnable {
         _port = SunspotPort.COMPASS_SAMPLE;
         try {
             _rRadio = RadiosFactory.createReceivingRadio(
-                    new SunspotPort(SunspotPort.COMPASS_THRESH)
+                    new SunspotPort(_port)
             );
             //need radio
         } catch (PortOutOfRangeException ex) {
