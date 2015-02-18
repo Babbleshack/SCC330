@@ -367,18 +367,48 @@ public class QueryManager implements IQueryManager
         }
     }
 
+    private int getLastDigit(int number)
+    {
+        return number % 10;
+    }
     /**
      * Returns a job_id, given a spot address and field column
      */
     public int getJobIdFromSpotAddressReadingFieldPortNumber(String spot_address, String column_name, int port_number) {
-        String getJobId = "SELECT Job.id "
-         + "FROM Job, Spot, Object, Sensor "
-         + "WHERE Spot.spot_address = ? "
-         + "AND Object.spot_id = Spot.id "
-         + "AND Job.object_id = Object.id "
-         + "AND Sensor.field = ? "
-         + "AND Sensor.port_number = ? " 
-         + "AND Sensor.id = Job.sensor_id";
+        String getJobId = null;
+
+        // If our port number ends in 5, we are looking for a sample rate monitor. 
+        // As the web front-end does not store sensors with ports ending in 5 (to prevent duplication),
+        // we need to deduct 5 from the port number and then look for jobs for this sensor 
+        // that do not have a threshold set but do have a sample rate set
+        if(this.getLastDigit(port_number) == 5) {
+            port_number -= 5; 
+            getJobId = "SELECT Job.id "
+             + "FROM Job, Spot, Object, Sensor "
+             + "WHERE Spot.spot_address = ? "
+             + "AND Object.spot_id = Spot.id "
+             + "AND Job.object_id = Object.id " 
+             + "AND Job.threshold IS NULL " 
+             + "AND Job.sample_rate IS NOT NULL "
+             + "AND Sensor.field = ? "
+             + "AND Sensor.port_number = ? " 
+             + "AND Sensor.id = Job.sensor_id";
+
+             
+        // If our port number ends in 0, we are looking for a threshold monitor, so look for jobs 
+        // where sample rate is null
+        // Don't check if threshold is not null because some monitors don't require thresholds
+        } else {
+             getJobId = "SELECT Job.id "
+             + "FROM Job, Spot, Object, Sensor "
+             + "WHERE Spot.spot_address = ? "
+             + "AND Object.spot_id = Spot.id "
+             + "AND Job.object_id = Object.id "
+             + "AND Job.sample_rate IS NULL " 
+             + "AND Sensor.field = ? "
+             + "AND Sensor.port_number = ? " 
+             + "AND Sensor.id = Job.sensor_id";
+        }
 
         try {
             /**
@@ -402,10 +432,11 @@ public class QueryManager implements IQueryManager
                  * Return result
                  */
                 int job_id = result.getInt("Job.id");
-                // System.out.println("Job id: " + job_id);
+                System.out.println("Job id: " + job_id);
                 return job_id;
             } else {
                 System.out.println("No results to get job_id ");
+                System.out.println(record);
                 return -1;
             }
 
