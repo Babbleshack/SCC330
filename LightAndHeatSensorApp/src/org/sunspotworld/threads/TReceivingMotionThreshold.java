@@ -12,10 +12,8 @@ import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
 
-import org.sunspotworld.database.DatabaseConnectionFactory;
-import org.sunspotworld.database.MySQLConnectionManager;
 import org.sunspotworld.database.QueryManager;
-public class TReceivingMotion implements Runnable
+public class TReceivingMotionThreshold implements Runnable
 {
 
     private IMotionMonitor motionMonitor;
@@ -26,7 +24,7 @@ public class TReceivingMotion implements Runnable
 
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TReceivingMotion()
+    public TReceivingMotionThreshold()
     {
         try
         {

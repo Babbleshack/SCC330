@@ -21,7 +21,7 @@ public class LightMonitor implements ILightMonitor
     public LightMonitor()
     {
         try {
-            this.port = new SunspotPort(SunspotPort.LIGHT_PORT);
+            this.port = new SunspotPort(SunspotPort.LIGHT_THRESH);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }

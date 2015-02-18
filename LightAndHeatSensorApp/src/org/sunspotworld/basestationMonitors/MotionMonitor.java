@@ -12,7 +12,7 @@ public class MotionMonitor implements IMotionMonitor
     public MotionMonitor()
     {
         try {
-            this.port = new SunspotPort(SunspotPort.MOTION_PORT);
+            this.port = new SunspotPort(SunspotPort.MOTION_THRESH);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }

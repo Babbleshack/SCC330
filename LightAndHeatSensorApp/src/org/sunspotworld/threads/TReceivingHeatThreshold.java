@@ -7,42 +7,40 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
-import org.sunspotworld.basestationMonitors.ILightMonitor;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
+import org.sunspotworld.basestationMonitors.IThermoMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
 
-import org.sunspotworld.database.DatabaseConnectionFactory;
-import org.sunspotworld.database.MySQLConnectionManager;
 import org.sunspotworld.database.QueryManager;
 
 /**
  * Sample Sun SPOT host application
  */
-public class TReceivingLight implements Runnable
+public class TReceivingHeatThreshold implements Runnable
 {
 
-    private ILightMonitor lightMonitor;
-    private QueryManager queryManager;
+    private final QueryManager _qm;
 
     // Init receiving radio
-    IReceivingRadio lightReceivingRadio;
-
+    private IReceivingRadio thermoReceivingRadio;
+    private final int _port;
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TReceivingLight()
+    public TReceivingHeatThreshold()
     {
+        _port = SunspotPort.THERMO_THRESH;
         try
         {
-            lightMonitor = MonitorFactory.createLightMonitor();
-            lightReceivingRadio = RadiosFactory.createReceivingRadio(lightMonitor.getPort());
-            queryManager = new QueryManager();
+            thermoReceivingRadio = RadiosFactory.createReceivingRadio(
+                new SunspotPort(_port));
         }
         catch(Exception e)
         {
            System.out.println("Unable initiate polling");
         }
+        _qm = new QueryManager();
     }
 
     public void startPolling() throws Exception
@@ -57,16 +55,18 @@ public class TReceivingLight implements Runnable
             try
             {
                 // Read light and heat values
-                int  lightValue  = lightReceivingRadio.receiveLight();
+                double  thermoValue   = thermoReceivingRadio.receiveHeat();
 
                 // Print out light and heat values
-                System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);
+                System.out.println("Message from " + thermoReceivingRadio.getReceivedAddress() + " - " + "Heat: " + thermoValue);
 
                 try
                 {
-                    queryManager.createLightRecord(lightValue, lightReceivingRadio.getReceivedAddress(), System.currentTimeMillis(), SunspotPort.LIGHT_PORT);
+                    _qm.createThermoRecord(thermoValue,
+                            thermoReceivingRadio.getReceivedAddress(),
+                            System.currentTimeMillis(), _port);
                 } catch (NullPointerException npe) {
-                    System.out.println("lightService: queryManager - NullPointerException");
+                    System.out.println("heatService: queryManager - NullPointerException");
                 }
             }
             catch (IOException io)

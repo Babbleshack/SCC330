@@ -12,7 +12,7 @@ public class AccelMonitor implements IAccelMonitor
     public AccelMonitor()
     {
         try {
-            this.port = new SunspotPort(SunspotPort.ACCEL_PORT);
+            this.port = new SunspotPort(SunspotPort.ACCEL_THRESH);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }

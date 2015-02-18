@@ -10,26 +10,28 @@ import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationMonitors.IAccelMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
+import org.sunspotworld.basestationRadios.SunspotPort;
 
 import org.sunspotworld.database.QueryManager;
-public class TReceivingAccel implements Runnable
+public class TReceivingAccelThreshold implements Runnable
 {
 
-    private IAccelMonitor accelMonitor;
-    private QueryManager queryManager;
+    private QueryManager _qm;
 
     // Init receiving radio
     private IReceivingRadio accelReceivingRadio;
-
+    private final int _port;
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TReceivingAccel()
+    public TReceivingAccelThreshold()
     {
+       _port = SunspotPort.ACCEL_THRESH;
         try
         {
-            accelMonitor = MonitorFactory.createAccelMonitor();
-            accelReceivingRadio = RadiosFactory.createReceivingRadio(accelMonitor.getPort());
-            queryManager = new QueryManager();
+            accelReceivingRadio = RadiosFactory.createReceivingRadio(
+                    new SunspotPort(_port)
+            );
+            _qm = new QueryManager();
         }
         catch(Exception e)
         {
@@ -55,8 +57,10 @@ public class TReceivingAccel implements Runnable
                 System.out.println("Message from " + accelReceivingRadio.getReceivedAddress() + " - " + "acceleration: " + accelValue);
 
                 try
-                {
-                    queryManager.createAccelRecord(accelValue, accelReceivingRadio.getReceivedAddress(), System.currentTimeMillis());
+                {   
+                    _qm.createAccelRecord(accelValue, 
+                            accelReceivingRadio.getReceivedAddress(), 
+                            System.currentTimeMillis(), _port);
                 } catch (NullPointerException npe) {
                     System.out.println("accelService: queryManager - NullPointerException");
                 }

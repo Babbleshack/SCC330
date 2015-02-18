@@ -17,7 +17,7 @@ public class ThermoMonitor implements IThermoMonitor
     public ThermoMonitor()
     {
         try {
-            this.port = new SunspotPort(SunspotPort.THERMO_PORT);
+            this.port = new SunspotPort(SunspotPort.THERMO_THRESH);
         } catch (PortOutOfRangeException pe) {
             System.out.println("Port number out of range: " + pe);
         }
