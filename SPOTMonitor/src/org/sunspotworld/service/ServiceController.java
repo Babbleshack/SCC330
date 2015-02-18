@@ -64,37 +64,6 @@ public class ServiceController {
      *      if service 'X' does not appear in array and is running
      *          stop service 'X'
      */
-    public void autoManageServices(int[] serviceIDs, int[] data)
-    {
-        IService service;
-        boolean hasBeenFound;
-        //for each serviceID
-            //if service[id] is not running start it
-        int i;
-             
-        for(Enumeration e = this._services.keys();e.hasMoreElements(); )
-        {
-            hasBeenFound = false;
-            service = (IService)this._services.get(Integer.valueOf(e.nextElement().toString()));
-            for(i = 0;i<serviceIDs.length;i++) {
-                //if e is not found.
-                if(service.getServiceId() == serviceIDs[i]){
-                    hasBeenFound = true;
-                    if(service.isScheduled()) {
-                        service.setData(data[i]);
-                    } else {
-                        service.setData(data[i]);
-                        service.startService();
-                    }
-                }
-            }
-            if(!hasBeenFound && service.isScheduled()) {
-                service.stopService();
-            }
-        }
-        System.out.println("------EXIT SERVICE LOOP----");
-    }
-    
      public void autoManageServices(int[] serviceIDs, int[] data, int[] dir)
     {
         IService service;

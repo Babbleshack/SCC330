@@ -507,7 +507,7 @@ public class QueryManager implements IQueryManager
                     if(result.getString("direction").compareTo("Below") == 0 ) //string are the same
                         output_array.add(Integer.valueOf(Integer.valueOf(0))); // new below threshold
                     else
-                        output_array.add(Integer.valueOf(Integer.valueOf(-1))); //new add threshold
+                        output_array.add(Integer.valueOf(Integer.valueOf(1))); //new above threshold
                 } else { // Both sample rate and threshold not null... shouldn't happen but set up anyway
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(0));

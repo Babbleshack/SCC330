@@ -84,11 +84,11 @@ public class AccelerometerService implements IService, TaskObserver {
     }
     public void setDirection(int dir) {
         if(dir == IOperator.ABOVE)
-            _direction = new GreaterThan();
+            _monitor.setDirection(new GreaterThan());
         else if(dir == IOperator.BELOW)
-            _direction = new LessThan();
+            _monitor.setDirection(new LessThan());
         else 
-            _direction = new NullOperator();
+            _monitor.setDirection(new NullOperator());
     }
     public IOperator getDirecton() {
         return _direction;

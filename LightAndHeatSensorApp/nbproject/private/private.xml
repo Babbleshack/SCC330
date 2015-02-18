@@ -2,18 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingHeatSample.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/SunSpotHostApplication.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingAccelSample.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingCompassSample.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingLightSample.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingMotionThreshold.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/basestationRadios/ReceivingRadio.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingCompassThreshold.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingHeatThreshold.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingAccelThreshold.java</file>
-            <file>file:/home/babbleshack/NetBeansProjects/SCC330/LightAndHeatSensorApp/src/org/sunspotworld/threads/TReceivingLightThreshold.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
