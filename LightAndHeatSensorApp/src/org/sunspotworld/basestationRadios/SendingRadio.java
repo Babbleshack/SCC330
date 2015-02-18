@@ -78,6 +78,7 @@ public class SendingRadio implements ISendingRadio
             
             radioConn.send(datagram);
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("IOException occured while sending ports: " + e);
         }
     }

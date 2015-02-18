@@ -500,15 +500,14 @@ public class QueryManager implements IQueryManager
                     port_number += 5; 
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(sample_rate));
-                    output_array.add(Integer.valueOf(-1)); //no direction needed
+                    output_array.add(Integer.valueOf(Integer.valueOf(-1))); //no direction needed
                 } else if(threshold_null == false && sample_rate_null == true) { // Sample rate is null, threshold is't null, set up threshold
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(threshold));
                     if(result.getString("direction").compareTo("Below") == 0 ) //string are the same
-                        output_array.add(0); // new below threshold
+                        output_array.add(Integer.valueOf(Integer.valueOf(0))); // new below threshold
                     else
-                        output_array.add(1); //new add threshold
-                    output_array.add((Object)result.getString("direction"));
+                        output_array.add(Integer.valueOf(Integer.valueOf(-1))); //new add threshold
                 } else { // Both sample rate and threshold not null... shouldn't happen but set up anyway
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(0));
