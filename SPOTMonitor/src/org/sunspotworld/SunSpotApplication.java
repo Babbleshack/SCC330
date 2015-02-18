@@ -171,7 +171,6 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
           if(portsThresholds.length <= 0)
               continue;
           int arrayLength = portsThresholds.length/3;
-          System.out.println("Array Lenght: " + arrayLength);
           ports = new int[arrayLength];
           serviceParams = new int[arrayLength];
           direction = new int[arrayLength];

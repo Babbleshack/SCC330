@@ -4,6 +4,7 @@
  */
 package org.sunspotworld.spotMonitors;
 
+import operators.IOperator;
 import org.sunspotworld.monitorStates.IThresholdMonitorState;
 import org.sunspotworld.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObservable;
@@ -20,6 +21,7 @@ public class ThresholdMonitor extends TaskObservable implements
     private final IThresholdMonitorState monitorState;
     private static final String _TYPE = "THRESHOLD";
     private boolean _hasBeenMet = false;
+    private IOperator _direction;
     public ThresholdMonitor(ISensor sensor, 
             IThresholdMonitorState state) {
         super(SAMPLE_RATE);
@@ -65,5 +67,11 @@ public class ThresholdMonitor extends TaskObservable implements
 
     public void setHasBeenMet(boolean hasBeenMet) {
         _hasBeenMet = hasBeenMet;
+    }
+    public void setDirection(IOperator direction) {
+        _direction = direction;
+    }
+    public IOperator getDirection(){
+        return _direction;
     }
 }

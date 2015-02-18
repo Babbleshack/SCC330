@@ -5,6 +5,7 @@
  */
 package org.sunspotworld.spotMonitors;
 
+import operators.IOperator;
 import org.sunspotworld.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
@@ -15,6 +16,7 @@ public class SampleMonitor extends TaskObservable implements IMonitor {
     private static final String _TYPE = "SAMPLE";
     private static final int MULTI = 1000;
     public static final long DEFAULT_SAMPLE_RATE = 1000;
+    private IOperator _direction;
     public SampleMonitor(ISensor sensor) {
         super(DEFAULT_SAMPLE_RATE);
         this.sampleRate = sampleRate;
@@ -56,5 +58,11 @@ public class SampleMonitor extends TaskObservable implements IMonitor {
 
     public void addMonitorObserver(TaskObserver to) {
         this.addObserver(to);
+    }
+        public void setDirection(IOperator direction) {
+        _direction = direction;
+    }
+    public IOperator getDirection(){
+        return _direction;
     }
 }

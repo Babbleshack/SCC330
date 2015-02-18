@@ -5,6 +5,7 @@
  */
 package org.sunspotworld.spotMonitors;
 
+import operators.IOperator;
 import org.sunspotworld.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObserver;
 
@@ -30,4 +31,7 @@ public interface IMonitor
      */
     public void setVariable(int data);
     public void addMonitorObserver(TaskObserver to);
+    //Direction stuff
+    public void setDirection(IOperator direction);
+    public IOperator getDirection();
 }
