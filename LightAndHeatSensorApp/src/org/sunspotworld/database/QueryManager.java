@@ -514,7 +514,7 @@ public class QueryManager implements IQueryManager
                 }
                 System.out.println("Port: " + port_number + " - Sample Rate: " +
                         sample_rate + " - Threshold: " + threshold +
-                        " Direction" + result.getString("direction")
+                        " - Direction: " + result.getString("direction")
                 );
 
             }
