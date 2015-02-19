@@ -15,7 +15,7 @@ import org.sunspotworld.sensors.ISensor;
 public class ThresholdMonitor extends TaskObservable implements
         IThresholdMonitor, IMonitor
 {
-    public static final long SAMPLE_RATE = 2 * 1000;
+    public static final long SAMPLE_RATE = 1 * 1000;
     private double threshold = 0;
     private final ISensor sensor;
     private final IThresholdMonitorState monitorState;
