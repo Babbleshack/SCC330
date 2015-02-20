@@ -81,7 +81,7 @@ public class CompassService implements IService, TaskObserver {
     public void update(TaskObservable o, Object arg) {
         LEDController.flashLED(_feedbackLED, _serviceColour);
         _sRadio.sendBarometerReadion(
-                ((IMonitor)o).getSensorReading().getDataAsDouble()
+                ((SensorData)arg).getDataAsDouble()
         );
     }
 

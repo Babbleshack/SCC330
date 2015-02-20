@@ -65,7 +65,7 @@ public class ThermoService implements TaskObserver, IService {
     public void update(TaskObservable o, Object arg) {
         //send data across radio connection.
         LEDController.flashLED(_feedbackLED, _serviceColour);
-        _sRadio.sendHeat(((IMonitor)o).getSensorReading().getDataAsDouble());
+        _sRadio.sendHeat(((SensorData)arg).getDataAsDouble());
         System.out.println("Sent Heat");
     }
     public void update(TaskObservable o) {
