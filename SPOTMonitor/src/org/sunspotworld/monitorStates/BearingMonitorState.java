@@ -9,15 +9,17 @@ import org.sunspotworld.spotMonitors.ThresholdMonitor;
 
 public class BearingMonitorState implements IThresholdMonitorState {
     public void checkThresholdCondition(ThresholdMonitor context) {
-        if(!context.getDirection().operate(context.getSensorReading().getDataAsDouble(),
-                context.getThreshold())){
-            //threshold has not been met
+        boolean result = context.getDirection().operate(
+                context.getSensorReading().getDataAsDouble(),
+                context.getThreshold()
+        );
+        if(context.getHasBeenMet() && !result) { //gone below threshold for first time
             context.setHasBeenMet(false);
-            return;
-        }
-        if(!context.getHasBeenMet()){
-          context.setHasBeenMet(true);
-          context.notifyObservers(context.getSensorReading());
+            context.notifyObservers(context.getThresholdAsSensorReading());
+        } 
+        if(result && !context.getHasBeenMet() ){ //if met set flag and send reading
+            context.notifyObservers(context.getSensorReading());
+            context.setHasBeenMet(true);
         }
     }
 }
