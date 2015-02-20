@@ -15,31 +15,31 @@ import org.sunspotworld.sensors.ISensor;
 public class ThresholdMonitor extends TaskObservable implements
         IThresholdMonitor, IMonitor
 {
-    public static final long SAMPLE_RATE = 1 * 1000;
-    private double threshold = 0;
-    private final ISensor sensor;
-    private final IThresholdMonitorState monitorState;
+    public static final long SAMPLE_RATE = 2 * 1000;
+    private double _threshold;
+    private final ISensor _sensor;
+    private final IThresholdMonitorState _monitorState;
     private static final String _TYPE = "THRESHOLD";
     private boolean _hasBeenMet = false;
     private IOperator _direction;
     public ThresholdMonitor(ISensor sensor, 
             IThresholdMonitorState state) {
         super(SAMPLE_RATE);
-        this.threshold = SAMPLE_RATE;
-        this.monitorState = state;
-        this.sensor = sensor;
+        this._threshold = 0;
+        this._monitorState = state;
+        this._sensor = sensor;
     }
     public void doTask() throws Exception {
-        this.monitorState.checkThresholdCondition(this);
+        this._monitorState.checkThresholdCondition(this);
     }
     public double getThreshold() {
-        return this.threshold;
+        return this._threshold;
     }
     public void setThreshold(double threshold) {
-        this.threshold = threshold;
+        this._threshold = threshold;
     }
     public SensorData getSensorReading() {
-        return this.sensor.getData();
+        return this._sensor.getData();
     }
     public void startMonitor(){
         this.start();
@@ -54,7 +54,7 @@ public class ThresholdMonitor extends TaskObservable implements
         return this._TYPE;
     }
     public void setVariable(int data) {
-        this.threshold = data;
+        this._threshold = (double)data;
     }
 
     public void addMonitorObserver(TaskObserver to) {
@@ -73,5 +73,10 @@ public class ThresholdMonitor extends TaskObservable implements
     }
     public IOperator getDirection(){
         return _direction;
+    }
+
+    public SensorData getThresholdAsSensorReading() {
+        System.out.println("THRESHOLD IS " + this._threshold);
+        return new SensorData(this._threshold);
     }
 }

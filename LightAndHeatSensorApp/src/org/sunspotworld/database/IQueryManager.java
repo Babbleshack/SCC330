@@ -17,7 +17,7 @@ public interface IQueryManager
     public int isSpotExists(String spot_address);
     public String getSpotAddressFromObjectTitle(String object_title);
     public void createSwitchRecord(String switch_id, String spot_address, long time);
-    public void createLightRecord(int light, String spot_address, long time, int port_number);
+    public void createLightRecord(double light, String spot_address, long time, int port_number);
     public void createAccelRecord(double accelData, String spot_address, long time, int port_number);
     public void createThermoRecord(double celciusData, String spot_address, long time, int port_number);
     public void createBarometerRecord(double bearing, String spot_address, long time, int port_number);

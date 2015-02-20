@@ -9,7 +9,7 @@ public interface ISendingRadio
      * Builds a datagram that sends light intensity data to the basestation
      * @param  value the light value to send to the basestation
      */
-    public void sendLight(int value);
+    public void sendLight(double value);
 
     /**
      * Builds a datagram that sends heat data to the basestation

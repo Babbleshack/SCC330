@@ -11,6 +11,7 @@ import operators.IOperator;
 import operators.LessThan;
 import operators.NullOperator;
 import org.sunspotworld.controllers.LEDController;
+import org.sunspotworld.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
 import org.sunspotworld.spotMonitors.IMonitor;
@@ -61,14 +62,14 @@ public class LightService implements IService, TaskObserver {
     public void update(TaskObservable o, Object arg) {
         //send data across radio connection.
         LEDController.flashLED(_feedbackLED, _serviceColour);
-        _sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
+        _sRadio.sendLight(((SensorData)arg).getDataAsDouble());
         System.out.println("Sent Light");
     }
 
     public void update(TaskObservable o) {
         //send data across radio connection.
         LEDController.flashLED(_feedbackLED, _serviceColour);
-        _sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
+        _sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsDouble());
         System.out.println("Sent Light");
     }
     public int getServiceId() {

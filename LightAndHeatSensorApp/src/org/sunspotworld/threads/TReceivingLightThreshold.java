@@ -7,9 +7,7 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
-import org.sunspotworld.basestationMonitors.ILightMonitor;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
-import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
 
@@ -55,7 +53,7 @@ public class TReceivingLightThreshold implements Runnable
             try
             {
                 // Read light and heat values
-                int  lightValue  = lightReceivingRadio.receiveLight();
+                double  lightValue  = lightReceivingRadio.receiveLight();
 
                 // Print out light and heat values
                 System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);

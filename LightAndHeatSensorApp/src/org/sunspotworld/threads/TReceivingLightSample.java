@@ -55,7 +55,7 @@ public class TReceivingLightSample implements Runnable
             try
             {
                 // Read light and heat values
-                int  lightValue  = lightReceivingRadio.receiveLight();
+                double  lightValue  = lightReceivingRadio.receiveLight();
 
                 // Print out light and heat values
                 System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);

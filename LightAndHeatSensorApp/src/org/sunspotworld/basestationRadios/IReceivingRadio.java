@@ -24,7 +24,7 @@ public interface IReceivingRadio
 	 * Receives a datagram sent by the SendingRadio containing light data
 	 * @return light data
 	 */
-	public int receiveLight() throws IOException;
+	public double receiveLight() throws IOException;
 
 	/**
 	 * Receives a datagram sent by the SendingRadio containing a switch id

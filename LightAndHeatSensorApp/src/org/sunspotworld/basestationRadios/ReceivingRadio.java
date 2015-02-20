@@ -40,11 +40,11 @@ public class ReceivingRadio implements IReceivingRadio
         return datagram.readUTF(); 
     }
 
-    public int receiveLight() throws IOException
+    public double receiveLight() throws IOException
     {
         datagram.reset();
         radioConn.receive(datagram); 
-        return datagram.readInt(); 
+        return datagram.readDouble(); 
     }
 
     public double receiveHeat() throws IOException

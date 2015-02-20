@@ -7,8 +7,6 @@ package org.sunspotworld.spotRadios;
 import java.io.IOException;
 
 import com.sun.spot.io.j2me.radiogram.*;
-import com.sun.spot.peripheral.TimeoutException;
-import java.util.Vector;
 
 import javax.microedition.io.*;
 
@@ -36,11 +34,11 @@ public class SendingRadio implements ISendingRadio
        // rdg = (Radiogram)radioConn.newDatagram(rcvConn.getMaximumLength()); 
     }
 
-    public void sendLight(int value)
+    public void sendLight(double value)
     {
         try {
             datagram.reset();
-            datagram.writeInt(value);
+            datagram.writeDouble(value);
             radioConn.send(datagram);
             System.out.println("Light value " + value + " sent...");
         } catch (Exception e) {

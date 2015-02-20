@@ -5,6 +5,7 @@
 package org.sunspotworld.homePatterns; 
 import com.sun.spot.service.Task;
 import java.util.Vector;
+import org.sunspotworld.data.SensorData;
 //import org.sunspotworld.Patterns.Observer;
 
 
@@ -87,6 +88,7 @@ public abstract class TaskObservable extends Task {
 	 */
 	public void notifyObservers(Object arg)
 	{
+            System.out.println("OBSERVABLE PRINT: " + ((SensorData)arg).getDataAsDouble());
 		for(int i= 0; i<observers.size(); i++)
 		{
 			((TaskObserver)observers.elementAt(i)).update(this, arg);

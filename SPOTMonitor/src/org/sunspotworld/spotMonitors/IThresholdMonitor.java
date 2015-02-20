@@ -6,4 +6,6 @@ public interface IThresholdMonitor {
     void setThreshold(double threshold);
     boolean getHasBeenMet();
     void setHasBeenMet(boolean hasBeenMet);
+    SensorData getSensorReading();
+    SensorData getThresholdAsSensorReading();
 }

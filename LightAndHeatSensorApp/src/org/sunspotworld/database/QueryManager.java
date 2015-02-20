@@ -700,7 +700,7 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createLightRecord(int light, String spot_address, long time, int port_number) {
+    public void createLightRecord(double light, String spot_address, long time, int port_number) {
         String insertLightRecord = "INSERT INTO Light"
                 + "(light_intensity, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -709,7 +709,7 @@ public class QueryManager implements IQueryManager
             if(job_id > 0) {
                 PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertLightRecord);
-                insert.setInt(1, light);
+                insert.setDouble(1, light);
                 insert.setString(2, spot_address);
                 insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
                 insert.setInt(4, job_id);
