@@ -71,13 +71,13 @@ public class ServiceController {
         //for each serviceID
             //if service[id] is not running start it
         int i;
-             
+             System.out.println("AUTOMANAGING SERVICES");
         for(Enumeration e = this._services.keys();e.hasMoreElements(); )
         {
             hasBeenFound = false;
             service = (IService)this._services.get(Integer.valueOf(e.nextElement().toString()));
             for(i = 0;i<serviceIDs.length;i++) {
-                //if e is not found.
+                //if e is found.
                 if(service.getServiceId() == serviceIDs[i]){
                     hasBeenFound = true;
                     if(service.isScheduled()) {

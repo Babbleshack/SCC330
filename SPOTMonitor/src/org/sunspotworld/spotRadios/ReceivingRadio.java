@@ -43,6 +43,8 @@ public class ReceivingRadio implements IReceivingRadio
      */
     public int[] receiveDiscoverResponse()
     {
+        final int minLenght = 3;
+        int[] portsThresholds;
         try {
             String spot_address = "";
             while(!spot_address.equals(spotAddress)) {
@@ -53,13 +55,22 @@ public class ReceivingRadio implements IReceivingRadio
             
             
                 int datagramLength = datagram.readInt();
-                int[] portsThresholds = new int[datagramLength];
+                if(datagramLength < minLenght){
+                    portsThresholds = new int[3];
+                    for(int i = 0; i < 2; i++){
+                        portsThresholds[i] = -1;
+                    }
+                    return portsThresholds;
+                }
+                portsThresholds = new int[datagramLength];
             
                 for (int i = 0;i < datagramLength; i += 3) {
                     portsThresholds[i] = datagram.readInt();
                     portsThresholds[i+1] = datagram.readInt();
                     portsThresholds[i+2] = datagram.readInt();
                 }
+                
+                    
             
             return portsThresholds;
         } catch (IOException ex) {

@@ -52,7 +52,8 @@ public class LightService implements IService, TaskObserver {
     public void stopService() {
         _monitor.stopMonitor();
         LEDController.turnLEDOff(
-                LEDController.getLED(LEDController.LIGHT_LED));
+                LEDController.getLED(LEDController.LIGHT_LED)
+        );
         System.out.println("Stopped Light Service");
     }
     public boolean isScheduled() {

@@ -9,7 +9,6 @@ package org.sunspotworld.threads;
 import java.io.IOException;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationRadios.ISendingRadio;
-import org.sunspotworld.basestationMonitors.IThermoMonitor;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
 import org.sunspotworld.homeCollections.ArrayList;

@@ -41,7 +41,7 @@ public class SendingRadio implements ISendingRadio
             // write spot_address first
             datagram.writeUTF(spot_address);
             datagram.writeInt(portsThresholds.size());
-
+            
             // now write ports + thresh
             for (int i = 0; i < portsThresholds.size(); i += 3) {
                 switch(((Integer)portsThresholds.get(i)).intValue()) {
