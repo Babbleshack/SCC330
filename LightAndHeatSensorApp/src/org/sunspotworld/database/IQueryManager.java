@@ -4,7 +4,7 @@
  */
 package org.sunspotworld.database;
 
-import org.sunspotworld.homeCollections.ArrayList;
+import java.util.ArrayList;
 
 /**
  *
@@ -34,5 +34,10 @@ public interface IQueryManager
 
 
     public void createZoneRecord(int newZoneID, String spotAddress, String towerAddress, long currentTimeMillis, int port_number);
+    //basestation stuff
+    public boolean checkIfBaseStationExists(String bsAddress);
+    public void addBasestation(String bsAddress);
+    public boolean doesSpotBelongToBS(String bsAddress, String spotAddress);
+    public ArrayList<String> getSpots(String bsAddress);
     
 }

@@ -6,23 +6,9 @@
 
 package org.sunspotworld;
 
-import org.sunspotworld.threads.TDiscovery;
-import org.sunspotworld.threads.TReceivingSwitch;
-import org.sunspotworld.threads.TReceivingHeatThreshold;
-import org.sunspotworld.threads.TReceivingAccelThreshold;
-import org.sunspotworld.threads.TReceivingLightThreshold;
-import org.sunspotworld.threads.TZoneController;
 import com.sun.spot.peripheral.ota.OTACommandServer;
-import org.sunspotworld.threads.TReceivingBattery;
-import org.sunspotworld.threads.TReceivingWater;
-
 import org.sunspotworld.database.QueryManager;
-import org.sunspotworld.threads.TReceivingAccelSample;
-import org.sunspotworld.threads.TReceivingCompassSample;
-import org.sunspotworld.threads.TReceivingCompassThreshold;
-import org.sunspotworld.threads.TReceivingHeatSample;
-import org.sunspotworld.threads.TReceivingLightSample;
-
+import org.sunspotworld.threads.*;
 /**
  * Host application that polls for temperature and
  * light updates from the Java Sun SPOTs
