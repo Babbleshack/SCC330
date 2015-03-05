@@ -1129,6 +1129,7 @@ public class QueryManager implements IQueryManager
 		+ "WHERE Basestation.basestation_address = ?";
 		ArrayList<String> spots = null;
 		try {
+		   spots = new ArrayList();
 		   PreparedStatement getSpots =
 			connection.getConnection().prepareStatement(getSpotsQuery);
 		    getSpots.setString(1, bsAddress);

@@ -9,6 +9,7 @@ package org.sunspotworld;
 import com.sun.spot.peripheral.ota.OTACommandServer;
 import org.sunspotworld.database.QueryManager;
 import org.sunspotworld.threads.*;
+import java.util.concurrent.ConcurrentHashMap;
 /**
  * Host application that polls for temperature and
  * light updates from the Java Sun SPOTs
@@ -32,7 +33,6 @@ public class SunSpotHostApplication
     public SunSpotHostApplication() throws Exception
     {
         this.qm = new QueryManager(); 
-        startPolling();
     }
 
     /**
@@ -40,8 +40,10 @@ public class SunSpotHostApplication
      */
     public void startPolling() throws Exception
     {
+	//create share map
+	ConcurrentHashMap<String, String> addressMap = new ConcurrentHashMap<String, String>(); 
         //declare and instantiate threads.
-        discoveryThread = new Thread(new TDiscovery(),"discoveryService");
+        discoveryThread = new Thread(new TDiscovery(addressMap),"discoveryService");
         switchThread = new Thread(new TReceivingSwitch(),"switchService");
         heatThreadThresh = new Thread(new TReceivingHeatThreshold(),"heatService");
         lightThreadThresh = new Thread(new TReceivingLightThreshold(),"lightService");
@@ -102,6 +104,7 @@ public class SunSpotHostApplication
         ota.start();
         //OTACommandServer.start("HostApplication");
         SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication();
+	SunSpotHostApplication.startPolling();
 
     }
 }
