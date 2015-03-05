@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.ResultSet;
 import java.util.Calendar;
-import org.sunspotworld.homeCollections.ArrayList;
+import java.util.ArrayList;
 import org.sunspotworld.valueObjects.LightData;
 import org.sunspotworld.valueObjects.ThermoData;
 import org.sunspotworld.valueObjects.AccelData;
@@ -1064,7 +1064,7 @@ public class QueryManager implements IQueryManager
 		String checkBaseStation = "SELECT * FROM Basestation WHERE basestation_address = ?";
 		try {
 		    PreparedStatement record =
-			connection.getConnection().prepareStatement(isSpotExists);
+			connection.getConnection().prepareStatement(checkBaseStation);
 		    record.setString(1, bsAddress);
 		    ResultSet result = record.executeQuery();
 		    if(result.next())
@@ -1087,7 +1087,7 @@ public class QueryManager implements IQueryManager
 	try {
 	   PreparedStatement insert =
 		connection.getConnection().prepareStatement(createBS);
-	    insert.setString(1, spot_address);
+	    insert.setString(1, bsAddress);
 	    insert.setDate(2, new Date(System.currentTimeMillis()));
 	    insert.executeUpdate();
 	} catch (SQLException e) {
@@ -1123,7 +1123,7 @@ public class QueryManager implements IQueryManager
 	 * get list of spots belonging to this basestation 'bsAddress'
 	 */
 	public ArrayList<String> getSpots(String bsAddress){
-		String getSpots = "SELECT Spot.spot_address Spot.basestation_id "
+		String getSpotsQuery = "SELECT Spot.spot_address Spot.basestation_id "
 			+ "Basestation.id FROM Spot "
 			+ "INNER JOIN Basestaion "
 			+ "ON Spot.basestation_id = Basestation.id "
@@ -1131,7 +1131,7 @@ public class QueryManager implements IQueryManager
 		ArrayList<String> spots = null;
 		try {
 		   PreparedStatement getSpots =
-			connection.getConnection().prepareStatement(getSpots);
+			connection.getConnection().prepareStatement(getSpotsQuery);
 		    getSpots.setString(1, bsAddress);
 		    ResultSet res = getSpots.executeQuery();
 		    while(res.next()){
