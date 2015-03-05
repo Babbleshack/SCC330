@@ -926,7 +926,7 @@ public class QueryManager implements IQueryManager
         ArrayList thermoDatums = new ArrayList();
         //find timestamps
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-        Timestamp lastWeekTimestamp = findDateRange(currentTimestamp, -1);
+         Timestamp lastWeekTimestamp = findDateRange(currentTimestamp, -1);
         //queary db for data
         String getLastWeek = "SELECT * FROM Heat WHERE "
             + "created_at >= ? "//is greater than last week
@@ -1037,7 +1037,7 @@ public class QueryManager implements IQueryManager
                 + ("VALUES (?,?,?,?,?)");
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "heat_temperature", port_number);
-            if(job_id > 0) {
+           if(job_id > 0) {
                PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertBearingRecord);
                 insert.setDouble(1, bearing);
@@ -1055,4 +1055,94 @@ public class QueryManager implements IQueryManager
                 + "createThermoRecord: " + e);
         }
     }
+
+	/*
+	* Check if basestation exists in database
+	* returns boolean
+	*/
+	public boolean checkIfBaseStationExists(String bsAddress) {
+		String checkBaseStation = "SELECT * FROM Basestation WHERE basestation_address = ?";
+		try {
+		    PreparedStatement record =
+			connection.getConnection().prepareStatement(isSpotExists);
+		    record.setString(1, bsAddress);
+		    ResultSet result = record.executeQuery();
+		    if(result.next())
+			return true;
+		    else
+			return false;
+		} catch (SQLException e) {
+			System.err.println("FAILED TO CHECK BASESTATION EXISTS");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	/*
+	 * add basestation record
+	 */
+	public void addBasestation(String bsAddress){
+	String createBS = "INSERT INTO Basestation"
+		+ "(basestation_address, created_at)"
+		+ "VALUES (?,?)";
+	try {
+	   PreparedStatement insert =
+		connection.getConnection().prepareStatement(createBS);
+	    insert.setString(1, spot_address);
+	    insert.setDate(2, new Date(System.currentTimeMillis()));
+	    insert.executeUpdate();
+	} catch (SQLException e) {
+		System.err.println("FAILED TO CREATE BASESTAION RECORD\n");
+		e.printStackTrace();
+	}
+
+	}
+	/*
+	 * checks if spot belongs to BS
+	 */
+	public boolean doesSpotBelongToBS(String bsAddress, String spotAddress){
+		String getSpots = "SELECT Spot.spot_address Spot.basestation_id "
+			+ "Basestation.id FROM Spot "
+			+ "INNER JOIN Basestaion "
+			+ "ON Spot.basestation_id = Basestation.id "
+			+ "WHERE Spot.spot_Address = ?";
+		try {
+		   PreparedStatement doCheck =
+			connection.getConnection().prepareStatement(getSpots);
+		    doCheck.setString(1, spotAddress);
+		    ResultSet res = doCheck.executeQuery();
+		    if(!res.next())
+			    return false; //there was no match
+		    return true; //jobs a good'un
+		} catch (SQLException e) {
+			System.err.println("FAILED TO CREATE BASESTAION RECORD\n");
+			e.printStackTrace();
+		}
+		return false;
+	}
+	/*
+	 * get list of spots belonging to this basestation 'bsAddress'
+	 */
+	public ArrayList<String> getSpots(String bsAddress){
+		String getSpots = "SELECT Spot.spot_address Spot.basestation_id "
+			+ "Basestation.id FROM Spot "
+			+ "INNER JOIN Basestaion "
+			+ "ON Spot.basestation_id = Basestation.id "
+			+ "WHERE Basestation.basestation_address = ?";
+		ArrayList<String> spots = null;
+		try {
+		   PreparedStatement getSpots =
+			connection.getConnection().prepareStatement(getSpots);
+		    getSpots.setString(1, bsAddress);
+		    ResultSet res = getSpots.executeQuery();
+		    while(res.next()){
+			spots.add(res.getString("Spot.spot_address"));	
+		    }
+		    return spots;
+		} catch (SQLException e) {
+			System.err.println("FAILED TO CREATE BASESTAION RECORD\n");
+			e.printStackTrace();
+		}
+		return spots;
+		
+	}
 }
