@@ -1100,9 +1100,9 @@ public class QueryManager implements IQueryManager
 	 * checks if spot belongs to BS
 	 */
 	public boolean doesSpotBelongToBS(String bsAddress, String spotAddress){
-		String getSpots = "SELECT Spot.spot_address Spot.basestation_id "
+		String getSpots = "SELECT Spot.spot_address, Spot.basestation_id, "
 			+ "Basestation.id FROM Spot "
-			+ "INNER JOIN Basestaion "
+			+ "INNER JOIN Basestation "
 			+ "ON Spot.basestation_id = Basestation.id "
 			+ "WHERE Spot.spot_Address = ?";
 		try {
@@ -1123,11 +1123,10 @@ public class QueryManager implements IQueryManager
 	 * get list of spots belonging to this basestation 'bsAddress'
 	 */
 	public ArrayList<String> getSpots(String bsAddress){
-		String getSpotsQuery = "SELECT Spot.spot_address Spot.basestation_id "
-			+ "Basestation.id FROM Spot "
-			+ "INNER JOIN Basestaion "
-			+ "ON Spot.basestation_id = Basestation.id "
-			+ "WHERE Basestation.basestation_address = ?";
+		String getSpotsQuery = "SELECT Spot.spot_address FROM Spot " 
+		+ "INNER JOIN Basestation " 
+		+ "ON Spot.basestation_id = Basestation.id "
+		+ "WHERE Basestation.basestation_address = ?;
 		ArrayList<String> spots = null;
 		try {
 		   PreparedStatement getSpots =
