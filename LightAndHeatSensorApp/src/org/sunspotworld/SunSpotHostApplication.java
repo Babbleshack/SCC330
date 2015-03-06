@@ -23,7 +23,7 @@ public class SunSpotHostApplication
             heatThreadThresh, lightThreadThresh, accelThreadThresh, 
             zoneThread, waterThread, batteryMonitor,
             CompassThreadThresh, heatSampleThread, lightSampleThread,
-            accelSampleThread, CompassSampleThread= null;
+            accelSampleThread, CompassSampleThread, baseStationDiscovey= null;
     
     private QueryManager qm  = null; 
 
@@ -42,20 +42,24 @@ public class SunSpotHostApplication
     {
 	//create share map
 	ConcurrentHashMap<String, String> addressMap = new ConcurrentHashMap<String, String>(); 
+        //get basestation discovery started
+        baseStationDiscovey = new Thread(new TBaseStationDiscovery(new QueryManager(), addressMap),"TBaseStationDiscovery");
+        baseStationDiscovey.setDaemon(true);
+        baseStationDiscovey.start();
         //declare and instantiate threads.
         discoveryThread = new Thread(new TDiscovery(addressMap),"discoveryService");
-        switchThread = new Thread(new TReceivingSwitch(),"switchService");
-        heatThreadThresh = new Thread(new TReceivingHeatThreshold(),"heatService");
-        lightThreadThresh = new Thread(new TReceivingLightThreshold(),"lightService");
-        accelThreadThresh = new Thread(new TReceivingAccelThreshold(),"accelService");
-        CompassThreadThresh = new Thread(new TReceivingCompassThreshold(), "BearingService");
-        heatSampleThread = new Thread(new TReceivingHeatSample(),"heatServiceSample");
-        lightSampleThread = new Thread(new TReceivingLightSample(),"lightServiceSample");
-        accelSampleThread = new Thread(new TReceivingAccelSample(),"accelServiceSample");
-        CompassSampleThread = new Thread(new TReceivingCompassSample(), "BearingServiceSample");
-        zoneThread = new Thread(new TZoneController(), "zoneControllerService");
-        waterThread = new Thread(new TReceivingWater(), "waterLevelService");
-        batteryMonitor = new Thread(new TReceivingBattery(), "BatteryMonitorService");
+        switchThread = new Thread(new TReceivingSwitch(addressMap),"switchService");
+        heatThreadThresh = new Thread(new TReceivingHeatThreshold(addressMap),"heatService");
+        lightThreadThresh = new Thread(new TReceivingLightThreshold(addressMap),"lightService");
+        accelThreadThresh = new Thread(new TReceivingAccelThreshold(addressMap),"accelService");
+        CompassThreadThresh = new Thread(new TReceivingCompassThreshold(addressMap), "BearingService");
+        heatSampleThread = new Thread(new TReceivingHeatSample(addressMap),"heatServiceSample");
+        lightSampleThread = new Thread(new TReceivingLightSample(addressMap),"lightServiceSample");
+        accelSampleThread = new Thread(new TReceivingAccelSample(addressMap),"accelServiceSample");
+        CompassSampleThread = new Thread(new TReceivingCompassSample(addressMap), "BearingServiceSample");
+        zoneThread = new Thread(new TZoneController(addressMap), "zoneControllerService");
+        waterThread = new Thread(new TReceivingWater(addressMap), "waterLevelService");
+        batteryMonitor = new Thread(new TReceivingBattery(addressMap), "BatteryMonitorService");
         
         //set Daemons
         discoveryThread.setDaemon(true);
