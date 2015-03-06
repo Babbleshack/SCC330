@@ -10,6 +10,7 @@ import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.cache.CacheFactory;
 import org.sunspotworld.cache.IZoneCache;
 import org.sunspotworld.database.IQueryManager;
@@ -21,7 +22,8 @@ public class TZoneController implements Runnable
 	private IReceivingRadio rRadio;
         private IZoneCache zCache;
         private IQueryManager qm;
-	public TZoneController()
+        private final ConcurrentHashMap<String, String> _addressMap;
+	public TZoneController(ConcurrentHashMap addressMap)
 	{
 		try 
 		{
@@ -31,22 +33,17 @@ public class TZoneController implements Runnable
 		}
                 qm = new QueryManager();
 		zCache = CacheFactory.createZoneCache(qm);
+                _addressMap = addressMap;
 	}
 	public void run()
 	{
 		while(true)
 		{
 			try {
-	            /**
-	             * receive address.
-	             * get location from db
-	             * go nuts
-	             * still basically the same only with 
-	             * Chocolate Brownies
-	             */              
-				String towerAddress = rRadio.receiveZonePacket();
-				String spotAddress = rRadio.getReceivedAddress();
-                                
+	            
+                String towerAddress = rRadio.receiveZonePacket();
+                String spotAddress = rRadio.getReceivedAddress();
+                if(!_addressMap.contains(spotAddress)) continue;                
                int receivedSpotZoneID = qm.getZoneIdFromSpotAddress(spotAddress);
                int receivedTowerZoneID = qm.getZoneIdFromSpotAddress(towerAddress);
                 // int receivedSpotZoneID = zCache.getZoneID(spotAddress);

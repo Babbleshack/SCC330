@@ -5,6 +5,7 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 import org.sunspotworld.basestationRadios.RadiosFactory;
@@ -16,7 +17,8 @@ public class TReceivingCompassThreshold implements Runnable {
     private final QueryManager _qm;
     private IReceivingRadio _rRadio;
     private final int _port;
-    public TReceivingCompassThreshold() {
+    private final ConcurrentHashMap<String, String> _addressMap;
+    public TReceivingCompassThreshold(ConcurrentHashMap addressMap) {
         _port = SunspotPort.COMPASS_THRESH;
         try {
             _rRadio = RadiosFactory.createReceivingRadio(
@@ -27,6 +29,7 @@ public class TReceivingCompassThreshold implements Runnable {
             System.err.println("error with radio in Barometer thread");
         }
         _qm = new QueryManager();
+        _addressMap = addressMap;
     }
 
     public void run() {
@@ -34,6 +37,8 @@ public class TReceivingCompassThreshold implements Runnable {
         while(true) {
             try {
                 angle = _rRadio.receiveBarometer();
+                String address = _rRadio.getReceivedAddress();
+                if(!_addressMap.contains(address)) continue;    
                 _qm.createBarometerRecord(angle, _rRadio.getReceivedAddress(),
                         System.currentTimeMillis(), _port);
             } catch (IOException ex) {

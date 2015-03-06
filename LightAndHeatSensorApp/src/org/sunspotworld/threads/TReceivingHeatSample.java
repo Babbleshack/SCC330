@@ -7,9 +7,8 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
-import org.sunspotworld.basestationMonitors.IThermoMonitor;
-import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
 
@@ -26,9 +25,10 @@ public class TReceivingHeatSample implements Runnable
     // Init receiving radio
     private IReceivingRadio thermoReceivingRadio;
     private final int _port;
+    private final ConcurrentHashMap<String, String> _addressMap;
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TReceivingHeatSample()
+    public TReceivingHeatSample(ConcurrentHashMap addressMap)
     {
         _port = SunspotPort.THERMO_SAMPLE;
         try
@@ -41,6 +41,7 @@ public class TReceivingHeatSample implements Runnable
            System.out.println("Unable initiate polling");
         }
         _qm = new QueryManager();
+        _addressMap = addressMap;
     }
 
     public void startPolling() throws Exception
@@ -56,7 +57,8 @@ public class TReceivingHeatSample implements Runnable
             {
                 // Read light and heat values
                 double  thermoValue   = thermoReceivingRadio.receiveHeat();
-
+                String address = thermoReceivingRadio.getReceivedAddress();
+                if(!_addressMap.contains(address)) continue;    
                 // Print out light and heat values
                 System.out.println("Message from " + thermoReceivingRadio.getReceivedAddress() + " - " + "Heat: " + thermoValue);
 

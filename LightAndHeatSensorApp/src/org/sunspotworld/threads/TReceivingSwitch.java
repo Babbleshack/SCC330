@@ -1,13 +1,12 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationMonitors.ISwitchMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 
-import org.sunspotworld.database.DatabaseConnectionFactory;
-import org.sunspotworld.database.MySQLConnectionManager;
 import org.sunspotworld.database.QueryManager;
 
 /**
@@ -24,7 +23,8 @@ public class TReceivingSwitch implements Runnable
 
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TReceivingSwitch()
+    private final ConcurrentHashMap<String, String> _addressMap;
+    public TReceivingSwitch(ConcurrentHashMap addressMap)
     {
         try
         {
@@ -36,6 +36,7 @@ public class TReceivingSwitch implements Runnable
         {
            System.out.println("Unable initiate polling");
         }
+        _addressMap = addressMap;
     }
 
     public void startPolling() throws Exception

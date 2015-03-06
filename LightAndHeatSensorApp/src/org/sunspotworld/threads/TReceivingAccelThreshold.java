@@ -6,9 +6,8 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
-import org.sunspotworld.basestationMonitors.IAccelMonitor;
-import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
 
@@ -21,9 +20,10 @@ public class TReceivingAccelThreshold implements Runnable
     // Init receiving radio
     private IReceivingRadio accelReceivingRadio;
     private final int _port;
+    private final ConcurrentHashMap<String, String> _addressMap;
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TReceivingAccelThreshold()
+    public TReceivingAccelThreshold(ConcurrentHashMap addressMap)
     {
        _port = SunspotPort.ACCEL_THRESH;
         try
@@ -37,6 +37,7 @@ public class TReceivingAccelThreshold implements Runnable
         {
            System.out.println("Unable initiate polling");
         }
+        _addressMap = addressMap;
     }
 
     public void startPolling() throws Exception
@@ -52,6 +53,8 @@ public class TReceivingAccelThreshold implements Runnable
             {
                 // Read accel
                 double  accelValue   = accelReceivingRadio.receiveAccel();
+                String address = accelReceivingRadio.getReceivedAddress();
+                if(!_addressMap.contains(address)) continue;
 
                 // Print out accel
                 System.out.println("Message from " + accelReceivingRadio.getReceivedAddress() + " - " + "acceleration: " + accelValue);

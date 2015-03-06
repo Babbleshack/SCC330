@@ -6,6 +6,7 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationMonitors.IMotionMonitor;
 import org.sunspotworld.basestationMonitors.MonitorFactory;
@@ -21,10 +22,11 @@ public class TReceivingMotionThreshold implements Runnable
 
     // Init receiving radio
     IReceivingRadio motionReceivingRadio;
+    private final ConcurrentHashMap<String, String> _addressMap;
 
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TReceivingMotionThreshold()
+    public TReceivingMotionThreshold(ConcurrentHashMap addressMap)
     {
         try
         {
@@ -36,6 +38,7 @@ public class TReceivingMotionThreshold implements Runnable
         {
            System.out.println("Unable initiate polling");
         }
+        _addressMap = addressMap;
     }
 
     public void startPolling() throws Exception
@@ -51,7 +54,8 @@ public class TReceivingMotionThreshold implements Runnable
             {
                 // Read accel
                 long  motionValue = motionReceivingRadio.receiveMotion();
-
+                String address = motionReceivingRadio.getReceivedAddress();
+                if(!_addressMap.contains(address)) continue; 
                 // Print out accel
                 System.out.println("Message from " + motionReceivingRadio.getReceivedAddress() + " - " + "motion: " + motionValue);
 

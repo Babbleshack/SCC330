@@ -6,9 +6,8 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
-import org.sunspotworld.basestationMonitors.IAccelMonitor;
-import org.sunspotworld.basestationMonitors.MonitorFactory;
 import org.sunspotworld.basestationRadios.RadiosFactory;
 import org.sunspotworld.basestationRadios.SunspotPort;
 
@@ -21,9 +20,10 @@ public class TReceivingAccelSample implements Runnable
     // Init receiving radio
     private IReceivingRadio accelReceivingRadio;
     private final int _port;
+    private final ConcurrentHashMap<String, String> _addressMap;
     // creates an instance of SunSpotHostApplication class and initialises
     // instance variables
-    public TReceivingAccelSample()
+    public TReceivingAccelSample(ConcurrentHashMap addressMap)
     {
        _port = SunspotPort.ACCEL_SAMPLE;
         try
@@ -37,6 +37,7 @@ public class TReceivingAccelSample implements Runnable
         {
            System.out.println("Unable initiate polling");
         }
+        _addressMap = addressMap;
     }
 
     public void run()

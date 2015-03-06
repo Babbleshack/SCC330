@@ -5,6 +5,7 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 import org.sunspotworld.basestationRadios.RadiosFactory;
@@ -16,8 +17,8 @@ public class TReceivingBattery implements Runnable {
 
     private IQueryManager qManage;
     private IReceivingRadio rRadio;
-    
-    public TReceivingBattery()
+    private final ConcurrentHashMap<String, String> _addressMap;
+    public TReceivingBattery(ConcurrentHashMap addressMap)
     {
         try {
             qManage = new QueryManager();
@@ -26,6 +27,7 @@ public class TReceivingBattery implements Runnable {
         } catch (PortOutOfRangeException ex) {
             ex.printStackTrace();
         }
+        _addressMap = addressMap;
     }
     public void run() {
         int batteryLevel = 0;
@@ -34,7 +36,9 @@ public class TReceivingBattery implements Runnable {
             try {
             batteryLevel =
                     rRadio.receiveBatteryLevel();//<--- goes straght into DB
-                qManage.updateBatteryPower(rRadio.getReceivedAddress(), batteryLevel);
+            String address = rRadio.getReceivedAddress();
+            if(!_addressMap.contains(address)) continue;    
+            qManage.updateBatteryPower(rRadio.getReceivedAddress(), batteryLevel);
                 //NEED RECEIVING METHODS
                 //DB METHOD
             } catch (IOException ex) {

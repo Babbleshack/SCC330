@@ -6,6 +6,7 @@
 package org.sunspotworld.threads;
 
 import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
 import org.sunspotworld.basestationRadios.IReceivingRadio;
 import org.sunspotworld.basestationRadios.PortOutOfRangeException;
 import org.sunspotworld.basestationRadios.RadiosFactory;
@@ -18,8 +19,9 @@ public class TReceivingWater implements Runnable
 {
     private IReceivingRadio rRadio;
     private IQueryManager qManage;
+    private final ConcurrentHashMap<String, String> _addressMap;
     
-    public TReceivingWater()
+    public TReceivingWater(ConcurrentHashMap addressMap)
     {
         try {
             rRadio = RadiosFactory.createReceivingRadio(
@@ -29,6 +31,7 @@ public class TReceivingWater implements Runnable
             ex.printStackTrace();
         }
         qManage = new QueryManager();
+        _addressMap = addressMap;
     }
 
     public void run() {
@@ -39,6 +42,8 @@ public class TReceivingWater implements Runnable
                  * Receive data and put into db.
                  */
                 int waterLevel = rRadio.receiveWater();
+                String address = rRadio.getReceivedAddress();
+                if(!_addressMap.contains(address)) continue;
                 qManage.createWaterRecord(waterLevel, rRadio.getReceivedAddress(),
                         System.currentTimeMillis(), SunspotPort.WATER_PORT);
             } catch (IOException ex) {
