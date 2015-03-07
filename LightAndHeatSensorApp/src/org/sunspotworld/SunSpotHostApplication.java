@@ -37,6 +37,7 @@ public class SunSpotHostApplication
         this.qm = new QueryManager(); 
 	Properties p = new Properties();
 	//p.list().println("Printing properties \n");
+	System.out.println("ADDRESS IS: " + System.getProperty("IEEE_ADDRESS"));
     }
 
     /**
