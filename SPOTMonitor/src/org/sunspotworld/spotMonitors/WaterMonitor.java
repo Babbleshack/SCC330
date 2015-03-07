@@ -30,7 +30,6 @@ public class WaterMonitor extends TaskObservable implements
         cupState = new FullState(); //set state of cup to full
         fillLevelPercentage = MAX_FILL_PERCENTAGE;
         this.sw1.addISwitchListener(this);
-        System.out.println("Started Water Monitor");
     }
     /**
      * Repeatedly executed every sample rate.
@@ -49,17 +48,13 @@ public class WaterMonitor extends TaskObservable implements
         }
         //if water level changes then notify Observers 
         double currentWaterLevel = this.fillLevelPercentage;
-        System.out.println("==================================================");
         averageReading = averageReading/SAMPLE_FREQ;
-        System.out.println("ANGLE [" + averageReading + "]");
-        System.out.println("BEFORE POURING [" + this.fillLevelPercentage + "]");
         this.pour(averageReading);
         if(currentWaterLevel != this.fillLevelPercentage)
         { 
             this.hasChanged();
             this.notifyObservers();
         }
-        System.out.println("After POURING [" + this.fillLevelPercentage + "]");
     }
     /**
      * call locally to determine cup fill level.

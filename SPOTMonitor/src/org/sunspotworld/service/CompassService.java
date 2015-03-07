@@ -19,6 +19,7 @@ import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.RadiosFactory;
 import org.sunspotworld.spotRadios.SunspotPort;
+import org.sunspotworld.data.SensorData;
 
 
 public class CompassService implements IService, TaskObserver {
