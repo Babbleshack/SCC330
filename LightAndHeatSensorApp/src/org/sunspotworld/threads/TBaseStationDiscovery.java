@@ -8,15 +8,25 @@ import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import org.sunspotworld.database.IQueryManager;
+import com.sun.spot.peripheral.radio.BasestationManager;
+import com.sun.spot.peripheral.radio.BasestationManager.DiscoverResult;
 
 public class TBaseStationDiscovery implements Runnable {
 	private final IQueryManager _qm;
-	private final String ADDRESS;
+	private String ADDRESS;
 	private final ConcurrentHashMap<String, String> _addressMap;
 	public TBaseStationDiscovery(IQueryManager qm, ConcurrentHashMap addressMap) {
 		_qm = qm;
-		ADDRESS = System.getProperty("IEEE_ADDRESS");
-		System.out.println("Address is: " + ADDRESS);
+		//get BS address
+		try {
+			BasestationManager bsm = new BasestationManager();
+			DiscoverResult[] dr = bsm.discover();
+			ADDRESS = dr[0].getAddress().asDottedHex();
+			System.out.println("Address is: " + ADDRESS);
+		}catch(IOException e) {
+			System.err.println("ERROR GETTING SYSTEM ADDRESS");
+			e.printStackTrace();
+		} 
 		_addressMap = addressMap;
 	}
 	/**

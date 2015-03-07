@@ -11,7 +11,10 @@ import org.sunspotworld.database.QueryManager;
 import org.sunspotworld.threads.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.io.*;
-import com.sun.spot.util.Properties;
+import com.sun.spot.util.*;
+import com.sun.spot.peripheral.Spot;
+import com.sun.spot.peripheral.radio.BasestationManager;
+import com.sun.spot.peripheral.radio.BasestationManager.DiscoverResult;
 /**
  * Host application that polls for temperature and
  * light updates from the Java Sun SPOTs
@@ -35,17 +38,13 @@ public class SunSpotHostApplication
     public SunSpotHostApplication() throws Exception
     {
         this.qm = new QueryManager(); 
-	Properties p = new Properties();
-	//p.list().println("Printing properties \n");
-	System.out.println("ADDRESS IS: " + System.getProperty("IEEE_ADDRESS"));
     }
 
     /**
      * Initiate threads for communicating with the sunSPOT device
      */
     public void startPolling() throws Exception
-    {
-	//create share map
+    {	//create share map
 	ConcurrentHashMap<String, String> addressMap = new ConcurrentHashMap<String, String>(); 
         //get basestation discovery started
         baseStationDiscovey = new Thread(new TBaseStationDiscovery(new QueryManager(), addressMap),"TBaseStationDiscovery");
