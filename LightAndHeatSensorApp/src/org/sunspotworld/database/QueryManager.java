@@ -1084,6 +1084,7 @@ public class QueryManager implements IQueryManager
 	String createBS = "INSERT INTO Basestation"
 		+ "(basestation_address, created_at)"
 		+ "VALUES (?,?)";
+	System.out.println("Adding Basestation: " + bsAddress);
 	try {
 	   PreparedStatement insert =
 		connection.getConnection().prepareStatement(createBS);

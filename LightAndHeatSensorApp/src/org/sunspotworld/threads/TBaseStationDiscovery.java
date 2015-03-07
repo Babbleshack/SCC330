@@ -15,7 +15,8 @@ public class TBaseStationDiscovery implements Runnable {
 	private final ConcurrentHashMap<String, String> _addressMap;
 	public TBaseStationDiscovery(IQueryManager qm, ConcurrentHashMap addressMap) {
 		_qm = qm;
-		ADDRESS = System.getProperty("IEE_ADDRESS");
+		ADDRESS = System.getProperty("IEEE_ADDRESS");
+		System.out.println("Address is: " + ADDRESS);
 		_addressMap = addressMap;
 	}
 	/**

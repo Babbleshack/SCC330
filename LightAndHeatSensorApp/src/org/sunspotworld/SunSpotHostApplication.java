@@ -10,6 +10,8 @@ import com.sun.spot.peripheral.ota.OTACommandServer;
 import org.sunspotworld.database.QueryManager;
 import org.sunspotworld.threads.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.io.*;
+import com.sun.spot.util.Properties;
 /**
  * Host application that polls for temperature and
  * light updates from the Java Sun SPOTs
@@ -33,6 +35,8 @@ public class SunSpotHostApplication
     public SunSpotHostApplication() throws Exception
     {
         this.qm = new QueryManager(); 
+	Properties p = new Properties();
+	//p.list().println("Printing properties \n");
     }
 
     /**
@@ -78,14 +82,14 @@ public class SunSpotHostApplication
         //start threads
         discoveryThread.start();
         switchThread.start();
+        batteryMonitor.start();
+        heatSampleThread.start();
         heatThreadThresh.start();
         lightThreadThresh.start();
         accelThreadThresh.start();
         zoneThread.start();
         waterThread.start();
-        batteryMonitor.start();
         CompassThreadThresh.start();
-        heatSampleThread.start();
         lightSampleThread.start();
         accelSampleThread.start();
         CompassSampleThread.start();
@@ -104,11 +108,10 @@ public class SunSpotHostApplication
          */
         OTACommandServer ota = (OTACommandServer) 
                 OTACommandServer.getInstance();
-        ota.setServiceName("HostApplication");
-        ota.start();
-        //OTACommandServer.start("HostApplication");
-        SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication();
+	ota.setServiceName("HostApplication");
+	ota.start();
+		        //OTACommandServer.start("HostApplication");
+	SunSpotHostApplication SunSpotHostApplication = new SunSpotHostApplication();
 	SunSpotHostApplication.startPolling();
-
     }
 }
