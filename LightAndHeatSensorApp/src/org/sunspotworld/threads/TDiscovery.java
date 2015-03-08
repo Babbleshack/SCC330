@@ -61,7 +61,7 @@ public class TDiscovery implements Runnable
                 String  spot_address   = discoveryRadio.receiveDiscoverMe();
                 System.out.println("Discovery request from: " + spot_address);
 		//check if spot belongs to bs
-		if(!_addressMap.contains(spot_address)) continue;
+		// if(!_addressMap.contains(spot_address)) continue;
 		System.out.println(spot_address + "was not dropped");
                 // Query to see if this SPOT exists
                 if(queryManager.isSpotExists(spot_address) == 0) {
