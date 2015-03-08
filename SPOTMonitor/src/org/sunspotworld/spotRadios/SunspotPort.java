@@ -18,7 +18,7 @@ public class SunspotPort
     public static final int ACCEL_PORT          = 130;
     public static final int MOTION_PORT         = 140;
     public static final int PING_PORT           = 160; //these two should be one
-    public static final int BASE_TOWER_PORT     = 170;
+    public static final int BASE_TOWER_PORT     = 150;
     public static final int WATER_PORT          = 180;
     public static final int BATTERY_PORT        = 190;
     public static final int BAROMETER_PORT      = 200;
