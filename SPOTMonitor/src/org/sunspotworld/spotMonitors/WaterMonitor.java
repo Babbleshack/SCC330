@@ -14,7 +14,7 @@ import org.sunspotworld.cupStates.SmartCupState;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.sensors.AxisSensor;
 public class WaterMonitor extends TaskObservable implements 
-        ISwitchListener
+        ISwitchListener, IMonitor
 {
     private double fillLevelPercentage;
     private SmartCupState cupState;
@@ -38,6 +38,7 @@ public class WaterMonitor extends TaskObservable implements
      * @throws Exception 
      */
     public void doTask() throws Exception {
+	//get average cup tilt.
         double averageReading = 0;
         for(int i=0;i<SAMPLE_FREQ;i++)
         {
@@ -46,10 +47,11 @@ public class WaterMonitor extends TaskObservable implements
                             axisSensor.getAxisData().getY()
                     )));
         }
-        //if water level changes then notify Observers 
-        double currentWaterLevel = this.fillLevelPercentage;
         averageReading = averageReading/SAMPLE_FREQ;
+	//pour container
+        double currentWaterLevel = this.fillLevelPercentage;
         this.pour(averageReading);
+        //if water level changes then notify Observers 
         if(currentWaterLevel != this.fillLevelPercentage)
         { 
             this.hasChanged();
