@@ -1105,17 +1105,21 @@ public class QueryManager implements IQueryManager
 			+ "Basestation.id FROM Spot "
 			+ "INNER JOIN Basestation "
 			+ "ON Spot.basestation_id = Basestation.id "
-			+ "WHERE Spot.spot_Address = ?";
+			+ "WHERE Spot.spot_Address = ? "
+			+ "AND Basestation.basestation_address = ?";
+		System.out.println("BSAddress: " + bsAddress + " Spot address: " + spotAddress);
 		try {
 		   PreparedStatement doCheck =
 			connection.getConnection().prepareStatement(getSpots);
 		    doCheck.setString(1, spotAddress);
+		    doCheck.setString(2, bsAddress);
 		    ResultSet res = doCheck.executeQuery();
 		    if(!res.next())
 			    return false; //there was no match
+		    System.out.println("Basestation owns: " + spotAddress);
 		    return true; //jobs a good'un
 		} catch (SQLException e) {
-			System.err.println("FAILED TO CREATE BASESTAION RECORD\n");
+			System.err.println("FAILED TO CHECK IF BS EXISTS:\n");
 			e.printStackTrace();
 		}
 		return false;

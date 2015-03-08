@@ -40,7 +40,15 @@ public class TBaseStationDiscovery implements Runnable {
 			if(!_qm.checkIfBaseStationExists(ADDRESS))
 				_qm.addBasestation((String)ADDRESS); 
 			_updateAddressMap();
+			for(String address : _qm.getSpots(ADDRESS))
+				System.out.println("Got address of: " + address);
 			_removeStaleSpots();
+			try{
+				Thread.sleep(500);
+			} catch(Exception ie) {
+				System.err.println("Error pauseing BD thread\n");
+				ie.printStackTrace();
+			}
 		}
 	}
 	/*
@@ -48,10 +56,9 @@ public class TBaseStationDiscovery implements Runnable {
 	 */
 	private void _removeStaleSpots() {
 		for(String spotAddress : _addressMap.keySet()) {
-			if(_qm.doesSpotBelongToBS(spotAddress,ADDRESS))
+			if(_qm.doesSpotBelongToBS(ADDRESS, spotAddress))
 				continue;
-			else
-				_addressMap.remove(spotAddress);		
+			System.out.println("REMOVING: " + _addressMap.remove(spotAddress));	
 		}			
 	}
 	/*

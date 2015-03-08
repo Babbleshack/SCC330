@@ -58,7 +58,10 @@ public class TReceivingLightSample implements Runnable
                 // Read light and heat values
                 double  lightValue  = lightReceivingRadio.receiveLight();
                 String address = lightReceivingRadio.getReceivedAddress();
-                if(!_addressMap.contains(address)) continue; 
+                if(!_addressMap.contains(address)) {
+			System.out.println("Dropping packet from: " + address);
+			continue; 
+		}
                 // Print out light and heat values
                 System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);
 
