@@ -121,10 +121,6 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
                                 new AxisThresholdState()))
         );
 
-        /**
-         * This is commented out at the moment as the ZoneProcessorServer 
-         * blocks this thread inside its run() call. Needs fixing
-         */
          services.put(Integer.valueOf(IService.PING), 
                  ServiceFactory.createTowerService());
          System.out.println("added tower service");
@@ -146,6 +142,12 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
                 )
         );
         System.out.println("Added Barometer stuff");        
+	
+	services.put(Integer.valueOf(IService.WATER_SERVICE),
+			ServiceFactory.createWaterService()
+		);
+	System.out.println("Water Service Added");
+
         return services;
         
     }
