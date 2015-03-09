@@ -5,6 +5,7 @@
 package org.sunspotworld.service;
 
 import org.sunspotworld.spotMonitors.IMonitor;
+import org.sunspotworld.spotMonitors.WaterMonitor;
 
 public class ServiceFactory {
     public static IService createThermoService(IMonitor monitor) {
@@ -40,6 +41,10 @@ public class ServiceFactory {
     
     public static IService createZoneProccessorService() {
         return new ZoneProcessorService(IService.TOWER_RECIEVER);
+    }
+
+    public static IService createWaterService() {
+	return new WaterService(new WaterMonitor(), IService.WATER_SERVICE);
     }
     
 }

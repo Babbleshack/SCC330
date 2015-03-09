@@ -13,6 +13,13 @@ import org.sunspotworld.cupStates.FullState;
 import org.sunspotworld.cupStates.SmartCupState;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.sensors.AxisSensor;
+import operators.IOperator;
+import operators.NullOperator;
+import org.sunspotworld.data.SensorData;
+import org.sunspotworld.homePatterns.TaskObservable;
+import org.sunspotworld.homePatterns.TaskObserver;
+import org.sunspotworld.sensors.ISensor;
+
 public class WaterMonitor extends TaskObservable implements 
         ISwitchListener, IMonitor
 {
@@ -23,6 +30,7 @@ public class WaterMonitor extends TaskObservable implements
     private static final long SAMPLE_RATE = 500;
     private static final long SAMPLE_FREQ = 10;
     private static final double MAX_FILL_PERCENTAGE = 100;
+    private final String _TYPE = "WATER_MONITOR";
     public WaterMonitor()
     {
         super(SAMPLE_RATE);
@@ -86,6 +94,7 @@ public class WaterMonitor extends TaskObservable implements
     }
 
     public void switchPressed(SwitchEvent evt) {
+	    /* check if monitor is running */
         if(evt.getSwitch() == sw1)
         {
             System.out.println("REFILL SWWITCH PRESSED");
@@ -107,17 +116,34 @@ public class WaterMonitor extends TaskObservable implements
     public void switchReleased(SwitchEvent evt) {
         System.out.println("Switch released");
     }
-    public String getDataAsString() {
-        return String.valueOf(this.fillLevelPercentage);
-    }
-    public double getDataAsDouble() {
-        return this.fillLevelPercentage;
-    }
-    public int getDataAsInt() {
-        return (int) this.fillLevelPercentage;
-    }
-    public long getDataAsLong() {
-        return (long) this.fillLevelPercentage;
-    }
 
+	public SensorData getSensorReading(){
+		return new SensorData(fillLevelPercentage);
+	}
+
+	public void startMonitor() {
+		this.start();
+	}
+	public void stopMonitor() {
+		this.stop();
+	}
+	public boolean getStatus() {
+		return this.isActive();
+	}
+	public String getType(){
+		return _TYPE;
+	}
+	public void setVariable(int data) {
+		return;
+	}
+	public void addMonitorObserver(TaskObserver to) {
+		this.addObserver(to);
+	}
+	//Direction stuff
+	public void setDirection(IOperator direction) {
+		return;
+	}
+	public IOperator getDirection() {
+		return new NullOperator();
+	}
 }
