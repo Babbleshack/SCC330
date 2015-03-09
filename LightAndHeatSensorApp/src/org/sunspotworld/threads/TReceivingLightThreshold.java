@@ -60,7 +60,7 @@ public class TReceivingLightThreshold implements Runnable
                 String address = lightReceivingRadio.getReceivedAddress();
                 if(!_addressMap.contains(address)) continue; 
                 // Print out light and heat values
-                System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);
+                System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " \t\t " + "Light: \t\t " + lightValue);
 
                 try
                 {

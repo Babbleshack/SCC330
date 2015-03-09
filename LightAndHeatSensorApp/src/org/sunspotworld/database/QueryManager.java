@@ -432,7 +432,7 @@ public class QueryManager implements IQueryManager
                  * Return result
                  */
                 int job_id = result.getInt("Job.id");
-                System.out.println("Job id: " + job_id);
+                // System.out.println("Job id: " + job_id);
                 return job_id;
             } else {
                 System.out.println("No results to get job_id ");
@@ -512,10 +512,10 @@ public class QueryManager implements IQueryManager
                     output_array.add((Object)Integer.valueOf(port_number));
                     output_array.add((Object)Integer.valueOf(0));
                 }
-                System.out.println("Port: " + port_number + " - Sample Rate: " +
-                        sample_rate + " - Threshold: " + threshold +
-                        " - Direction: " + result.getString("direction")
-                );
+                // System.out.println("Port: " + port_number + " - Sample Rate: " +
+                //         sample_rate + " - Threshold: " + threshold +
+                //         " - Direction: " + result.getString("direction")
+                // );
 
             }
 
@@ -568,7 +568,7 @@ public class QueryManager implements IQueryManager
             while (result.next()) {
                 output_array.add((Object)Integer.valueOf(
                         result.getInt("Job.id")));
-                System.out.println("Job id: " + result.getInt("Job.id"));
+                // System.out.println("Job id: " + result.getInt("Job.id"));
             }
 
             if(output_array.size() == 0) 
@@ -1107,7 +1107,7 @@ public class QueryManager implements IQueryManager
 			+ "ON Spot.basestation_id = Basestation.id "
 			+ "WHERE Spot.spot_Address = ? "
 			+ "AND Basestation.basestation_address = ?";
-		System.out.println("BSAddress: " + bsAddress + " Spot address: " + spotAddress);
+		// System.out.println("BSAddress: " + bsAddress + " Spot address: " + spotAddress);
 		try {
 		   PreparedStatement doCheck =
 			connection.getConnection().prepareStatement(getSpots);
@@ -1116,7 +1116,7 @@ public class QueryManager implements IQueryManager
 		    ResultSet res = doCheck.executeQuery();
 		    if(!res.next())
 			    return false; //there was no match
-		    System.out.println("Basestation owns: " + spotAddress);
+		    // System.out.println("Basestation owns: " + spotAddress);
 		    return true; //jobs a good'un
 		} catch (SQLException e) {
 			System.err.println("FAILED TO CHECK IF BS EXISTS:\n");

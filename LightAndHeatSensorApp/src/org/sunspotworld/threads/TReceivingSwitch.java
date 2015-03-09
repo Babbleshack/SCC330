@@ -54,7 +54,7 @@ public class TReceivingSwitch implements Runnable
                 String  switchId   = switchReceivingRadio.receiveSwitch();
 
                 // Print out light and heat values
-                System.out.println("Message from " + switchReceivingRadio.getReceivedAddress() + " - " + "Switch ID: " + switchId);
+                System.out.println("Message from " + switchReceivingRadio.getReceivedAddress() + " \t\t " + "Switch ID: \t\t " + switchId);
 
                 try
                 {

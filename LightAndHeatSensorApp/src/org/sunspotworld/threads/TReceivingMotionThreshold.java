@@ -57,7 +57,7 @@ public class TReceivingMotionThreshold implements Runnable
                 String address = motionReceivingRadio.getReceivedAddress();
                 if(!_addressMap.contains(address)) continue; 
                 // Print out accel
-                System.out.println("Message from " + motionReceivingRadio.getReceivedAddress() + " - " + "motion: " + motionValue);
+                System.out.println("Message from " + motionReceivingRadio.getReceivedAddress() + " \t\t " + "Motion: \t\t " + motionValue);
 
                 try
                 {

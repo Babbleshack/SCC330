@@ -51,7 +51,7 @@ public class TReceivingAccelSample implements Runnable
                 double  accelValue   = accelReceivingRadio.receiveAccel();
 
                 // Print out accel
-                System.out.println("Message from " + accelReceivingRadio.getReceivedAddress() + " - " + "acceleration: " + accelValue);
+                System.out.println("Message from " + accelReceivingRadio.getReceivedAddress() + " \t\t " + "Acceleration: \t\t " + accelValue);
 
                 try
                 {   

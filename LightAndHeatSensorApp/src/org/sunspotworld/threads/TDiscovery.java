@@ -59,10 +59,10 @@ public class TDiscovery implements Runnable
             {
                 // Receive discover me 
                 String  spot_address   = discoveryRadio.receiveDiscoverMe();
-                System.out.println("Discovery request from: " + spot_address);
+                System.out.println("\nDiscovery request from: " + spot_address);
 		//check if spot belongs to bs
 		// if(!_addressMap.contains(spot_address)) continue;
-		System.out.println(spot_address + "was not dropped");
+		// System.out.println(spot_address + "was not dropped");
                 // Query to see if this SPOT exists
                 if(queryManager.isSpotExists(spot_address) == 0) {
                     // If spot does not exist: insert spot, with no user id
@@ -71,9 +71,10 @@ public class TDiscovery implements Runnable
 
                 // 2. Get all jobs + sensors + sensor ports attached to this SPOT
                 ArrayList spotParameters = queryManager.getSensorPortsJobThresholdsFromSpotAddress(spot_address);
-                System.out.println("got ports "  + spot_address.toString());
+                // System.out.println("got ports "  + spot_address.toString());
                 // 3. Send list of ports back to SPOT 
                 responseRadio.sendDiscoverReponse(spot_address, spotParameters);
+                System.out.println();
             }
             catch (IOException io)
             {

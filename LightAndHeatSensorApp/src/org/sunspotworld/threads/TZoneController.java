@@ -58,7 +58,7 @@ public class TZoneController implements Runnable
                 // add to cache and database
                 qm.createZoneRecord(receivedTowerZoneID, spotAddress, 
                         towerAddress, System.currentTimeMillis(), SunspotPort.BASE_TOWER_PORT);
-                zCache.add(spotAddress, receivedTowerZoneID); 
+                zCache.add(spotAddress, receivedTowerZoneID);
 			} catch(IOException io) {
 				System.out.println("Could not receive received address: " + io);
 			}

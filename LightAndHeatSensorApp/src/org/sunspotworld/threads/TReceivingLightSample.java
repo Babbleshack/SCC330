@@ -59,11 +59,11 @@ public class TReceivingLightSample implements Runnable
                 double  lightValue  = lightReceivingRadio.receiveLight();
                 String address = lightReceivingRadio.getReceivedAddress();
                 if(!_addressMap.contains(address)) {
-			System.out.println("Dropping packet from: " + address);
+			// System.out.println("Packet dropped from SPOT " + address);
 			continue; 
 		}
                 // Print out light and heat values
-                System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " - " + "Light: " + lightValue);
+                System.out.println("Message from " + lightReceivingRadio.getReceivedAddress() + " \t\t " + "Light: \t\t " + lightValue);
 
                 try
                 {
@@ -71,9 +71,9 @@ public class TReceivingLightSample implements Runnable
                     _qm.createLightRecord(lightValue,
                             lightReceivingRadio.getReceivedAddress(),
                             System.currentTimeMillis(), _port);
-                    System.out.println("Created Light Sample Record for ID: " + lightReceivingRadio.getReceivedAddress()); 
+                    // System.out.println("Created Light Sample Record for ID: " + lightReceivingRadio.getReceivedAddress()); 
                 } catch (NullPointerException npe) {
-                    System.out.println("lightService: queryManager - NullPointerException");
+                    // System.out.println("lightService: queryManager - NullPointerException");
                 }
             }
             catch (IOException io)

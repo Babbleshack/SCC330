@@ -46,22 +46,34 @@ public class SendingRadio implements ISendingRadio
             for (int i = 0; i < portsThresholds.size(); i += 3) {
                 switch(((Integer)portsThresholds.get(i)).intValue()) {
                     case 110:
-                        System.out.println("SPOT has job of sensing heat");
+                        System.out.println("SPOT has job of sensing Heat \t\t (threshold " + ((Integer)portsThresholds.get(i+1)).intValue() + ")");
+                        break;
+                    case 115:
+                        System.out.println("SPOT has job of sending Heat \t\t (sample rate " + ((Integer)portsThresholds.get(i+1)).intValue() + "s)");
                         break;
                     case 120:
-                        System.out.println("SPOT has job of sensing light");
+                        System.out.println("SPOT has job of sensing Light \t\t (threshold " + ((Integer)portsThresholds.get(i+1)).intValue() + ")");
+                        break;
+                    case 125:
+                        System.out.println("SPOT has job of sending Light \t\t (sample rate " + ((Integer)portsThresholds.get(i+1)).intValue() + "s)");
                         break;
                     case 130:
-                        System.out.println("SPOT has job of sensing accelleration");
+                        System.out.println("SPOT has job of sensing Acceleration \t\t (threshold " + ((Integer)portsThresholds.get(i+1)).intValue() + ")");
+                        break;
+                    case 135:
+                        System.out.println("SPOT has job of sending Acceleration \t\t (sample rate " + ((Integer)portsThresholds.get(i+1)).intValue() + "s)");
                         break;
                     case 140:
-                        System.out.println("SPOT has job of sensing motion");
+                        System.out.println("SPOT has job of sensing Motion \t\t (threshold " + ((Integer)portsThresholds.get(i+1)).intValue() + ")");
+                        break;
+                    case 145:
+                        System.out.println("SPOT has job of sending Motion \t\t (sample rate " + ((Integer)portsThresholds.get(i+1)).intValue() + "s)");
                         break;
                     case 150:
-                        System.out.println("SPOT has job of being a cell tower");
+                        System.out.println("SPOT has job of being a Cell Tower");
                         break;
                     case 160:
-                        System.out.println("SPOT has job of being a roaming spot");
+                        System.out.println("SPOT has job of being a Roaming Spot");
                         break;
                     case 180:
                         System.out.println("SPOT has job of being a Smart Cup");

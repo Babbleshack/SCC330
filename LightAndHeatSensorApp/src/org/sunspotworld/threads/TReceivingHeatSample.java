@@ -60,7 +60,7 @@ public class TReceivingHeatSample implements Runnable
                 String address = thermoReceivingRadio.getReceivedAddress();
                 if(!_addressMap.contains(address)) continue;    
                 // Print out light and heat values
-                System.out.println("Message from " + thermoReceivingRadio.getReceivedAddress() + " - " + "Heat: " + thermoValue);
+                System.out.println("Message from " + thermoReceivingRadio.getReceivedAddress() + " \t\t " + "Temperature: \t\t " + thermoValue);
 
                 try
                 {

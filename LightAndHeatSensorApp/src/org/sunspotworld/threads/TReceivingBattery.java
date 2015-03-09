@@ -39,8 +39,7 @@ public class TReceivingBattery implements Runnable {
             String address = rRadio.getReceivedAddress();
             if(!_addressMap.contains(address)) continue;    
             qManage.updateBatteryPower(rRadio.getReceivedAddress(), batteryLevel);
-                //NEED RECEIVING METHODS
-                //DB METHOD
+                System.out.println("Message from " + rRadio.getReceivedAddress() + " \t\t " + "Battery: \t\t " + batteryLevel);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
