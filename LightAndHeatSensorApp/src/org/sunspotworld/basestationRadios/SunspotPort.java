@@ -22,9 +22,9 @@ public class SunspotPort
     public static final int ACCEL_THRESH          = 130;
     public static final int ACCEL_SAMPLE          = 135;
     public static final int MOTION_THRESH         = 140;
-    public static final int PING_PORT           = 150;
+    public static final int PING_PORT           = 150; 
     public static final int TOWER_RECIEVER_PORT = 160;
-    public static final int BASE_TOWER_PORT     = 170;
+    public static final int BASE_TOWER_PORT     = 150; 
     public static final int WATER_PORT          = 180;
     public static final int BATTERY_PORT        = 190;
     public static final int COMPASS_THRESH      = 200;

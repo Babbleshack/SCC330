@@ -22,7 +22,7 @@ public class TBaseStationDiscovery implements Runnable {
 			BasestationManager bsm = new BasestationManager();
 			DiscoverResult[] dr = bsm.discover();
 			ADDRESS = dr[0].getAddress().asDottedHex();
-			System.out.println("Address is: " + ADDRESS);
+			// System.out.println("Address is: " + ADDRESS);
 		}catch(IOException e) {
 			System.err.println("ERROR GETTING SYSTEM ADDRESS");
 			e.printStackTrace();
@@ -41,7 +41,7 @@ public class TBaseStationDiscovery implements Runnable {
 				_qm.addBasestation((String)ADDRESS); 
 			_updateAddressMap();
 			for(String address : _qm.getSpots(ADDRESS))
-				System.out.println("Got address of: " + address);
+				// System.out.println("Got address of: " + address);
 			_removeStaleSpots();
 			try{
 				Thread.sleep(500);
@@ -58,7 +58,7 @@ public class TBaseStationDiscovery implements Runnable {
 		for(String spotAddress : _addressMap.keySet()) {
 			if(_qm.doesSpotBelongToBS(ADDRESS, spotAddress))
 				continue;
-			System.out.println("REMOVING: " + _addressMap.remove(spotAddress));	
+			// System.out.println("REMOVING: " + _addressMap.remove(spotAddress));	
 		}			
 	}
 	/*

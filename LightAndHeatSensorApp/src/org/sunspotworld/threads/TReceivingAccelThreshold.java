@@ -57,7 +57,7 @@ public class TReceivingAccelThreshold implements Runnable
                 if(!_addressMap.contains(address)) continue;
 
                 // Print out accel
-                System.out.println("Message from " + accelReceivingRadio.getReceivedAddress() + " - " + "acceleration: " + accelValue);
+                System.out.println("Message from " + accelReceivingRadio.getReceivedAddress() + " \t\t " + "Acceleration: \t\t " + accelValue);
 
                 try
                 {   
