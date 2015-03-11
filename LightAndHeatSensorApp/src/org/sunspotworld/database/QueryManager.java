@@ -33,6 +33,9 @@ public class QueryManager implements IQueryManager
      * @return
      */
     public int isSpotExists(String spot_address) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String isSpotExists = "SELECT * FROM Spot WHERE spot_address = ?";
 
         try {
@@ -69,6 +72,9 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createSpotRecord(String spot_address, long time) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertSpotRecord = "INSERT INTO Spot"
                 + "(spot_address, created_at, updated_at)"
                 + ("VALUES (?,?,?)");
@@ -126,6 +132,9 @@ public class QueryManager implements IQueryManager
     }
 
     public String getReadingTableFromJobId(int job_id) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String getReadingTableFromJobId = "SELECT * " 
                 + " FROM Job, Sensor"
                 + " WHERE Sensor.id = Job.sensor_id "
@@ -161,6 +170,9 @@ public class QueryManager implements IQueryManager
     }
 
     public String getReadingFieldFromJobId(int job_id) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String getReadingTableFromJobId = "SELECT * " 
                 + " FROM Job, Sensor"
                 + " WHERE Sensor.id = Job.sensor_id "
@@ -202,6 +214,9 @@ public class QueryManager implements IQueryManager
      * @return spot_id
      */
     public int getSpotIdFromSpotAddress(String spot_address) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String getSpotId = "SELECT Spot.id " 
                 + " FROM Spot"
                 + " WHERE Spot.spot_address = ? ";
@@ -244,6 +259,9 @@ public class QueryManager implements IQueryManager
      * @return spot_address
      */
     public String getSpotAddressFromObjectTitle(String object_title) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String getSpotAddress = "SELECT Spot.spot_address " 
                 + " FROM Spot, Object"
                 + " WHERE Spot.id = Object.spot_id "
@@ -283,6 +301,9 @@ public class QueryManager implements IQueryManager
      * @return int zone id
      */
     public int getZoneIdFromSpotAddress(String spot_address) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String getZoneId = "SELECT ZoneSpot.zone_id " 
                 + " FROM Spot, ZoneSpot"
                 + " WHERE Spot.spot_address = ? "
@@ -325,6 +346,9 @@ public class QueryManager implements IQueryManager
      * @return int
      */
     public int getOtherTowerZone(String spot_address, int zone_id) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String getZoneIdTowerZone = "SELECT zone_object.zone_id "
          + "FROM Spot, Object, zone_object "
          + "WHERE Spot.spot_address = ? "
@@ -381,6 +405,9 @@ public class QueryManager implements IQueryManager
         // As the web front-end does not store sensors with ports ending in 5 (to prevent duplication),
         // we need to deduct 5 from the port number and then look for jobs for this sensor 
         // that do not have a threshold set but do have a sample rate set
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         if(this.getLastDigit(port_number) == 5) {
             port_number -= 5; 
             getJobId = "SELECT Job.id "
@@ -451,6 +478,9 @@ public class QueryManager implements IQueryManager
      * Returns all sensor ports and thresholds for a given a spot address
      */
     public ArrayList getSensorPortsJobThresholdsFromSpotAddress(String spot_address) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold`, `Job`.`sample_rate`, `direction` "
          + "FROM Job "
          + "LEFT JOIN Sensor "
@@ -535,6 +565,9 @@ public class QueryManager implements IQueryManager
      * Returns all sensor thresholds for a given a spot address
      */
     public ArrayList getSensorThresholdsFromSpotAddress(String spot_address) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String query = "SELECT Job.threshold "
          + "FROM Job "
          + "LEFT JOIN Sensor "
@@ -590,6 +623,9 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createSwitchRecord(String switch_id, String spot_address, long time) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertSwitchRecord = "INSERT INTO Switch"
                 + "(switch_id, spot_address, zone_id, created_at)"
                 + ("VALUES (?,?,?,?)");
@@ -615,6 +651,9 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createZoneRecord(int zone_id, String spot_address, String tower_address, long time, int port_number) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertZoneRecord = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
@@ -640,6 +679,9 @@ public class QueryManager implements IQueryManager
     }
 
     public void createZoneRecordForRoaming(int zone_id, String spot_address, long time, int port_number) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertZoneRecordForRoaming = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
@@ -670,6 +712,9 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createMotionRecord(int motion, String spot_address, long time, int port_number) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertMotionRecord = "INSERT INTO Motion"
                 + "(motion, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -701,6 +746,9 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createLightRecord(double light, String spot_address, long time, int port_number) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertLightRecord = "INSERT INTO Light"
                 + "(light_intensity, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -733,6 +781,9 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createThermoRecord(double celsiusData, String spot_address, long time, int port_number) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertThermoRecord = "INSERT INTO Heat"
                 + "(heat_temperature, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -763,6 +814,9 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createAccelRecord(double accelData, String spot_address, long time, int port_number) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertAccelRecord = "INSERT INTO Acceleration"
                 + "(acceleration, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -794,6 +848,9 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public void createWaterRecord(int water_percent, String spot_address, long time, int port_number) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertWaterRecord = "INSERT INTO Water"
                 + "(water_percent, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -823,6 +880,9 @@ public class QueryManager implements IQueryManager
      * @param spot_address String
      */
     public void createSpotRecord(String spot_address) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertSpotRecord = "INSERT INTO Spot"
                 + "(spot_id, basestation_id, created_at)"
                 + "VALUES (?,?,?)";
@@ -844,6 +904,9 @@ public class QueryManager implements IQueryManager
      * @param title String
      */
     public void createZoneRecord(String title) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertZoneRecord = "INSERT INTO Zone"
                 + "(title, created_at)"
                 + "VALUES (?,?)";
@@ -865,6 +928,9 @@ public class QueryManager implements IQueryManager
      * @param spot_id int
      */
     public void createSpotZoneRecord(String spot_address, int spot_id) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String insertSpotZoneRecord = "INSERT INTO ZoneSpot"
                 + "(spot_address, spot_id, created_at)"
                 + "VALUES (?,?,?)";
@@ -885,6 +951,9 @@ public class QueryManager implements IQueryManager
      * Returns past 7 days of light data
      */
     public ArrayList getPastWeekLight() {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         //ArrayList for collection data
         ArrayList lightDatums = new ArrayList();
         //find timestamps
@@ -922,6 +991,9 @@ public class QueryManager implements IQueryManager
      * Returns past 7 days of thermo data
      */
     public ArrayList getPastWeekThermo() {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         //ArrayList for collection data
         ArrayList thermoDatums = new ArrayList();
         //find timestamps
@@ -959,6 +1031,9 @@ public class QueryManager implements IQueryManager
      * Returns past 7 days of accelleration and thermo data
      */
     public ArrayList getPastAccelThermo() {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         //ArrayList for collection data
         ArrayList accelDatums = new ArrayList();
         //find timestamps
@@ -994,6 +1069,9 @@ public class QueryManager implements IQueryManager
 
     public void updateBatteryPower(String spotAddress, int powerLevelPercentage)
     {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String updatePower = "UPDATE Spot SET battery_percent = ? "
                 + "where spot_address = ?";
         try{
@@ -1011,6 +1089,9 @@ public class QueryManager implements IQueryManager
 
     public void updateSpotUpdatedAtTime(String spotAddress)
     {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
         String setSpotUpdatedAt = "UPDATE Spot SET updated_at = ? "
                 + "where spot_address = ?";
         try{
@@ -1032,6 +1113,10 @@ public class QueryManager implements IQueryManager
     }
 
     public void createBarometerRecord(double bearing, String spot_address, long time, int port_number) {
+        if(connection.getStatus())
+            connection.disconnect();
+        connection.connect();
+
         String insertBearingRecord = "INSERT INTO Bearing"
                 + "(bearing, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -1061,6 +1146,9 @@ public class QueryManager implements IQueryManager
 	* returns boolean
 	*/
 	public boolean checkIfBaseStationExists(String bsAddress) {
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
 		String checkBaseStation = "SELECT * FROM Basestation WHERE basestation_address = ?";
 		try {
 		    PreparedStatement record =
@@ -1081,6 +1169,9 @@ public class QueryManager implements IQueryManager
 	 * add basestation record
 	 */
 	public void addBasestation(String bsAddress){
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
 	String createBS = "INSERT INTO Basestation"
 		+ "(basestation_address, created_at)"
 		+ "VALUES (?,?)";
@@ -1101,6 +1192,9 @@ public class QueryManager implements IQueryManager
 	 * checks if spot belongs to BS
 	 */
 	public boolean doesSpotBelongToBS(String bsAddress, String spotAddress){
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
 		String getSpots = "SELECT Spot.spot_address, Spot.basestation_id, "
 			+ "Basestation.id FROM Spot "
 			+ "INNER JOIN Basestation "
@@ -1128,6 +1222,9 @@ public class QueryManager implements IQueryManager
 	 * get list of spots belonging to this basestation 'bsAddress'
 	 */
 	public ArrayList<String> getSpots(String bsAddress){
+	if(connection.getStatus())
+		connection.disconnect();
+	connection.connect();
 		String getSpotsQuery = "SELECT Spot.spot_address FROM Spot " 
 		+ "INNER JOIN Basestation " 
 		+ "ON Spot.basestation_id = Basestation.id "

@@ -30,8 +30,6 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
             e.printStackTrace();
             System.err.println("MySQL driver not found HERE" + e);
         }
-
-        this.connect();
     }
     public void connect()
     {
@@ -68,5 +66,10 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
         if(connection == null)
             throw new NullPointerException();
         return connection;
+    }
+    public boolean getStatus() {
+	if(connection == null)
+		return false;
+	return true;
     }
 }

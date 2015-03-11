@@ -26,5 +26,9 @@ public interface IDatabaseConnectionManager {
      * @return Connection
      */
     public Connection getConnection();
+    /**
+     * returns true if connection is made
+     */
+    public boolean getStatus();
     
 }
