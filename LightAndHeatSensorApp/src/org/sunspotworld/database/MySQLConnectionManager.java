@@ -63,13 +63,19 @@ public class MySQLConnectionManager implements IDatabaseConnectionManager
      * @return 
      */
     public Connection getConnection() {
-        if(connection == null)
-            throw new NullPointerException();
+        if(connection == null) {
+            this.connect(); 
+            return connection;
+        }
         return connection;
     }
     public boolean getStatus() {
-	if(connection == null)
-		return false;
-	return true;
+        try {
+        	if(connection.isClosed())
+        		return true;
+        	return false;
+        } catch(Exception e) {
+            return false;
+        }
     }
 }

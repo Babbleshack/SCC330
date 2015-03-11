@@ -59,7 +59,8 @@ public class TReceivingAccelSample implements Runnable
                             accelReceivingRadio.getReceivedAddress(), 
                             System.currentTimeMillis(), _port);
                 } catch (NullPointerException npe) {
-                    System.out.println("accelService: queryManager - NullPointerException");
+                    System.out.println("accelService: queryManager - NullPointerException:");
+                    npe.printStackTrace();
                 }
             }
             catch (IOException io)

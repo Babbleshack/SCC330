@@ -32,24 +32,23 @@ public class QueryManager implements IQueryManager
      * @param spot_address
      * @return
      */
-    public int isSpotExists(String spot_address) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized int isSpotExists(String spot_address) {
         String isSpotExists = "SELECT * FROM Spot WHERE spot_address = ?";
 
+        PreparedStatement record = null;
+        ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(isSpotExists);
             record.setString(1, spot_address);
 
             /**
              * Access ResultSet for spot_address
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
 
             /**
              * Return result
@@ -63,6 +62,16 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "isSpotExists: " + e);
                 return 0;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -71,15 +80,13 @@ public class QueryManager implements IQueryManager
      * @param spot_address
      * @param time long
      */
-    public void createSpotRecord(String spot_address, long time) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createSpotRecord(String spot_address, long time) {
         String insertSpotRecord = "INSERT INTO Spot"
                 + "(spot_address, created_at, updated_at)"
                 + ("VALUES (?,?,?)");
+        PreparedStatement insert = null;
         try {
-            PreparedStatement insert =
+            insert =
                 connection.getConnection().prepareStatement(insertSpotRecord);
             insert.setString(1, spot_address);
             insert.setTimestamp(2, new Timestamp(time));
@@ -88,10 +95,19 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "insertSpotRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
-    public double getLatestReadingFromJobId(int job_id) {
+    public synchronized double getLatestReadingFromJobId(int job_id) {
         String reading_table = this.getReadingTableFromJobId(job_id); 
         String reading_field = this.getReadingFieldFromJobId(job_id);
 
@@ -103,18 +119,21 @@ public class QueryManager implements IQueryManager
                 + " ORDER BY id DESC " 
                 + " LIMIT 1";
 
+        PreparedStatement record = null;
+        ResultSet result = null;
+
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(getReading);
             record.setInt(1, job_id);
 
             /**
              * Access ResultSet for zone_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
             if(result.next()) {
                 /**
                  * Return result
@@ -128,31 +147,39 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getReading: " + e);
                 return -1;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
-    public String getReadingTableFromJobId(int job_id) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized String getReadingTableFromJobId(int job_id) {
         String getReadingTableFromJobId = "SELECT * " 
                 + " FROM Job, Sensor"
                 + " WHERE Sensor.id = Job.sensor_id "
                 + " AND Job.id = ? "
                 + " LIMIT 1";
-
+        PreparedStatement record = null;
+        ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(getReadingTableFromJobId);
             record.setInt(1, job_id);
 
             /**
              * Access ResultSet for zone_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
             if(result.next()) {
                 /**
                  * Return result
@@ -166,31 +193,39 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getReadingTableFromJobId: " + e);
                 return null;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
-    public String getReadingFieldFromJobId(int job_id) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized String getReadingFieldFromJobId(int job_id) {
         String getReadingTableFromJobId = "SELECT * " 
                 + " FROM Job, Sensor"
                 + " WHERE Sensor.id = Job.sensor_id "
                 + " AND Job.id = ? "
                 + " LIMIT 1";
-
+        PreparedStatement record = null;
+        ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(getReadingTableFromJobId);
             record.setInt(1, job_id);
 
             /**
              * Access ResultSet for zone_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
             if(result.next()) {
                 /**
                  * Return result
@@ -204,6 +239,16 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getReadingTableFromJobId: " + e);
                 return null;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -213,26 +258,25 @@ public class QueryManager implements IQueryManager
      * @param  spot_address spot_address of SPOT to get ID of 
      * @return spot_id
      */
-    public int getSpotIdFromSpotAddress(String spot_address) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized int getSpotIdFromSpotAddress(String spot_address) {
         String getSpotId = "SELECT Spot.id " 
                 + " FROM Spot"
                 + " WHERE Spot.spot_address = ? ";
 
+        PreparedStatement record = null;
+        ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(getSpotId);
             record.setString(1, spot_address);
 
             /**
              * Access ResultSet for zone_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
             if(result.next()) {
                 /**
                  * Return result
@@ -246,6 +290,16 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getSpotId: " + e);
                 return -1;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -258,27 +312,25 @@ public class QueryManager implements IQueryManager
      * @param  object_title object_title to search for related SPOT on  
      * @return spot_address
      */
-    public String getSpotAddressFromObjectTitle(String object_title) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized String getSpotAddressFromObjectTitle(String object_title) {
         String getSpotAddress = "SELECT Spot.spot_address " 
                 + " FROM Spot, Object"
                 + " WHERE Spot.id = Object.spot_id "
                 + " AND Object.title LIKE %?%";
-
+        PreparedStatement record = null;
+        ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+             record =
                 connection.getConnection().prepareStatement(getSpotAddress);
             record.setString(1, object_title);
 
             /**
              * Access ResultSet for zone_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
             if(result.next()) {
                 /**
                  * Return result
@@ -292,6 +344,16 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getSpotAddress: " + e);
                 return null;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -300,29 +362,27 @@ public class QueryManager implements IQueryManager
      * @param  spot_address spot address to get the most recent zone for
      * @return int zone id
      */
-    public int getZoneIdFromSpotAddress(String spot_address) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized int getZoneIdFromSpotAddress(String spot_address) {
         String getZoneId = "SELECT ZoneSpot.zone_id " 
                 + " FROM Spot, ZoneSpot"
                 + " WHERE Spot.spot_address = ? "
                 + " AND ZoneSpot.spot_id = Spot.id "
                 + " ORDER BY ZoneSpot.id DESC " 
                 + " LIMIT 1";
-
+        PreparedStatement record = null;
+        ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(getZoneId);
             record.setString(1, spot_address);
 
             /**
              * Access ResultSet for zone_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
             if(result.next()) {
                 /**
                  * Return result
@@ -336,6 +396,16 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getZoneId: " + e);
                 return -1;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -345,10 +415,7 @@ public class QueryManager implements IQueryManager
      * @parem zone_id current zone_id of SPOT
      * @return int
      */
-    public int getOtherTowerZone(String spot_address, int zone_id) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized int getOtherTowerZone(String spot_address, int zone_id) {
         String getZoneIdTowerZone = "SELECT zone_object.zone_id "
          + "FROM Spot, Object, zone_object "
          + "WHERE Spot.spot_address = ? "
@@ -357,12 +424,13 @@ public class QueryManager implements IQueryManager
          + "AND zone_object.zone_id != ? "
          + "ORDER BY zone_object.id DESC "
          + "LIMIT 1";
-
+         PreparedStatement record = null;
+         ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(getZoneIdTowerZone);
 
             record.setString(1, spot_address);
@@ -371,7 +439,7 @@ public class QueryManager implements IQueryManager
             /**
              * Access ResultSet for zone_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
             if(result.next()) {
                 /**
                  * Return result
@@ -388,6 +456,16 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getZoneIdTowerZone: " + e);
                 return -1;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -398,16 +476,13 @@ public class QueryManager implements IQueryManager
     /**
      * Returns a job_id, given a spot address and field column
      */
-    public int getJobIdFromSpotAddressReadingFieldPortNumber(String spot_address, String column_name, int port_number) {
+    public synchronized int getJobIdFromSpotAddressReadingFieldPortNumber(String spot_address, String column_name, int port_number) {
         String getJobId = null;
 
         // If our port number ends in 5, we are looking for a sample rate monitor. 
         // As the web front-end does not store sensors with ports ending in 5 (to prevent duplication),
         // we need to deduct 5 from the port number and then look for jobs for this sensor 
         // that do not have a threshold set but do have a sample rate set
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
         if(this.getLastDigit(port_number) == 5) {
             port_number -= 5; 
             getJobId = "SELECT Job.id "
@@ -436,12 +511,13 @@ public class QueryManager implements IQueryManager
              + "AND Sensor.port_number = ? " 
              + "AND Sensor.id = Job.sensor_id";
         }
-
+        PreparedStatement record = null;
+        ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(getJobId);
 
                //  System.out.println("Looking for job_id for: " + spot_address + " and column: " + column_name);
@@ -453,7 +529,7 @@ public class QueryManager implements IQueryManager
             /**
              * Access ResultSet for job_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
             if(result.next()) {
                 /**
                  * Return result
@@ -471,16 +547,23 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getJobId: " + e);
                 return -1;
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
     /**
      * Returns all sensor ports and thresholds for a given a spot address
      */
-    public ArrayList getSensorPortsJobThresholdsFromSpotAddress(String spot_address) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized ArrayList getSensorPortsJobThresholdsFromSpotAddress(String spot_address) {
         String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold`, `Job`.`sample_rate`, `direction` "
          + "FROM Job "
          + "LEFT JOIN Sensor "
@@ -491,12 +574,13 @@ public class QueryManager implements IQueryManager
          + "ON Spot.id = Object.spot_id "
          + "WHERE Spot.spot_address = ? "
          + "AND Job.tracking = 1 ";
-
+         PreparedStatement record = null;
+         ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(query);
 
             record.setString(1, spot_address);
@@ -504,7 +588,7 @@ public class QueryManager implements IQueryManager
             /**
              * Access ResultSet for job_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
 
             /**
              * Return result
@@ -558,16 +642,23 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getSensorPortsJobThresholdsFromSpotAddress: " + e);
                 return new ArrayList();
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
     /**
      * Returns all sensor thresholds for a given a spot address
      */
-    public ArrayList getSensorThresholdsFromSpotAddress(String spot_address) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized ArrayList getSensorThresholdsFromSpotAddress(String spot_address) {
         String query = "SELECT Job.threshold "
          + "FROM Job "
          + "LEFT JOIN Sensor "
@@ -578,12 +669,13 @@ public class QueryManager implements IQueryManager
          + "ON Spot.id = Object.spot_id "
          + "WHERE Spot.spot_address = ? "
          + "AND Job.tracking = 1 ";
-
+        PreparedStatement record = null;
+        ResultSet result = null;
         try {
             /**
              * Execute select query
              */
-            PreparedStatement record =
+            record =
                 connection.getConnection().prepareStatement(query);
 
             record.setString(1, spot_address);
@@ -591,7 +683,7 @@ public class QueryManager implements IQueryManager
             /**
              * Access ResultSet for job_id
              */
-            ResultSet result = record.executeQuery();
+            result = record.executeQuery();
 
             /**
              * Return result
@@ -613,6 +705,16 @@ public class QueryManager implements IQueryManager
                 System.err.println("SQL Exception while preparing/Executing "
                 + "getJobId: " + e);
                 return new ArrayList();
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -622,15 +724,13 @@ public class QueryManager implements IQueryManager
      * @param spot_address string
      * @param time long
      */
-    public void createSwitchRecord(String switch_id, String spot_address, long time) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createSwitchRecord(String switch_id, String spot_address, long time) {
         String insertSwitchRecord = "INSERT INTO Switch"
                 + "(switch_id, spot_address, zone_id, created_at)"
                 + ("VALUES (?,?,?,?)");
+        PreparedStatement insert = null;
         try {
-            PreparedStatement insert =
+            insert =
                 connection.getConnection().prepareStatement(insertSwitchRecord);
             insert.setString(1, switch_id);
             insert.setString(2, spot_address);
@@ -641,6 +741,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createSwitchRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -650,18 +759,16 @@ public class QueryManager implements IQueryManager
      * @param spot_address int
      * @param time long
      */
-    public void createZoneRecord(int zone_id, String spot_address, String tower_address, long time, int port_number) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createZoneRecord(int zone_id, String spot_address, String tower_address, long time, int port_number) {
         String insertZoneRecord = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
+        PreparedStatement insert = null;
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(tower_address, "zone_id", port_number);
             if(job_id > 0) {
                 this.createZoneRecordForRoaming(zone_id, spot_address, time, port_number);
-                PreparedStatement insert =
+                insert =
                     connection.getConnection().prepareStatement(insertZoneRecord);
                 insert.setInt(1, zone_id);
                 insert.setInt(2, this.getSpotIdFromSpotAddress(spot_address));
@@ -675,20 +782,27 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createZoneRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
-    public void createZoneRecordForRoaming(int zone_id, String spot_address, long time, int port_number) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createZoneRecordForRoaming(int zone_id, String spot_address, long time, int port_number) {
         String insertZoneRecordForRoaming = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
+        PreparedStatement insert = null;
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "zone_id", port_number);
             if(job_id > 0) {
-                PreparedStatement insert =
+                insert =
                     connection.getConnection().prepareStatement(insertZoneRecordForRoaming);
                 insert.setInt(1, zone_id);
                 insert.setInt(2, this.getSpotIdFromSpotAddress(spot_address));
@@ -701,6 +815,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createZoneRecordForRoaming: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -711,17 +834,15 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createMotionRecord(int motion, String spot_address, long time, int port_number) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createMotionRecord(int motion, String spot_address, long time, int port_number) {
         String insertMotionRecord = "INSERT INTO Motion"
                 + "(motion, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
+        PreparedStatement insert = null;
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "motion", port_number);
             if(job_id > 0) {
-                PreparedStatement insert =
+                insert =
                     connection.getConnection().prepareStatement(insertMotionRecord);
                 insert.setInt(1, motion);
                 insert.setString(2, spot_address);
@@ -736,6 +857,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createMotionRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -745,17 +875,15 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createLightRecord(double light, String spot_address, long time, int port_number) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createLightRecord(double light, String spot_address, long time, int port_number) {
         String insertLightRecord = "INSERT INTO Light"
                 + "(light_intensity, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
+        PreparedStatement insert = null;
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "light_intensity", port_number);
             if(job_id > 0) {
-                PreparedStatement insert =
+                 insert =
                     connection.getConnection().prepareStatement(insertLightRecord);
                 insert.setDouble(1, light);
                 insert.setString(2, spot_address);
@@ -770,6 +898,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createLightRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -780,18 +917,15 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createThermoRecord(double celsiusData, String spot_address, long time, int port_number) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createThermoRecord(double celsiusData, String spot_address, long time, int port_number) {
         String insertThermoRecord = "INSERT INTO Heat"
                 + "(heat_temperature, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
+        PreparedStatement insert = null;
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "heat_temperature", port_number);
             if(job_id > 0) {
-               PreparedStatement insert =
-                    connection.getConnection().prepareStatement(insertThermoRecord);
+                insert = connection.getConnection().prepareStatement(insertThermoRecord);
                 insert.setDouble(1, celsiusData);
                 insert.setString(2, spot_address);
                 insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
@@ -805,6 +939,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createThermoRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
     /**
@@ -813,18 +956,15 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createAccelRecord(double accelData, String spot_address, long time, int port_number) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createAccelRecord(double accelData, String spot_address, long time, int port_number) {
         String insertAccelRecord = "INSERT INTO Acceleration"
                 + "(acceleration, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
+        PreparedStatement insert = null;
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "acceleration", port_number);
             if(job_id > 0) {
-                PreparedStatement insert =
-                    connection.getConnection().prepareStatement(insertAccelRecord);
+                insert = connection.getConnection().prepareStatement(insertAccelRecord);
                 insert.setDouble(1, accelData);
                 insert.setString(2, spot_address);
                 insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
@@ -838,6 +978,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createAccelRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -847,18 +996,15 @@ public class QueryManager implements IQueryManager
      * @param zone_id int
      * @param time long
      */
-    public void createWaterRecord(int water_percent, String spot_address, long time, int port_number) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createWaterRecord(int water_percent, String spot_address, long time, int port_number) {
         String insertWaterRecord = "INSERT INTO Water"
                 + "(water_percent, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
+        PreparedStatement insert = null;
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "water_percent", port_number);
             if(job_id > 0) {
-                PreparedStatement insert =
-                    connection.getConnection().prepareStatement(insertWaterRecord);
+                insert = connection.getConnection().prepareStatement(insertWaterRecord);
                 insert.setInt(1, water_percent);
                 insert.setString(2, spot_address);
                 insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
@@ -872,6 +1018,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createWaterRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -879,16 +1034,13 @@ public class QueryManager implements IQueryManager
      * insert Spot Record into DB
      * @param spot_address String
      */
-    public void createSpotRecord(String spot_address) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createSpotRecord(String spot_address) {
         String insertSpotRecord = "INSERT INTO Spot"
                 + "(spot_id, basestation_id, created_at)"
                 + "VALUES (?,?,?)";
+        PreparedStatement insert = null;
         try {
-           PreparedStatement insert =
-                connection.getConnection().prepareStatement(insertSpotRecord);
+            insert = connection.getConnection().prepareStatement(insertSpotRecord);
             insert.setString(1, spot_address);
             insert.setInt(2, 1); 
             insert.setDate(3, new Date(System.currentTimeMillis()));
@@ -896,6 +1048,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createLightRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -903,15 +1064,13 @@ public class QueryManager implements IQueryManager
      * create  and insert a new zone record to DB
      * @param title String
      */
-    public void createZoneRecord(String title) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createZoneRecord(String title) {
         String insertZoneRecord = "INSERT INTO Zone"
                 + "(title, created_at)"
                 + "VALUES (?,?)";
+                PreparedStatement insert = null;
         try {
-           PreparedStatement insert =
+           insert =
                 connection.getConnection().prepareStatement(insertZoneRecord);
             insert.setString(1, title);
             insert.setDate(2, new Date(System.currentTimeMillis()));
@@ -919,6 +1078,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createLightRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -927,15 +1095,13 @@ public class QueryManager implements IQueryManager
      * @param spot_address string
      * @param spot_id int
      */
-    public void createSpotZoneRecord(String spot_address, int spot_id) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized void createSpotZoneRecord(String spot_address, int spot_id) {
         String insertSpotZoneRecord = "INSERT INTO ZoneSpot"
                 + "(spot_address, spot_id, created_at)"
                 + "VALUES (?,?,?)";
+                PreparedStatement insert = null;
         try {
-           PreparedStatement insert =
+           insert =
                 connection.getConnection().prepareStatement(insertSpotZoneRecord);
             insert.setString(1, spot_address);
             insert.setInt(2, spot_id);
@@ -944,16 +1110,22 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createLightRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
     /**
      * Returns past 7 days of light data
      */
-    public ArrayList getPastWeekLight() {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized ArrayList getPastWeekLight() {
         //ArrayList for collection data
         ArrayList lightDatums = new ArrayList();
         //find timestamps
@@ -964,13 +1136,14 @@ public class QueryManager implements IQueryManager
                 + "created_at >= ? "//is greater than last week
                 + "AND "
                 + "created_at <= ? "; //is less than today
-        PreparedStatement getData;
+        PreparedStatement getData = null;
+        ResultSet rs = null;
         try {
             getData =
             connection.getConnection().prepareStatement(getLastWeek);
             getData.setTimestamp(1, lastWeekTimestamp);
             getData.setTimestamp(2, currentTimestamp);
-            ResultSet rs = (ResultSet)getData.executeQuery();
+            rs = (ResultSet)getData.executeQuery();
             //ArrayList for collection data
             while(rs.next())
             {
@@ -983,17 +1156,24 @@ public class QueryManager implements IQueryManager
             }
         } catch (SQLException e) {
             System.err.println("SQL Exception getting Past Week Light" + e);
-        }
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                rs.close();
+                getData.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
             return lightDatums;
+        }
     }
 
     /**
      * Returns past 7 days of thermo data
      */
-    public ArrayList getPastWeekThermo() {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized ArrayList getPastWeekThermo() {
         //ArrayList for collection data
         ArrayList thermoDatums = new ArrayList();
         //find timestamps
@@ -1004,13 +1184,14 @@ public class QueryManager implements IQueryManager
             + "created_at >= ? "//is greater than last week
             + "AND "
             + "created_at <= ? "; //is less than today
-        PreparedStatement getData;
+        PreparedStatement getData = null;
+        ResultSet rs = null;
         try {
             getData =
                 connection.getConnection().prepareStatement(getLastWeek);
             getData.setTimestamp(1, lastWeekTimestamp);
             getData.setTimestamp(2, currentTimestamp);
-            ResultSet rs = (ResultSet)getData.executeQuery();
+            rs = (ResultSet)getData.executeQuery();
         //ArrayList for collection data
         while(rs.next())
         {
@@ -1023,17 +1204,24 @@ public class QueryManager implements IQueryManager
         }
         } catch (SQLException e) {
             System.err.println("SQL Exception getting Past Week Heat" + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                rs.close();
+                getData.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
+            return thermoDatums;
         }
-        return thermoDatums;
     }
 
     /**
      * Returns past 7 days of accelleration and thermo data
      */
-    public ArrayList getPastAccelThermo() {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+    public synchronized ArrayList getPastAccelThermo() {
         //ArrayList for collection data
         ArrayList accelDatums = new ArrayList();
         //find timestamps
@@ -1044,13 +1232,14 @@ public class QueryManager implements IQueryManager
             + "created_at >= ? "//is greater than last week
             + "AND "
             + "created_at <= ? "; //is less than today
-        PreparedStatement getData;
+        PreparedStatement getData = null;
+        ResultSet rs = null;
         try {
             getData =
                 connection.getConnection().prepareStatement(getLastWeek);
             getData.setTimestamp(1, lastWeekTimestamp);
             getData.setTimestamp(2, currentTimestamp);
-            ResultSet rs = (ResultSet)getData.executeQuery();
+            rs = (ResultSet)getData.executeQuery();
         //ArrayList for collection data
         while(rs.next())
         {
@@ -1063,19 +1252,26 @@ public class QueryManager implements IQueryManager
         }
         } catch (SQLException e) {
             System.err.println("SQL Exception getting Past Week Heat" + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                rs.close();
+                getData.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
+            return accelDatums;
         }
-        return accelDatums;
     }
 
-    public void updateBatteryPower(String spotAddress, int powerLevelPercentage)
+    public synchronized void updateBatteryPower(String spotAddress, int powerLevelPercentage)
     {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
         String updatePower = "UPDATE Spot SET battery_percent = ? "
                 + "where spot_address = ?";
+            PreparedStatement putBattery = null;
         try{
-            PreparedStatement putBattery;
             putBattery =
                     connection.getConnection().prepareStatement(updatePower);
             putBattery.setInt(1, powerLevelPercentage);
@@ -1084,18 +1280,24 @@ public class QueryManager implements IQueryManager
             this.updateSpotUpdatedAtTime(spotAddress);
         }catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                putBattery.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
-    public void updateSpotUpdatedAtTime(String spotAddress)
+    public synchronized void updateSpotUpdatedAtTime(String spotAddress)
     {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
         String setSpotUpdatedAt = "UPDATE Spot SET updated_at = ? "
                 + "where spot_address = ?";
+                PreparedStatement update = null;
         try{
-            PreparedStatement update;
             update =
                     connection.getConnection().prepareStatement(setSpotUpdatedAt);
             update.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
@@ -1103,6 +1305,15 @@ public class QueryManager implements IQueryManager
             update.executeUpdate();
         }catch (Exception e) {
             System.out.println(e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                update.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
     private Timestamp findDateRange(Timestamp from, int noOfWeeks){
@@ -1112,18 +1323,15 @@ public class QueryManager implements IQueryManager
         return new Timestamp(past.getTimeInMillis());
     }
 
-    public void createBarometerRecord(double bearing, String spot_address, long time, int port_number) {
-        if(connection.getStatus())
-            connection.disconnect();
-        connection.connect();
-
+    public synchronized void createBarometerRecord(double bearing, String spot_address, long time, int port_number) {
         String insertBearingRecord = "INSERT INTO Bearing"
                 + "(bearing, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
+                PreparedStatement insert = null;
         try {
             int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "bearing", port_number);
            if(job_id > 0) {
-               PreparedStatement insert =
+               insert =
                     connection.getConnection().prepareStatement(insertBearingRecord);
                 insert.setDouble(1, bearing);
                 insert.setString(2, spot_address);
@@ -1138,6 +1346,15 @@ public class QueryManager implements IQueryManager
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
                 + "createThermoRecord: " + e);
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
@@ -1145,16 +1362,15 @@ public class QueryManager implements IQueryManager
 	* Check if basestation exists in database
 	* returns boolean
 	*/
-	public boolean checkIfBaseStationExists(String bsAddress) {
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+	public synchronized boolean checkIfBaseStationExists(String bsAddress) {
 		String checkBaseStation = "SELECT * FROM Basestation WHERE basestation_address = ?";
+        PreparedStatement record = null;
+        ResultSet result = null;
 		try {
-		    PreparedStatement record =
+		  record =
 			connection.getConnection().prepareStatement(checkBaseStation);
 		    record.setString(1, bsAddress);
-		    ResultSet result = record.executeQuery();
+		   result = record.executeQuery();
 		    if(result.next())
 			return true;
 		    else
@@ -1163,38 +1379,51 @@ public class QueryManager implements IQueryManager
 			System.err.println("FAILED TO CHECK BASESTATION EXISTS");
 			e.printStackTrace();
 			return false;
-		}
+		} finally {
+            if(connection.getStatus()) { 
+                try { 
+                result.close();
+                record.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
+        }
 	}
 	/*
 	 * add basestation record
 	 */
-	public void addBasestation(String bsAddress){
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
-	String createBS = "INSERT INTO Basestation"
-		+ "(basestation_address, created_at)"
-		+ "VALUES (?,?)";
-	System.out.println("Adding Basestation: " + bsAddress);
-	try {
-	   PreparedStatement insert =
-		connection.getConnection().prepareStatement(createBS);
-	    insert.setString(1, bsAddress);
-	    insert.setDate(2, new Date(System.currentTimeMillis()));
-	    insert.executeUpdate();
-	} catch (SQLException e) {
-		System.err.println("FAILED TO CREATE BASESTAION RECORD\n");
-		e.printStackTrace();
-	}
-
+	public synchronized void addBasestation(String bsAddress){
+    	String createBS = "INSERT INTO Basestation"
+    		+ "(basestation_address, created_at)"
+    		+ "VALUES (?,?)";
+    	System.out.println("Adding Basestation: " + bsAddress);
+        PreparedStatement insert = null;
+    	try {
+    	   insert =
+    		connection.getConnection().prepareStatement(createBS);
+    	    insert.setString(1, bsAddress);
+    	    insert.setDate(2, new Date(System.currentTimeMillis()));
+    	    insert.executeUpdate();
+    	} catch (SQLException e) {
+    		System.err.println("FAILED TO CREATE BASESTAION RECORD\n");
+    		e.printStackTrace();
+    	} finally {
+            if(connection.getStatus()) { 
+                try {
+                    insert.close();
+                    connection.disconnect(); 
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 	}
 	/*
 	 * checks if spot belongs to BS
 	 */
-	public boolean doesSpotBelongToBS(String bsAddress, String spotAddress){
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+	public synchronized boolean doesSpotBelongToBS(String bsAddress, String spotAddress){
 		String getSpots = "SELECT Spot.spot_address, Spot.basestation_id, "
 			+ "Basestation.id FROM Spot "
 			+ "INNER JOIN Basestation "
@@ -1202,12 +1431,14 @@ public class QueryManager implements IQueryManager
 			+ "WHERE Spot.spot_Address = ? "
 			+ "AND Basestation.basestation_address = ?";
 		// System.out.println("BSAddress: " + bsAddress + " Spot address: " + spotAddress);
+        PreparedStatement doCheck = null;
+        ResultSet res = null;
 		try {
-		   PreparedStatement doCheck =
+		   doCheck =
 			connection.getConnection().prepareStatement(getSpots);
 		    doCheck.setString(1, spotAddress);
 		    doCheck.setString(2, bsAddress);
-		    ResultSet res = doCheck.executeQuery();
+		    res = doCheck.executeQuery();
 		    if(!res.next())
 			    return false; //there was no match
 		    // System.out.println("Basestation owns: " + spotAddress);
@@ -1215,27 +1446,36 @@ public class QueryManager implements IQueryManager
 		} catch (SQLException e) {
 			System.err.println("FAILED TO CHECK IF BS EXISTS:\n");
 			e.printStackTrace();
-		}
-		return false;
+		} finally {
+            if(connection.getStatus()) { 
+                try { 
+                    res.close();
+                    doCheck.close();
+                    connection.disconnect();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+        }
 	}
 	/*
 	 * get list of spots belonging to this basestation 'bsAddress'
 	 */
-	public ArrayList<String> getSpots(String bsAddress){
-	if(connection.getStatus())
-		connection.disconnect();
-	connection.connect();
+	public synchronized ArrayList<String> getSpots(String bsAddress){
 		String getSpotsQuery = "SELECT Spot.spot_address FROM Spot " 
 		+ "INNER JOIN Basestation " 
 		+ "ON Spot.basestation_id = Basestation.id "
 		+ "WHERE Basestation.basestation_address = ?";
 		ArrayList<String> spots = null;
+        PreparedStatement getSpots = null;
+        ResultSet res = null;
 		try {
 		   spots = new ArrayList();
-		   PreparedStatement getSpots =
+		  getSpots =
 			connection.getConnection().prepareStatement(getSpotsQuery);
 		    getSpots.setString(1, bsAddress);
-		    ResultSet res = getSpots.executeQuery();
+		  res = getSpots.executeQuery();
 		    while(res.next()){
 			spots.add(res.getString("Spot.spot_address"));	
 		    }
@@ -1243,8 +1483,18 @@ public class QueryManager implements IQueryManager
 		} catch (SQLException e) {
 			System.err.println("FAILED TO CREATE BASESTAION RECORD\n");
 			e.printStackTrace();
-		}
-		return spots;
+		} finally {
+            if(connection.getStatus()) { 
+                try { 
+                    res.close();
+                    getSpots.close();
+                    connection.disconnect();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return spots;
+        }
 		
 	}
 }
