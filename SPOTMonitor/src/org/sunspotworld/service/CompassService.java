@@ -31,6 +31,7 @@ public class CompassService implements IService, TaskObserver {
     private IOperator _direction;
     public CompassService(final IMonitor monitor, final int serviceId) {
         _monitor = monitor;
+	_monitor.addMonitorObserver(this);
         _serviceId = serviceId;
         try {
             _sRadio = RadiosFactory.createSendingRadio(
