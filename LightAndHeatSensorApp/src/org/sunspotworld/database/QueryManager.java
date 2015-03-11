@@ -1032,11 +1032,11 @@ public class QueryManager implements IQueryManager
     }
 
     public void createBarometerRecord(double bearing, String spot_address, long time, int port_number) {
-        String insertBearingRecord = "INSERT INTO Bearings"
+        String insertBearingRecord = "INSERT INTO Bearing"
                 + "(bearing, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "heat_temperature", port_number);
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "bearing", port_number);
            if(job_id > 0) {
                PreparedStatement insert =
                     connection.getConnection().prepareStatement(insertBearingRecord);
@@ -1048,7 +1048,7 @@ public class QueryManager implements IQueryManager
                 insert.executeUpdate();
                 this.updateSpotUpdatedAtTime(spot_address);
             } else {
-                System.out.println("No job_id for this heat reading!");
+                System.out.println("No job_id for this barometer reading!");
             }
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"

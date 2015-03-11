@@ -40,6 +40,7 @@ public class TReceivingCompassSample implements Runnable {
                 if(!_addressMap.contains(_rRadio.getReceivedAddress())) continue;    
                 _qm.createBarometerRecord(angle, _rRadio.getReceivedAddress(),
                         System.currentTimeMillis(), _port);
+                System.out.println("Message from " + _rRadio.getReceivedAddress() + " \t\t " + "Angle: \t\t " + angle);
             } catch (IOException ex) {
                 System.err.println("Error storing barometer reading");
             }
