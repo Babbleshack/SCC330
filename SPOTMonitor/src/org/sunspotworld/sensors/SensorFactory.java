@@ -23,4 +23,7 @@ public class SensorFactory
     {
         return new BearingSensor();
     }
+    public static ISensro createImpactSensor() {
+        return new ImpactSensor();
+    }
 }
