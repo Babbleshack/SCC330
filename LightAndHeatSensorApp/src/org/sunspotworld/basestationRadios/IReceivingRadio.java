@@ -78,4 +78,6 @@ public interface IReceivingRadio
         public int receiveBatteryLevel();
         
         public double receiveBarometer() throws IOException;
+    public int receiveImpactFlag(); 
+
 }

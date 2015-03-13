@@ -143,10 +143,16 @@ public final class SunSpotApplication extends MIDlet implements Runnable {
         );
         System.out.println("Added Barometer stuff");        
 	
-	services.put(Integer.valueOf(IService.WATER_SERVICE),
-			ServiceFactory.createWaterService()
-		);
-	System.out.println("Water Service Added");
+        services.put(Integer.valueOf(IService.WATER_SERVICE),
+                ServiceFactory.createWaterService()
+            );
+        System.out.println("Water Service Added");
+
+        services.put(Integer.valueOf(IService.IMPACT_SERVICE),
+                ServiceFactory.createImpactService()
+            );
+        System.out.println("Added Impact Service");
+
 
         return services;
         

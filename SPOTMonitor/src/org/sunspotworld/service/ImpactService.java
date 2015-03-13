@@ -40,7 +40,7 @@ public class ImpactService implements IService, TaskObserver {
         this._monitor.addMonitorObserver(this);
         this._serviceId = serviceId;
         
-        _serviceColour = LEDColor.CYAN;
+        _serviceColour = LEDColor.WHITE;
         _feedbackLED = LEDController.getLED(LEDController.STATUS_LED);
         System.out.println("innit Service with ID" + this._serviceId);
     }
@@ -64,14 +64,14 @@ public class ImpactService implements IService, TaskObserver {
      */
     public void update(TaskObservable o, Object arg) {
         LEDController.flashLED(_feedbackLED, _serviceColour);
-        _sRadio.sendLight(((SensorData)arg).getDataAsInt());
+        _sRadio.sendImpactFlag(((SensorData)arg).getDataAsInt());
     }
     /*
      * Sends status to Basestation
      */
     public void update(TaskObservable o) {
         LEDController.flashLED(_feedbackLED, _serviceColour);
-        _sRadio.sendLight(((IMonitor)o).getSensorReading().getDataAsInt());
+        _sRadio.sendImpactFlag(((IMonitor)o).getSensorReading().getDataAsInt());
     }
     public int getServiceId() {
         return this._serviceId;

@@ -111,5 +111,10 @@ public class ReceivingRadio implements IReceivingRadio
         radioConn.receive(datagram); 
         return datagram.readDouble();
     }
+    public int receiveImpactFlag() {
+       datagram.reset();
+       radioConn.receive(datagram);
+       return datagram.readInt();
+    }
     
 }

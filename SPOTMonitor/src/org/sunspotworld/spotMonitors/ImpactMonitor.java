@@ -32,28 +32,11 @@ public class ImpactMonitor extends TaskObservable implements IMonitor, Observer{
     public void doTask() throws Exception {
         _counter.run();
         while(_running){
-            if(sensor.getData().getDataAsInt() != FALSE)
-                continue;
+            if(sensor.getData().getDataAsInt() == FALSE)
+                continue;// no impact was detected
             ((CounterTimer)_counter).incrementCounter();
         }
     }
-
-	   /*
-	     * Sample impact sensor
-	     * when first impact occurs,
-	     * if timer thread has been started,
-	     * 	increment impacts.
-	     * else
-	     * 	start timer thread.
-	     *
-	     * if number of impacts is > thresh
-	     *  call update
-	     *  set impacts to 0, and stop thread.
-	     * else
-	     * 	continue
-	     *
-	     * start timer thread, with impacts = 1
-	    */
     public long getSampleRate() {
         return this.sampleRate;
     }

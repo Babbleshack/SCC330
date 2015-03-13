@@ -67,4 +67,8 @@ public interface ISendingRadio
      * Sends battery information
      */
     public void sendBatteryPower(int powerLevel);
+    /**
+     * sends impact sensor flag
+     */
+    public void sendImpactFlag(int val) {
 }

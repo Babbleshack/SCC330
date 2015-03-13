@@ -22,6 +22,7 @@ public class SunspotPort
     public static final int WATER_PORT          = 180;
     public static final int BATTERY_PORT        = 190;
     public static final int BAROMETER_PORT      = 200;
+    public static final int IMPACT_PORT         = 210;
     
 
     private final int value;

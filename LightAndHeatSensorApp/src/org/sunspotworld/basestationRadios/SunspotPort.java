@@ -29,6 +29,7 @@ public class SunspotPort
     public static final int BATTERY_PORT        = 190;
     public static final int COMPASS_THRESH      = 200;
     public static final int COMPASS_SAMPLE      = 205;
+    public static final int IMPACT_PORT         = 210;
 
 
     private final int value;

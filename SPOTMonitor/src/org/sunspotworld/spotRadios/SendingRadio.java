@@ -195,4 +195,15 @@ public class SendingRadio implements ISendingRadio
             System.err.println("IOException occured while sending Barometer: " + e);
         }
     }
+    public void sendImpactFlag(int val) {
+        try {
+            datagram.reset();
+            datagram.writeInt(val);
+            radioConn.send(datagram);
+            System.out.println("Impact flag " + val + " sent...");
+        } catch (IOException e) {
+            System.err.println("IOException occured while sending Barometer: " + e);
+        }
+    }
+
 }

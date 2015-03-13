@@ -44,7 +44,11 @@ public class ServiceFactory {
     }
 
     public static IService createWaterService() {
-	return new WaterService(new WaterMonitor(), IService.WATER_SERVICE);
+    	return new WaterService(new WaterMonitor(), IService.WATER_SERVICE);
+    }
+
+    public static IService createImpactService() { 
+        return new ImpactService(new ImpactMonitor(), IService.IMPACT_SERVICE);
     }
     
 }

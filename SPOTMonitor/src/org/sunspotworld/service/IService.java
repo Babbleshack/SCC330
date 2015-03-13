@@ -22,6 +22,7 @@ public interface IService {
     public static final int WATER_SERVICE    = 180;
     public static final int BAROMETER_THRESH = 200;
     public static final int BAROMETER_SAMPLE = 205;
+    public static final int IMPACT_SERVICE   = 210;
 
     
     void startService();
