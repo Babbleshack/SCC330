@@ -1,12 +1,8 @@
-//The digital I/O pins (_d0-D3) can be accessed using the the getIOPins
-//method as shown below. _d0 represents the variable to which one of the pins
-//will be assigned (in this case pin _d0). The noise sensor value will be read
-//through _d0.
+package org.sunspotworld.sensors;
 
-//Pins _d0-D3 of the Sun SPOT accept digital values 0 or 1 (5v or 0v). In the
-//program an InputPinListener is attached to pin _d0 to monitor when the pin
-//turns HIGH or LOW. When the _d0 turns HIGH led(0) turns green briefly else
-//the led reverts to red
+import com.sun.spot.sensorboard.EDemoBoard;
+import com.sun.spot.resources.transducers.IIOPin;
+import org.sunspotworld.data.SensorData;
 public class ImpactSensor implements ISensor {
     private IIOPin _d0;
     private EDemoBoard _dboard;    
@@ -14,7 +10,7 @@ public class ImpactSensor implements ISensor {
     private static final int FALSE = 0;
     public ImpactSensor() {
         _dboard = EDemoBoard.getInstance();
-        _d0 = dboard.getIOPins()[EDemoBoad.d0];
+        _d0 = _dboard.getIOPins()[EDemoBoard.D0];
         _d0.setAsOutput(false);
     }
     /*
