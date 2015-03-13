@@ -15,6 +15,7 @@ import org.sunspotworld.data.SensorData;
 import org.sunspotworld.homePatterns.TaskObservable;
 import org.sunspotworld.homePatterns.TaskObserver;
 import org.sunspotworld.spotMonitors.IMonitor;
+import org.sunspotworld.spotMonitors.ImpactMonitor;
 import org.sunspotworld.spotRadios.ISendingRadio;
 import org.sunspotworld.spotRadios.PortOutOfRangeException;
 import org.sunspotworld.spotRadios.RadiosFactory;
@@ -88,12 +89,7 @@ public class ImpactService implements IService, TaskObserver {
      *Set number of seconds events should occur between
      */
     public void setDirection(int dir) {
-        if(dir == IOperator.ABOVE)
-            _monitor.setDirection(new GreaterThan());
-        else if(dir == IOperator.BELOW)
-            _monitor.setDirection(new LessThan());
-        else 
-            _monitor.setDirection(new NullOperator());
+        ((ImpactMonitor)_monitor).setCounter(dir);
     }
     public IOperator getDirecton() {
         return _direction;
