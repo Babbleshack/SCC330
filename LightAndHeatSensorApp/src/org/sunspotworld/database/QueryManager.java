@@ -1497,4 +1497,41 @@ public class QueryManager implements IQueryManager
         }
 		
 	}
+    public void createImpactRecord(int flag, String spotAddress, long time, int portNumber) {
+        System.out.println("No Implementation: \t Got flag: \t" + flag);
+
+        String insertMotionRecord = "INSERT INTO Impact"
+                + "(impact, spot_address, zone_id, job_id, created_at)"
+                + ("VALUES (?,?,?,?,?)");
+        PreparedStatement insert = null;
+        try {
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "impact", port_number);
+            if(job_id > 0) {
+                insert =
+                    connection.getConnection().prepareStatement(insertMotionRecord);
+                insert.setInt(1, flag);
+                insert.setString(2, spot_address);
+                insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+                insert.setInt(4, job_id);
+                insert.setTimestamp(5, new Timestamp(time));
+                insert.executeUpdate();
+                this.updateSpotUpdatedAtTime(spot_address);
+            } else {
+                System.out.println("No job_id for this impact flag!");
+            }
+        } catch (SQLException e) {
+                System.err.println("SQL Exception while preparing/Executing"
+                + "Impact Record" + e);
+                e.printStackTrace();
+        } finally {
+            if(connection.getStatus()) { 
+                try { 
+                insert.close();
+                connection.disconnect(); 
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+            }
+        }
+    }
 }

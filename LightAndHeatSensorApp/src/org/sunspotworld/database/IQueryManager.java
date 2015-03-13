@@ -22,6 +22,7 @@ public interface IQueryManager
     public void createThermoRecord(double celciusData, String spot_address, long time, int port_number);
     public void createBarometerRecord(double bearing, String spot_address, long time, int port_number);
     public void createWaterRecord(int water_percent, String spot_address, long time, int port_number);
+    public void createImpactRecord(int flag, String spotAddress, long time, int portNumber);
     public void createSpotRecord(String spot_id);
     public void createZoneRecord(String title);
     public void createSpotZoneRecord(String spot_address, int spot_id);
@@ -37,5 +38,6 @@ public interface IQueryManager
     public void addBasestation(String bsAddress);
     public boolean doesSpotBelongToBS(String bsAddress, String spotAddress);
     public ArrayList<String> getSpots(String bsAddress);
+
     
 }
