@@ -47,12 +47,12 @@ public class ImpactService implements IService, TaskObserver {
     public void startService() {
         _monitor.startMonitor();
         LEDController.turnLEDOn(
-                LEDController.getLED(LEDController.LIGHT_LED), _serviceColour);
+                LEDController.getLED(LEDController.IMPACT_LED), _serviceColour);
     }
     public void stopService() {
         _monitor.stopMonitor();
         LEDController.turnLEDOff(
-                LEDController.getLED(LEDController.LIGHT_LED)
+                LEDController.getLED(LEDController.IMPACT_LED)
         );
     }
     public boolean isScheduled() {
@@ -64,6 +64,7 @@ public class ImpactService implements IService, TaskObserver {
      */
     public void update(TaskObservable o, Object arg) {
         LEDController.flashLED(_feedbackLED, _serviceColour);
+        System.out.println("SERVICE GOT FLAG: " + ((SensorData)arg).getDataAsInt());
         _sRadio.sendImpactFlag(((SensorData)arg).getDataAsInt());
     }
     /*

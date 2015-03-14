@@ -21,6 +21,7 @@ public class ImpactMonitor extends TaskObservable implements IMonitor, Observer{
     private static final int TRUE = 1;
     private static final int FALSE = 0;
     private int _flag = FALSE;
+    private boolean _wasHigh;
 
     private IOperator _direction;
     public ImpactMonitor(ISensor sensor) {
@@ -28,13 +29,21 @@ public class ImpactMonitor extends TaskObservable implements IMonitor, Observer{
         this.sampleRate = sampleRate;
         this.sensor = sensor;
         _counter = new CounterTimer(CounterTimer.DEF_TIME, CounterTimer.DEF_THRESH);
+        ((Observable)_counter).addObserver(this);
+        _wasHigh = false;
     }
     public void doTask() throws Exception {
-        _counter.run();
         while(_running){
-            if(sensor.getData().getDataAsInt() == FALSE)
+            if(sensor.getData().getDataAsInt() == FALSE) {
+                _wasHigh = false;
                 continue;// no impact was detected
-            ((CounterTimer)_counter).incrementCounter();
+            }
+            if(!_wasHigh){
+                System.out.println("Impact");
+                ((CounterTimer)_counter).incrementCounter();
+                _wasHigh = true;
+                System.out.println("Counter After Impact \t " + ((CounterTimer)_counter).getCounter());
+            }
         }
     }
     public long getSampleRate() {
@@ -46,13 +55,13 @@ public class ImpactMonitor extends TaskObservable implements IMonitor, Observer{
         this.setPeriod(sampleRate);
     }
     public SensorData getSensorReading() {
-        return this.sensor.getData();
+        return new SensorData(this._flag);
     }
 
     public void startMonitor() {
         _running = true;
         this.start();
-
+        _counter.run();
     }
 
     public void stopMonitor() {
@@ -67,7 +76,7 @@ public class ImpactMonitor extends TaskObservable implements IMonitor, Observer{
     }
 
     public void setVariable(int data) {
-        this.setSampleRate(data * 1000);
+        ((CounterTimer)_counter).setTimer((long)1000*data);
     }
 
     public void addMonitorObserver(TaskObserver to) {
@@ -80,13 +89,20 @@ public class ImpactMonitor extends TaskObservable implements IMonitor, Observer{
         return _direction;
     }
     private int _flipSample() {
-        return _flag ^ TRUE; 
+        System.out.println("Fliping.. " + _flag);
+        return _flag ^= TRUE;
+        //return _flag ^ TRUE; 
     }
     public void update(Observable o, Object arg) {
+        _flipSample();
         notifyObservers();
+        System.out.println("Impact Mon is Notifying its Observers");
+        _counter.run();
     }
     public void update(Observable o) {
         notifyObservers(new SensorData(_flipSample()));
+        System.out.println("Impact Mon is Notifying its Observers");
+        _counter.run();
     }
     public void setCounter(int counter) {
         ((CounterTimer)_counter).setCounter(counter);

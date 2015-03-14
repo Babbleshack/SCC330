@@ -28,8 +28,8 @@ public abstract class LEDController {
     public static final int COMPASS_LED = 3;
     public static final int ROAMING_LED = 4;
     public static final int TOWER_LED   = 5;
+    public static final int IMPACT_LED  = 3;    
     public static final int STATUS_LED  = 7; //SERVICE LED USED FOR PACKAGE FEEDBACK
-    
     private static final int DIVISOR = 10;
     /**
      * First Come First Serve LED Power on method

@@ -15,8 +15,8 @@ public class CounterTimer extends Observable implements ITimer {
     }
     public void run() {
         _running = true;
-        long timout = System.currentTimeMillis() + _time;
-        while(System.currentTimeMillis() <= _time && _counter < _threshold);
+        long timeout = System.currentTimeMillis() + _time;
+        while(System.currentTimeMillis() <= timeout || _counter < _threshold);
         if(_counter >= _threshold) {
             resetCounter();
             notifyObservers();
@@ -32,15 +32,18 @@ public class CounterTimer extends Observable implements ITimer {
         return _time;
     }
     public void incrementCounter() {
+        System.out.println("Increment Counter");
         _counter++;
     }
     public void setCounter(int value) {
-        _counter = value;
+        _threshold = value;
+        System.out.println("Threshold is: \t" + _threshold + " Counter is:\t" + _counter + " timer is:\t" + _time);
     }
     public int getCounter() { 
         return _counter;
     }
     public void resetCounter() {
+        System.out.println("Resetting Counter");
         _counter = 0;
     }
     public boolean isRunning(){
