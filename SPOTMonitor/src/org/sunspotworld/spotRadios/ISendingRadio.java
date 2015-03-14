@@ -70,5 +70,6 @@ public interface ISendingRadio
     /**
      * sends impact sensor flag
      */
-    public void sendImpactFlag(int val) {
+    public void sendImpactFlag(int val);
+
 }

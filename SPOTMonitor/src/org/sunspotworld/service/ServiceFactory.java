@@ -6,6 +6,8 @@ package org.sunspotworld.service;
 
 import org.sunspotworld.spotMonitors.IMonitor;
 import org.sunspotworld.spotMonitors.WaterMonitor;
+import org.sunspotworld.spotMonitors.ImpactMonitor;
+import org.sunspotworld.sensors.ImpactSensor;
 
 public class ServiceFactory {
     public static IService createThermoService(IMonitor monitor) {
@@ -48,7 +50,7 @@ public class ServiceFactory {
     }
 
     public static IService createImpactService() { 
-        return new ImpactService(new ImpactMonitor(), IService.IMPACT_SERVICE);
+        return new ImpactService(new ImpactMonitor(new ImpactSensor()), IService.IMPACT_SERVICE);
     }
     
 }
