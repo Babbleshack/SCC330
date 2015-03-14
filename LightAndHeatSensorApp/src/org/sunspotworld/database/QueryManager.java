@@ -18,13 +18,13 @@ import org.sunspotworld.valueObjects.AccelData;
 
 public class QueryManager implements IQueryManager
 {
-    private IDatabaseConnectionManager connection;
+    // private IDatabaseConnectionManager connection;
     private static final String DB_NAME = "testing";
     private PreparedStatement stm = null;
 
     public QueryManager()
     {
-        connection = DatabaseConnectionFactory.createMySQLConnection();
+        // connection = DatabaseConnectionFactory.createMySQLConnection();
     }
 
     /**
@@ -33,6 +33,8 @@ public class QueryManager implements IQueryManager
      * @return
      */
     public synchronized int isSpotExists(String spot_address) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String isSpotExists = "SELECT * FROM Spot WHERE spot_address = ?";
 
         PreparedStatement record = null;
@@ -65,9 +67,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -81,6 +83,8 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public synchronized void createSpotRecord(String spot_address, long time) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertSpotRecord = "INSERT INTO Spot"
                 + "(spot_address, created_at, updated_at)"
                 + ("VALUES (?,?,?)");
@@ -98,8 +102,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -108,6 +112,8 @@ public class QueryManager implements IQueryManager
     }
 
     public synchronized double getLatestReadingFromJobId(int job_id) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String reading_table = this.getReadingTableFromJobId(job_id); 
         String reading_field = this.getReadingFieldFromJobId(job_id);
 
@@ -150,9 +156,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -161,6 +167,8 @@ public class QueryManager implements IQueryManager
     }
 
     public synchronized String getReadingTableFromJobId(int job_id) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String getReadingTableFromJobId = "SELECT * " 
                 + " FROM Job, Sensor"
                 + " WHERE Sensor.id = Job.sensor_id "
@@ -196,9 +204,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -207,6 +215,8 @@ public class QueryManager implements IQueryManager
     }
 
     public synchronized String getReadingFieldFromJobId(int job_id) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String getReadingTableFromJobId = "SELECT * " 
                 + " FROM Job, Sensor"
                 + " WHERE Sensor.id = Job.sensor_id "
@@ -242,9 +252,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -259,6 +269,8 @@ public class QueryManager implements IQueryManager
      * @return spot_id
      */
     public synchronized int getSpotIdFromSpotAddress(String spot_address) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String getSpotId = "SELECT Spot.id " 
                 + " FROM Spot"
                 + " WHERE Spot.spot_address = ? ";
@@ -293,9 +305,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -313,6 +325,8 @@ public class QueryManager implements IQueryManager
      * @return spot_address
      */
     public synchronized String getSpotAddressFromObjectTitle(String object_title) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String getSpotAddress = "SELECT Spot.spot_address " 
                 + " FROM Spot, Object"
                 + " WHERE Spot.id = Object.spot_id "
@@ -347,9 +361,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -363,6 +377,8 @@ public class QueryManager implements IQueryManager
      * @return int zone id
      */
     public synchronized int getZoneIdFromSpotAddress(String spot_address) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String getZoneId = "SELECT ZoneSpot.zone_id " 
                 + " FROM Spot, ZoneSpot"
                 + " WHERE Spot.spot_address = ? "
@@ -399,9 +415,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -416,6 +432,8 @@ public class QueryManager implements IQueryManager
      * @return int
      */
     public synchronized int getOtherTowerZone(String spot_address, int zone_id) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String getZoneIdTowerZone = "SELECT zone_object.zone_id "
          + "FROM Spot, Object, zone_object "
          + "WHERE Spot.spot_address = ? "
@@ -459,9 +477,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -477,6 +495,8 @@ public class QueryManager implements IQueryManager
      * Returns a job_id, given a spot address and field column
      */
     public synchronized int getJobIdFromSpotAddressReadingFieldPortNumber(String spot_address, String column_name, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String getJobId = null;
 
         // If our port number ends in 5, we are looking for a sample rate monitor. 
@@ -550,9 +570,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -564,6 +584,8 @@ public class QueryManager implements IQueryManager
      * Returns all sensor ports and thresholds for a given a spot address
      */
     public synchronized ArrayList getSensorPortsJobThresholdsFromSpotAddress(String spot_address) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String query = "SELECT `Sensor`.`port_number`, `Job`.`threshold`, `Job`.`sample_rate`, `direction` "
          + "FROM Job "
          + "LEFT JOIN Sensor "
@@ -645,9 +667,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -659,6 +681,8 @@ public class QueryManager implements IQueryManager
      * Returns all sensor thresholds for a given a spot address
      */
     public synchronized ArrayList getSensorThresholdsFromSpotAddress(String spot_address) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String query = "SELECT Job.threshold "
          + "FROM Job "
          + "LEFT JOIN Sensor "
@@ -708,9 +732,9 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -725,6 +749,8 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public synchronized void createSwitchRecord(String switch_id, String spot_address, long time) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertSwitchRecord = "INSERT INTO Switch"
                 + "(switch_id, spot_address, zone_id, created_at)"
                 + ("VALUES (?,?,?,?)");
@@ -744,8 +770,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -760,6 +786,8 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public synchronized void createZoneRecord(int zone_id, String spot_address, String tower_address, long time, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertZoneRecord = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
@@ -785,8 +813,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -795,6 +823,8 @@ public class QueryManager implements IQueryManager
     }
 
     public synchronized void createZoneRecordForRoaming(int zone_id, String spot_address, long time, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertZoneRecordForRoaming = "INSERT INTO ZoneSpot"
                 + "(zone_id, spot_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?)");
@@ -810,7 +840,7 @@ public class QueryManager implements IQueryManager
                 insert.setTimestamp(4, new Timestamp(time));
                 insert.executeUpdate();
             } else {
-                System.out.println("No job_id for this zone change reading!");
+                System.out.println("No job_id for this zone change reading! (roaming)");
             }
         } catch (SQLException e) {
                 System.err.println("SQL Exception while preparing/Executing"
@@ -818,8 +848,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -835,6 +865,8 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public synchronized void createMotionRecord(int motion, String spot_address, long time, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertMotionRecord = "INSERT INTO Motion"
                 + "(motion, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -860,8 +892,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -876,6 +908,8 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public synchronized void createLightRecord(double light, String spot_address, long time, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertLightRecord = "INSERT INTO Light"
                 + "(light_intensity, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -901,8 +935,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -918,6 +952,8 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public synchronized void createThermoRecord(double celsiusData, String spot_address, long time, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertThermoRecord = "INSERT INTO Heat"
                 + "(heat_temperature, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -942,8 +978,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -957,6 +993,8 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public synchronized void createAccelRecord(double accelData, String spot_address, long time, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertAccelRecord = "INSERT INTO Acceleration"
                 + "(acceleration, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -981,8 +1019,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -997,6 +1035,8 @@ public class QueryManager implements IQueryManager
      * @param time long
      */
     public synchronized void createWaterRecord(int water_percent, String spot_address, long time, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertWaterRecord = "INSERT INTO Water"
                 + "(water_percent, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -1021,8 +1061,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1035,6 +1075,8 @@ public class QueryManager implements IQueryManager
      * @param spot_address String
      */
     public synchronized void createSpotRecord(String spot_address) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertSpotRecord = "INSERT INTO Spot"
                 + "(spot_id, basestation_id, created_at)"
                 + "VALUES (?,?,?)";
@@ -1051,8 +1093,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1065,6 +1107,8 @@ public class QueryManager implements IQueryManager
      * @param title String
      */
     public synchronized void createZoneRecord(String title) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertZoneRecord = "INSERT INTO Zone"
                 + "(title, created_at)"
                 + "VALUES (?,?)";
@@ -1081,8 +1125,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1096,6 +1140,8 @@ public class QueryManager implements IQueryManager
      * @param spot_id int
      */
     public synchronized void createSpotZoneRecord(String spot_address, int spot_id) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertSpotZoneRecord = "INSERT INTO ZoneSpot"
                 + "(spot_address, spot_id, created_at)"
                 + "VALUES (?,?,?)";
@@ -1113,8 +1159,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1126,6 +1172,8 @@ public class QueryManager implements IQueryManager
      * Returns past 7 days of light data
      */
     public synchronized ArrayList getPastWeekLight() {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         //ArrayList for collection data
         ArrayList lightDatums = new ArrayList();
         //find timestamps
@@ -1161,7 +1209,7 @@ public class QueryManager implements IQueryManager
                 try { 
                 rs.close();
                 getData.close();
-                connection.disconnect(); 
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1174,6 +1222,8 @@ public class QueryManager implements IQueryManager
      * Returns past 7 days of thermo data
      */
     public synchronized ArrayList getPastWeekThermo() {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         //ArrayList for collection data
         ArrayList thermoDatums = new ArrayList();
         //find timestamps
@@ -1209,7 +1259,7 @@ public class QueryManager implements IQueryManager
                 try { 
                 rs.close();
                 getData.close();
-                connection.disconnect(); 
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1222,6 +1272,8 @@ public class QueryManager implements IQueryManager
      * Returns past 7 days of accelleration and thermo data
      */
     public synchronized ArrayList getPastAccelThermo() {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         //ArrayList for collection data
         ArrayList accelDatums = new ArrayList();
         //find timestamps
@@ -1257,7 +1309,7 @@ public class QueryManager implements IQueryManager
                 try { 
                 rs.close();
                 getData.close();
-                connection.disconnect(); 
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1268,6 +1320,8 @@ public class QueryManager implements IQueryManager
 
     public synchronized void updateBatteryPower(String spotAddress, int powerLevelPercentage)
     {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String updatePower = "UPDATE Spot SET battery_percent = ? "
                 + "where spot_address = ?";
             PreparedStatement putBattery = null;
@@ -1284,7 +1338,7 @@ public class QueryManager implements IQueryManager
             if(connection.getStatus()) { 
                 try { 
                 putBattery.close();
-                connection.disconnect(); 
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1294,6 +1348,8 @@ public class QueryManager implements IQueryManager
 
     public synchronized void updateSpotUpdatedAtTime(String spotAddress)
     {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String setSpotUpdatedAt = "UPDATE Spot SET updated_at = ? "
                 + "where spot_address = ?";
                 PreparedStatement update = null;
@@ -1309,7 +1365,7 @@ public class QueryManager implements IQueryManager
             if(connection.getStatus()) { 
                 try { 
                 update.close();
-                connection.disconnect(); 
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1324,6 +1380,8 @@ public class QueryManager implements IQueryManager
     }
 
     public synchronized void createBarometerRecord(double bearing, String spot_address, long time, int port_number) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         String insertBearingRecord = "INSERT INTO Bearing"
                 + "(bearing, spot_address, zone_id, job_id, created_at)"
                 + ("VALUES (?,?,?,?,?)");
@@ -1349,8 +1407,8 @@ public class QueryManager implements IQueryManager
         } finally {
             if(connection.getStatus()) { 
                 try { 
-                insert.close();
-                connection.disconnect(); 
+                if(insert != null) insert.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1363,6 +1421,8 @@ public class QueryManager implements IQueryManager
 	* returns boolean
 	*/
 	public synchronized boolean checkIfBaseStationExists(String bsAddress) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
 		String checkBaseStation = "SELECT * FROM Basestation WHERE basestation_address = ?";
         PreparedStatement record = null;
         ResultSet result = null;
@@ -1382,9 +1442,9 @@ public class QueryManager implements IQueryManager
 		} finally {
             if(connection.getStatus()) { 
                 try { 
-                result.close();
-                record.close();
-                connection.disconnect(); 
+                if(result != null) result.close();
+                if(record != null) record.close();
+                try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -1395,6 +1455,8 @@ public class QueryManager implements IQueryManager
 	 * add basestation record
 	 */
 	public synchronized void addBasestation(String bsAddress){
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
     	String createBS = "INSERT INTO Basestation"
     		+ "(basestation_address, created_at)"
     		+ "VALUES (?,?)";
@@ -1412,8 +1474,8 @@ public class QueryManager implements IQueryManager
     	} finally {
             if(connection.getStatus()) { 
                 try {
-                    insert.close();
-                    connection.disconnect(); 
+                    if(insert != null) insert.close();
+                    try { if (connection.getConnection() != null && !connection.getConnection().isClosed()) connection.getConnection().close(); } catch (Exception e) {};
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -1424,6 +1486,8 @@ public class QueryManager implements IQueryManager
 	 * checks if spot belongs to BS
 	 */
 	public synchronized boolean doesSpotBelongToBS(String bsAddress, String spotAddress){
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
 		String getSpots = "SELECT Spot.spot_address, Spot.basestation_id, "
 			+ "Basestation.id FROM Spot "
 			+ "INNER JOIN Basestation "
@@ -1463,6 +1527,8 @@ public class QueryManager implements IQueryManager
 	 * get list of spots belonging to this basestation 'bsAddress'
 	 */
 	public synchronized ArrayList<String> getSpots(String bsAddress){
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
 		String getSpotsQuery = "SELECT Spot.spot_address FROM Spot " 
 		+ "INNER JOIN Basestation " 
 		+ "ON Spot.basestation_id = Basestation.id "
