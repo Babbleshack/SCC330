@@ -622,9 +622,10 @@ public class QueryManager implements IQueryManager
                         output_array.add(Integer.valueOf(Integer.valueOf(0))); // new below threshold
                     else
                         output_array.add(Integer.valueOf(Integer.valueOf(1))); //new above threshold
-                } else { // Both sample rate and threshold not null... shouldn't happen but set up anyway
+                } else { // Both Null, we must be working with Impact Sensor
                     output_array.add((Object)Integer.valueOf(port_number));
-                    output_array.add((Object)Integer.valueOf(0));
+                    output_array.add((Object)Integer.valueOf(sample_rate));
+                    output_array.add((Object)Integer.valueOf(threshold));
                 }
                 // System.out.println("Port: " + port_number + " - Sample Rate: " +
                 //         sample_rate + " - Threshold: " + threshold +
