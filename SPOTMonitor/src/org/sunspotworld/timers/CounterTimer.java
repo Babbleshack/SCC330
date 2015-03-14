@@ -16,7 +16,7 @@ public class CounterTimer extends Observable implements ITimer {
     public void run() {
         _running = true;
         long timeout = System.currentTimeMillis() + _time;
-        while(System.currentTimeMillis() <= timeout || _counter < _threshold);
+        while(_counter <= _threshold || System.currentTimeMillis() <= timeout);
         if(_counter >= _threshold) {
             resetCounter();
             notifyObservers();
