@@ -107,14 +107,26 @@ public class ReceivingRadio implements IReceivingRadio
     }
 
     public double receiveBarometer() throws IOException {
-        datagram.reset();   
-        radioConn.receive(datagram); 
-        return datagram.readDouble();
+        try { 
+            datagram.reset();   
+            radioConn.receive(datagram); 
+            return datagram.readDouble();
+        } catch (Exception e) {
+            System.err.println("Error getting barometer from radio");
+            e.printStackTrace();
+        }
+        return 0;
     }
     public int receiveImpactFlag() {
-       datagram.reset();
-       radioConn.receive(datagram);
-       return datagram.readInt();
+        try{
+           datagram.reset();
+           radioConn.receive(datagram);
+           return datagram.readInt();
+        } catch (Exception e) {
+            System.err.println("Error reading impact from radio");
+            e.printStackTrace();
+        }
+        return 0;
     }
     
 }

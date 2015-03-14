@@ -1506,17 +1506,17 @@ public class QueryManager implements IQueryManager
                 + ("VALUES (?,?,?,?,?)");
         PreparedStatement insert = null;
         try {
-            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spot_address, "impact", port_number);
+            int job_id = this.getJobIdFromSpotAddressReadingFieldPortNumber(spotAddress, "impact", portNumber);
             if(job_id > 0) {
                 insert =
                     connection.getConnection().prepareStatement(insertMotionRecord);
                 insert.setInt(1, flag);
-                insert.setString(2, spot_address);
-                insert.setInt(3, this.getZoneIdFromSpotAddress(spot_address));
+                insert.setString(2, spotAddress);
+                insert.setInt(3, this.getZoneIdFromSpotAddress(spotAddress));
                 insert.setInt(4, job_id);
                 insert.setTimestamp(5, new Timestamp(time));
                 insert.executeUpdate();
-                this.updateSpotUpdatedAtTime(spot_address);
+                this.updateSpotUpdatedAtTime(spotAddress);
             } else {
                 System.out.println("No job_id for this impact flag!");
             }

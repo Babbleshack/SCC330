@@ -33,10 +33,10 @@ public class TReceivingImpact implements Runnable {
     }
 
     public void run() {
-        double flag;
+        int flag;
         while(true) {
             try {
-                flag = _rRadio.receiveBarometer();
+                flag = _rRadio.receiveImpactFlag();
                 if(!_addressMap.contains(_rRadio.getReceivedAddress())) continue;    
                 _qm.createImpactRecord(flag, _rRadio.getReceivedAddress(),
                         System.currentTimeMillis(), _port);
