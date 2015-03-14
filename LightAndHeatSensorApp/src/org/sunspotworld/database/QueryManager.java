@@ -501,15 +501,27 @@ public class QueryManager implements IQueryManager
         // where sample rate is null
         // Don't check if threshold is not null because some monitors don't require thresholds
         } else {
-             getJobId = "SELECT Job.id "
-             + "FROM Job, Spot, Object, Sensor "
-             + "WHERE Spot.spot_address = ? "
-             + "AND Object.spot_id = Spot.id "
-             + "AND Job.object_id = Object.id "
-             + "AND Job.sample_rate IS NULL " 
-             + "AND Sensor.field = ? "
-             + "AND Sensor.port_number = ? " 
-             + "AND Sensor.id = Job.sensor_id";
+            // Impact sensor uses sampel rate and threshold... 
+            if(port_number == 210) {
+                getJobId = "SELECT Job.id "
+                 + "FROM Job, Spot, Object, Sensor "
+                 + "WHERE Spot.spot_address = ? "
+                 + "AND Object.spot_id = Spot.id "
+                 + "AND Job.object_id = Object.id "
+                 + "AND Sensor.field = ? "
+                 + "AND Sensor.port_number = ? " 
+                 + "AND Sensor.id = Job.sensor_id";
+            } else {
+                 getJobId = "SELECT Job.id "
+                 + "FROM Job, Spot, Object, Sensor "
+                 + "WHERE Spot.spot_address = ? "
+                 + "AND Object.spot_id = Spot.id "
+                 + "AND Job.object_id = Object.id "
+                 + "AND Job.sample_rate IS NULL " 
+                 + "AND Sensor.field = ? "
+                 + "AND Sensor.port_number = ? " 
+                 + "AND Sensor.id = Job.sensor_id";
+            }
         }
         PreparedStatement record = null;
         ResultSet result = null;
