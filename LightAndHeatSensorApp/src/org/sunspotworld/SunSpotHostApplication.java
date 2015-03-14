@@ -28,7 +28,8 @@ public class SunSpotHostApplication
             heatThreadThresh, lightThreadThresh, accelThreadThresh, 
             zoneThread, waterThread, batteryMonitor,
             CompassThreadThresh, heatSampleThread, lightSampleThread,
-            accelSampleThread, CompassSampleThread, baseStationDiscovey= null;
+            accelSampleThread, CompassSampleThread, baseStationDiscovey,
+            impactThread    = null;
     
     private QueryManager qm  = null; 
 
@@ -52,6 +53,7 @@ public class SunSpotHostApplication
         baseStationDiscovey.start();
         //declare and instantiate threads.
         discoveryThread = new Thread(new TDiscovery(addressMap),"discoveryService");
+        impactThread = new Thread(new TReceivingImpact(addressMap), "Impact Service");
         switchThread = new Thread(new TReceivingSwitch(addressMap),"switchService");
         heatThreadThresh = new Thread(new TReceivingHeatThreshold(addressMap),"heatService");
         lightThreadThresh = new Thread(new TReceivingLightThreshold(addressMap),"lightService");
@@ -67,6 +69,7 @@ public class SunSpotHostApplication
         
         //set Daemons
         discoveryThread.setDaemon(true);
+        impactThread.setDaemon(true);
         switchThread.setDaemon(true);
         heatThreadThresh.setDaemon(true);
         lightThreadThresh.setDaemon(true);
@@ -81,6 +84,7 @@ public class SunSpotHostApplication
         CompassSampleThread.setDaemon(true);
         //start threads
         discoveryThread.start();
+        impactThread.start();
         switchThread.start();
         batteryMonitor.start();
         heatSampleThread.start();

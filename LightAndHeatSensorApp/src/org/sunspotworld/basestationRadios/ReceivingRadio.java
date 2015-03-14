@@ -119,6 +119,7 @@ public class ReceivingRadio implements IReceivingRadio
     }
     public int receiveImpactFlag() {
         try{
+           System.out.println("Received a flag"); 
            datagram.reset();
            radioConn.receive(datagram);
            return datagram.readInt();
