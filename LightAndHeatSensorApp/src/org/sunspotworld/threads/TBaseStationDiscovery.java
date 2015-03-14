@@ -44,7 +44,7 @@ public class TBaseStationDiscovery implements Runnable {
 				// System.out.println("Got address of: " + address);
 			_removeStaleSpots();
 			try{
-				Thread.sleep(1000 * 5);
+				Thread.sleep(500);
 			} catch(Exception ie) {
 				System.err.println("Error pauseing BD thread\n");
 				ie.printStackTrace();
