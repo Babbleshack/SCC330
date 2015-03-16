@@ -1577,6 +1577,8 @@ public class QueryManager implements IQueryManager
 		
 	}
     public void createImpactRecord(int flag, String spotAddress, long time, int portNumber) {
+        IDatabaseConnectionManager connection;
+        connection = DatabaseConnectionFactory.createMySQLConnection();
         System.out.println("No Implementation: \t Got flag: \t" + flag);
 
         String insertMotionRecord = "INSERT INTO Impact"
